@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, ChevronDown, Menu } from "lucide-react";
+import { ShoppingCart, ChevronDown, Menu, Home, Store, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -88,27 +88,56 @@ export const Header = () => {
           {/* Mobile Menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:bg-primary/10"
+                aria-label="Open menu"
+              >
+                <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-card border-border">
-              <nav className="flex flex-col gap-6 mt-8">
+            <SheetContent 
+              side="right" 
+              className="w-[85vw] sm:w-80 bg-background/98 backdrop-blur-xl border-border/50 p-0"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-border/50">
+                <h2 className="text-lg font-semibold">Menu</h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setMobileOpen(false)}
+                  className="h-8 w-8 hover:bg-primary/10"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <nav className="flex flex-col p-6">
+                {/* Home Link */}
                 <Link 
                   to="/" 
-                  className="text-lg font-medium hover:text-primary transition-colors"
+                  className="flex items-center gap-3 px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
                   onClick={() => setMobileOpen(false)}
                 >
+                  <Home className="h-5 w-5" />
                   Home
                 </Link>
                 
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-muted-foreground">Shop By Category</p>
+                {/* Categories */}
+                <div className="mt-6 space-y-2">
+                  <div className="flex items-center gap-2 px-4 mb-3">
+                    <Store className="h-4 w-4 text-muted-foreground" />
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Shop By Category
+                    </p>
+                  </div>
                   {categories.map((category) => (
                     <button
                       key={category.value}
                       onClick={() => handleCategoryClick(category.value)}
-                      className="block w-full text-left text-lg font-medium hover:text-primary transition-colors"
+                      className="block w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
                     >
                       {category.name}
                     </button>
