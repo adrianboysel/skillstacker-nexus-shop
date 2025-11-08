@@ -10,7 +10,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="flex flex-col items-start">
             <div className="mb-6 ml-[-40px]">
-              <img src={logoWhite} alt="Skill Stacker" className="h-10 md:h-12" />
+              <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="h-10 md:h-12" />
             </div>
             <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed">
               Built on Solana. Fueled by $STKR.
@@ -89,7 +89,7 @@ export const Footer = () => {
               <span className="text-xs font-medium">Amex</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 hover:shadow-glow transition-all cursor-pointer">
-              <img src={moonpayLogo} alt="MoonPay" className="h-4 brightness-0 invert" />
+              <img src={moonpayLogo} alt="MoonPay" width="63" height="16" className="h-4 brightness-0 invert" loading="lazy" />
             </div>
           </div>
           

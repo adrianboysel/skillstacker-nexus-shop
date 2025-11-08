@@ -41,7 +41,7 @@ export const Header = () => {
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group mr-auto ml-[-40px]">
-          <img src={logoWhite} alt="Skill Stacker" className="h-10 transition-transform group-hover:scale-105" />
+          <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-10 transition-transform group-hover:scale-105" />
         </Link>
         
         {/* Desktop Navigation */}

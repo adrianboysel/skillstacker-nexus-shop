@@ -13,7 +13,7 @@ export const PromoBanner = () => {
         <span className="text-sm md:text-base font-medium">
           Now accepting crypto payments via
         </span>
-        <img src={moonpayLogo} alt="MoonPay" className="h-4 md:h-5 brightness-0 invert inline-block" />
+        <img src={moonpayLogo} alt="MoonPay" width="79" height="20" className="h-4 md:h-5 brightness-0 invert inline-block" />
       </div>
       <button
         onClick={() => setIsVisible(false)}

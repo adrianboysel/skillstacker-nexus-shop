@@ -154,6 +154,8 @@ const ProductDetail = () => {
                 <img 
                   src={currentImage} 
                   alt={data.title}
+                  width="600"
+                  height="600"
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -176,6 +178,9 @@ const ProductDetail = () => {
                     <img 
                       src={image.node.url} 
                       alt={`${data.title} ${idx + 1}`}
+                      width="150"
+                      height="150"
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </button>

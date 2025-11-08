@@ -48,6 +48,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             <img 
               src={image} 
               alt={node.title}
+              width="403"
+              height="403"
+              loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
