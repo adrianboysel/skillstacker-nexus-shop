@@ -27,14 +27,15 @@ const Home = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[108px]">
-        <div 
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${heroBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={heroBg} 
+            alt="" 
+            fetchPriority="high"
+            width="1920"
+            height="1080"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-hero" />
         </div>
         
