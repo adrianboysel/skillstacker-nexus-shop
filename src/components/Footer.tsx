@@ -15,31 +15,9 @@ export const Footer = () => {
             <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed">
               Built on Solana. Fueled by $STKR.
             </p>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
               Where skills become capital — and style makes a statement.
             </p>
-            
-            {/* Payment Methods */}
-            <div className="mt-2">
-              <p className="text-xs text-muted-foreground mb-3">Accepted Payments</p>
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
-                  <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-xs font-medium">Visa</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
-                  <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-xs font-medium">Mastercard</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
-                  <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-xs font-medium">Amex</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
-                  <img src={moonpayLogo} alt="MoonPay" className="h-4" />
-                </div>
-              </div>
-            </div>
           </div>
           
           <div>
@@ -95,17 +73,38 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="pt-8 md:pt-10 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-          <p className="text-xs md:text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Skill Stacker. All rights reserved.
-          </p>
-          <div className="flex gap-6 md:gap-8">
-            <a href="https://discord.gg/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
-              Discord
-            </a>
-            <a href="https://twitter.com/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
-              Follow on X
-            </a>
+        <div className="pt-8 md:pt-10 border-t border-border/50 flex flex-col items-center gap-6">
+          {/* Payment Methods */}
+          <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <span className="text-xs font-medium">Visa</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <span className="text-xs font-medium">Mastercard</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <span className="text-xs font-medium">Amex</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
+              <img src={moonpayLogo} alt="MoonPay" className="h-4" />
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-8">
+            <p className="text-xs md:text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Skill Stacker. All rights reserved.
+            </p>
+            <div className="flex gap-6 md:gap-8">
+              <a href="https://discord.gg/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+                Discord
+              </a>
+              <a href="https://twitter.com/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+                Follow on X
+              </a>
+            </div>
           </div>
         </div>
       </div>
