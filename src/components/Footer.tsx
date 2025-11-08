@@ -89,7 +89,7 @@ export const Footer = () => {
               <span className="text-xs font-medium">Amex</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30">
-              <img src={moonpayLogo} alt="MoonPay" className="h-4" />
+              <img src={moonpayLogo} alt="MoonPay" className="h-4 brightness-0 invert" />
             </div>
           </div>
           
