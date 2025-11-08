@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Youtube } from "lucide-react";
 import logoWhite from "@/assets/logo-white.png";
 import moonpayLogo from "@/assets/moonpay-logo.png";
 
@@ -98,8 +98,9 @@ export const Footer = () => {
               © {new Date().getFullYear()} Skill Stacker. All rights reserved.
             </p>
             <div className="flex gap-6 md:gap-8">
-              <a href="https://discord.gg/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
-                Discord
+              <a href="https://youtube.com/@skillstacker" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Youtube className="h-4 w-4" />
+                YouTube
               </a>
               <a href="https://twitter.com/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
                 Follow on X
