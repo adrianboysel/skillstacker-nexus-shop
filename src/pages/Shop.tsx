@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCard } from "@/components/ProductCard";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
@@ -41,6 +42,7 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PromoBanner />
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-20">

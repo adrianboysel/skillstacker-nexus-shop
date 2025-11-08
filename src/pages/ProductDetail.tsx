@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingCart, ArrowLeft } from "lucide-react";
@@ -98,6 +99,7 @@ const ProductDetail = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
+        <PromoBanner />
         <Header />
         <main className="container mx-auto px-4 pt-32 pb-20">
           <div className="grid md:grid-cols-2 gap-12">
@@ -116,6 +118,7 @@ const ProductDetail = () => {
   if (!data) {
     return (
       <div className="min-h-screen bg-background">
+        <PromoBanner />
         <Header />
         <main className="container mx-auto px-4 pt-32 pb-20">
           <div className="text-center">
@@ -134,6 +137,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PromoBanner />
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-20">

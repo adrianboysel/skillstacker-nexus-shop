@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } from "lucide-react";
@@ -25,6 +26,7 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <PromoBanner />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 pt-32 pb-20">

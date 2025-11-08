@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCard } from "@/components/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
@@ -21,6 +22,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PromoBanner />
       <Header />
       
       {/* Hero Section */}
