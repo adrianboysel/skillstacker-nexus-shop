@@ -8,7 +8,7 @@ export const PromoBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="relative bg-primary text-white py-3 px-4 text-center">
+    <div className="sticky top-0 z-50 bg-primary text-white py-3 px-4 text-center shadow-md">
       <div className="container mx-auto flex items-center justify-center gap-2">
         <span className="text-sm md:text-base font-medium">
           Now accepting crypto payments via
