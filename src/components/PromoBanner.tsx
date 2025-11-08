@@ -3,7 +3,15 @@ import { useState } from "react";
 import moonpayLogo from "@/assets/moonpay-logo.png";
 
 export const PromoBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(() => {
+    const stored = localStorage.getItem('promo-banner-visible');
+    return stored !== 'false';
+  });
+
+  const handleClose = () => {
+    setIsVisible(false);
+    localStorage.setItem('promo-banner-visible', 'false');
+  };
 
   if (!isVisible) return null;
 
@@ -16,7 +24,7 @@ export const PromoBanner = () => {
         <img src={moonpayLogo} alt="MoonPay" width="79" height="20" className="h-3.5 sm:h-4 md:h-5 brightness-0 invert inline-block" />
       </div>
       <button
-        onClick={() => setIsVisible(false)}
+        onClick={handleClose}
         className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 hover:bg-white/10 rounded p-1 transition-colors"
         aria-label="Close banner"
       >

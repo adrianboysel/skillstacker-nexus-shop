@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { useCartStore } from "@/stores/cartStore";
 import logoWhite from "@/assets/logo-white.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = [
   { name: "All Products", value: "" },
@@ -30,6 +30,25 @@ export const Header = () => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(true);
+
+  useEffect(() => {
+    const checkBanner = () => {
+      const stored = localStorage.getItem('promo-banner-visible');
+      setBannerVisible(stored !== 'false');
+    };
+    
+    checkBanner();
+    window.addEventListener('storage', checkBanner);
+    
+    // Poll for changes since localStorage events don't fire in same tab
+    const interval = setInterval(checkBanner, 100);
+    
+    return () => {
+      window.removeEventListener('storage', checkBanner);
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleCategoryClick = (category: string) => {
     navigate(`/shop?category=${category}`);
@@ -37,7 +56,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-[28px] left-0 right-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl">
+    <header className={`fixed left-0 right-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl transition-all duration-300 ${bannerVisible ? 'top-[28px]' : 'top-0'}`}>
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group mr-auto md:ml-[-40px]">
