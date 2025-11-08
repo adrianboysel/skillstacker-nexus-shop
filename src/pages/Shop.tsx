@@ -29,12 +29,12 @@ const Shop = () => {
   });
 
   const getCategoryTitle = () => {
-    if (!category) return "Meme Militia Collection";
+    if (!category) return "All Products";
     const categoryMap: { [key: string]: string } = {
-      hoodie: "Hoodies",
-      shirt: "Shirts", 
-      hat: "Hats & Beanies",
-      sticker: "Stickers",
+      "skill stacker": "Skill Stacker Merch",
+      "brand butler": "Brand Butler Merch",
+      "brand hacker": "Brand Hacker Merch",
+      "meme militia": "Meme Militia Merch",
     };
     return categoryMap[category.toLowerCase()] || "Products";
   };

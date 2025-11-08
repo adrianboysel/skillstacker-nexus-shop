@@ -17,7 +17,7 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold mb-4">Shop</h3>
+            <h3 className="font-semibold mb-4">Shop By Brand</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -25,18 +25,23 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=hoodie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Hoodies
+                <Link to="/shop?category=skill stacker" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Skill Stacker
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=shirt" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Shirts
+                <Link to="/shop?category=brand butler" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Brand Butler
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=hat" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Hats & Beanies
+                <Link to="/shop?category=brand hacker" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Brand Hacker
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop?category=meme militia" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Meme Militia
                 </Link>
               </li>
             </ul>

@@ -19,10 +19,10 @@ import { useState } from "react";
 
 const categories = [
   { name: "All Products", value: "" },
-  { name: "Hoodies", value: "hoodie" },
-  { name: "Shirts", value: "shirt" },
-  { name: "Hats & Beanies", value: "hat" },
-  { name: "Stickers", value: "sticker" },
+  { name: "Skill Stacker Merch", value: "skill stacker" },
+  { name: "Brand Butler Merch", value: "brand butler" },
+  { name: "Brand Hacker Merch", value: "brand hacker" },
+  { name: "Meme Militia Merch", value: "meme militia" },
 ];
 
 export const Header = () => {
@@ -40,12 +40,12 @@ export const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-3 group mr-auto">
           <img src={logoWhite} alt="Skill Stacker" className="h-10 transition-transform group-hover:scale-105" />
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
             Home
           </Link>
@@ -57,7 +57,7 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="center" 
-              className="w-48 bg-card border-border z-[100] shadow-glow-blue"
+              className="w-56 bg-card border-border z-[100] shadow-glow-blue"
             >
               {categories.map((category) => (
                 <DropdownMenuItem
