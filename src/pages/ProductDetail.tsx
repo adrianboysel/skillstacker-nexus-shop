@@ -135,8 +135,34 @@ const ProductDetail = () => {
   const variant = data.variants.edges[selectedVariant]?.node;
   const currentImage = data.images.edges[selectedImage]?.node.url;
 
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": data.title,
+    "description": data.description,
+    "image": data.images.edges.map(img => img.node.url),
+    "offers": {
+      "@type": "Offer",
+      "url": `${window.location.origin}/product/${data.handle}`,
+      "priceCurrency": variant?.price.currencyCode || "USD",
+      "price": variant?.price.amount || "0",
+      "availability": variant?.availableForSale 
+        ? "https://schema.org/InStock" 
+        : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Skill Stacker"
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <PromoBanner />
       <Header />
       
