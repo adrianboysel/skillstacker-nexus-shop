@@ -45,7 +45,7 @@ const Shop = () => {
       <PromoBanner />
       <Header />
       
-      <main className="container mx-auto px-4 pt-[156px] pb-20">
+      <main className="container mx-auto px-4 pt-[132px] pb-20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold">

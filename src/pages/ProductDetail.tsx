@@ -101,7 +101,7 @@ const ProductDetail = () => {
       <div className="min-h-screen bg-background">
         <PromoBanner />
         <Header />
-        <main className="container mx-auto px-4 pt-[156px] pb-20">
+        <main className="container mx-auto px-4 pt-[132px] pb-20">
           <div className="grid md:grid-cols-2 gap-12">
             <Skeleton className="w-full aspect-square rounded-lg" />
             <div className="space-y-6">
@@ -120,7 +120,7 @@ const ProductDetail = () => {
       <div className="min-h-screen bg-background">
         <PromoBanner />
         <Header />
-        <main className="container mx-auto px-4 pt-[156px] pb-20">
+        <main className="container mx-auto px-4 pt-[132px] pb-20">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Product not found</h1>
             <Link to="/shop">

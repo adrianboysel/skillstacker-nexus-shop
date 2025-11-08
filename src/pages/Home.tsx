@@ -26,7 +26,7 @@ const Home = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[124px]">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[108px]">
         <div 
           className="absolute inset-0 z-0"
           style={{
