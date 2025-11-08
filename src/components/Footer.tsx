@@ -9,7 +9,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="flex flex-col items-start">
-            <div className="mb-6 ml-[-6px]">
+            <div className="mb-6 ml-[-40px]">
               <img src={logoWhite} alt="Skill Stacker" className="h-10 md:h-12" />
             </div>
             <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed">
