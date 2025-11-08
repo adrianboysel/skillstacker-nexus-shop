@@ -43,11 +43,11 @@ const Home = () => {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link to="/about">
+              <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer">
                 <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10">
-                  Join the Movement
+                  Learn About $STKR
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

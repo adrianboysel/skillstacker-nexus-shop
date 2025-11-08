@@ -17,21 +17,26 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <h3 className="font-semibold mb-4">Shop</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Shop
+                  All Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About
+                <Link to="/shop?category=hoodie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Hoodies
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Contact
+                <Link to="/shop?category=shirt" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Shirts
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop?category=hat" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Hats & Beanies
                 </Link>
               </li>
             </ul>

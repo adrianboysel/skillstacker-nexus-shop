@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -7,13 +8,36 @@ import type { ShopifyProduct } from "@/stores/cartStore";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Shop = () => {
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category') || '';
+
   const { data, isLoading } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['products', category],
     queryFn: async () => {
       const response = await storefrontApiRequest(PRODUCTS_QUERY, { first: 50 });
-      return response.data.products.edges as ShopifyProduct[];
+      const products = response.data.products.edges as ShopifyProduct[];
+      
+      // Filter by category if specified
+      if (category) {
+        return products.filter((product) => 
+          product.node.title.toLowerCase().includes(category.toLowerCase())
+        );
+      }
+      
+      return products;
     },
   });
+
+  const getCategoryTitle = () => {
+    if (!category) return "Meme Militia Collection";
+    const categoryMap: { [key: string]: string } = {
+      hoodie: "Hoodies",
+      shirt: "Shirts", 
+      hat: "Hats & Beanies",
+      sticker: "Stickers",
+    };
+    return categoryMap[category.toLowerCase()] || "Products";
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -23,7 +47,7 @@ const Shop = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold">
-              Meme Militia{" "}
+              {getCategoryTitle()}{" "}
               <span className="bg-gradient-primary bg-clip-text text-transparent">
                 Collection
               </span>
@@ -53,7 +77,10 @@ const Shop = () => {
             <div className="text-center py-20">
               <p className="text-xl text-muted-foreground mb-4">No products found</p>
               <p className="text-sm text-muted-foreground">
-                Create a product by telling me what you want to sell!
+                {category 
+                  ? `No ${getCategoryTitle().toLowerCase()} available yet.`
+                  : "Create a product by telling me what you want to sell!"
+                }
               </p>
             </div>
           )}
