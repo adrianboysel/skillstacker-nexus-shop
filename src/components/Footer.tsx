@@ -6,12 +6,12 @@ export const Footer = () => {
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          <div>
+          <div className="flex flex-col items-start">
             <img src={logoWhite} alt="Skill Stacker" className="h-10 mb-4" />
-            <p className="text-sm text-muted-foreground mb-2">
+            <p className="text-sm text-muted-foreground mb-2 text-left">
               Built on Solana. Fueled by $STKR.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground text-left">
               Where skills become capital — and style makes a statement.
             </p>
           </div>
