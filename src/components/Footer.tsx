@@ -7,11 +7,13 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div className="flex flex-col items-start">
-            <img src={logoWhite} alt="Skill Stacker" className="h-10 mb-4" />
-            <p className="text-sm text-muted-foreground mb-2 text-left">
+            <div className="mb-4">
+              <img src={logoWhite} alt="Skill Stacker" className="h-10" />
+            </div>
+            <p className="text-sm text-muted-foreground mb-2">
               Built on Solana. Fueled by $STKR.
             </p>
-            <p className="text-sm text-muted-foreground text-left">
+            <p className="text-sm text-muted-foreground">
               Where skills become capital — and style makes a statement.
             </p>
           </div>
