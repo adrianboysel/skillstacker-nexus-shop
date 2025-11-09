@@ -136,6 +136,11 @@ export async function createStorefrontCheckout(items: CartItem[]): Promise<strin
     }
 
     const url = new URL(cart.checkoutUrl);
+    
+    // Force use of the permanent Shopify domain for checkout, not custom domains
+    // Custom domains may not have checkout properly configured
+    url.hostname = SHOPIFY_STORE_PERMANENT_DOMAIN;
+    
     url.searchParams.set('channel', 'online_store');
     return url.toString();
   } catch (error) {
