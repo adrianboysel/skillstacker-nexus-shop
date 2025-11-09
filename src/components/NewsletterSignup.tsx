@@ -93,13 +93,18 @@ export const NewsletterSignup = () => {
       className="py-16 md:py-24 border-y border-border/50 relative overflow-hidden"
     >
       <div 
-        className="absolute inset-0 transition-transform duration-100 ease-out"
+        className="absolute transition-transform duration-100 ease-out"
         style={{
           backgroundImage: `url(${newsletterBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           transform: `translateY(${offsetY}px)`,
           willChange: 'transform',
+          top: '-20%',
+          left: 0,
+          right: 0,
+          bottom: '-20%',
+          height: '140%',
         }}
       />
       <div className="container mx-auto px-4 relative z-10">
