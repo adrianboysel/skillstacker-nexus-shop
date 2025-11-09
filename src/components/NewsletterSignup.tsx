@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -10,7 +10,31 @@ const emailSchema = z.string().trim().email({ message: "Invalid email address" }
 export const NewsletterSignup = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [offsetY, setOffsetY] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollPosition = window.scrollY;
+        const elementTop = rect.top + scrollPosition;
+        const viewportMiddle = scrollPosition + window.innerHeight / 2;
+        
+        // Calculate parallax offset - background moves slower than scroll
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = (viewportMiddle - elementTop) * 0.3;
+          setOffsetY(offset);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial calculation
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,13 +89,19 @@ export const NewsletterSignup = () => {
 
   return (
     <section 
+      ref={sectionRef}
       className="py-16 md:py-24 border-y border-border/50 relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${newsletterBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
     >
+      <div 
+        className="absolute inset-0 transition-transform duration-100 ease-out"
+        style={{
+          backgroundImage: `url(${newsletterBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          transform: `translateY(${offsetY}px)`,
+          willChange: 'transform',
+        }}
+      />
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
