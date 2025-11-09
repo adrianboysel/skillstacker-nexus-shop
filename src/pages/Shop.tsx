@@ -34,9 +34,29 @@ const Shop = () => {
       
       // Filter by category if specified
       if (category) {
-        products = products.filter((product) => 
-          product.node.productType.toLowerCase() === category.toLowerCase()
-        );
+        // Map category names to Shopify productType values
+        const categoryMap: { [key: string]: string[] } = {
+          "shirts": ["T-Shirts", "Shirts"],
+          "hats": ["Hats"],
+          "hoodies": ["Hoodies"],
+          "sweatshirts": ["Sweatshirts"],
+          "canvas": ["Canvas", "Canvas Print", "Wall Art"],
+          // Brand filters
+          "skill stacker": ["skill stacker"],
+          "brand butler": ["brand butler"],
+          "brand hacker": ["brand hacker"],
+          "meme militia": ["meme militia"],
+        };
+        
+        const validTypes = categoryMap[category.toLowerCase()];
+        if (validTypes) {
+          products = products.filter((product) => 
+            validTypes.some(type => 
+              product.node.productType.toLowerCase().includes(type.toLowerCase()) ||
+              product.node.title.toLowerCase().includes(category.toLowerCase())
+            )
+          );
+        }
       }
       
       return products;
