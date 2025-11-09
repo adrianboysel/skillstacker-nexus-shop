@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, ChevronDown, Menu, Home, Store, X, Shirt, CircleDot, Frame, Tag } from "lucide-react";
+import { ShoppingCart, ChevronDown, Menu, Home, Store, X, Shirt, CircleDot, Frame, Tag, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,6 +13,11 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useCartStore } from "@/stores/cartStore";
 import logoWhite from "@/assets/logo-white.png";
 import { useState, useEffect } from "react";
@@ -38,6 +43,8 @@ export const Header = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [bannerVisible, setBannerVisible] = useState(true);
+  const [brandsOpen, setBrandsOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   useEffect(() => {
     const checkBanner = () => {
@@ -199,51 +206,57 @@ export const Header = () => {
                   New Arrivals
                 </Link>
                 
-                {/* Shop By Brand */}
-                <div className="mt-6 space-y-2">
-                  <div className="flex items-center gap-2 px-4 mb-3">
-                    <Store className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {/* Shop By Brand - Collapsible */}
+                <Collapsible open={brandsOpen} onOpenChange={setBrandsOpen} className="mt-6">
+                  <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-4 text-base font-semibold text-primary rounded-lg hover:bg-primary/10 transition-colors">
+                    <div className="flex items-center gap-2">
+                      <Store className="h-5 w-5" />
                       Shop By Brand
-                    </p>
-                  </div>
-                  {brands.map((brand) => {
-                    const IconComponent = brand.icon;
-                    return (
-                      <button
-                        key={brand.value}
-                        onClick={() => handleBrandClick(brand.value)}
-                        className="flex items-center gap-3 w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
-                      >
-                        <IconComponent className="h-5 w-5" />
-                        {brand.name}
-                      </button>
-                    );
-                  })}
-                </div>
+                    </div>
+                    <ChevronRight className={`h-5 w-5 transition-transform ${brandsOpen ? 'rotate-90' : ''}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-1 mt-2">
+                    {brands.map((brand) => {
+                      const IconComponent = brand.icon;
+                      return (
+                        <button
+                          key={brand.value}
+                          onClick={() => handleBrandClick(brand.value)}
+                          className="flex items-center gap-3 w-full text-left px-8 py-3 text-sm font-medium text-foreground rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
+                        >
+                          <IconComponent className="h-4 w-4" />
+                          {brand.name}
+                        </button>
+                      );
+                    })}
+                  </CollapsibleContent>
+                </Collapsible>
                 
-                {/* Shop By Category */}
-                <div className="mt-6 space-y-2">
-                  <div className="flex items-center gap-2 px-4 mb-3">
-                    <Store className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {/* Shop By Category - Collapsible */}
+                <Collapsible open={categoriesOpen} onOpenChange={setCategoriesOpen} className="mt-2">
+                  <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-4 text-base font-semibold text-primary rounded-lg hover:bg-primary/10 transition-colors">
+                    <div className="flex items-center gap-2">
+                      <Store className="h-5 w-5" />
                       Shop By Category
-                    </p>
-                  </div>
-                  {categories.map((category) => {
-                    const IconComponent = category.icon;
-                    return (
-                      <button
-                        key={category.value}
-                        onClick={() => handleCategoryClick(category.value)}
-                        className="flex items-center gap-3 w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
-                      >
-                        <IconComponent className="h-5 w-5" />
-                        {category.name}
-                      </button>
-                    );
-                  })}
-                </div>
+                    </div>
+                    <ChevronRight className={`h-5 w-5 transition-transform ${categoriesOpen ? 'rotate-90' : ''}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-1 mt-2">
+                    {categories.map((category) => {
+                      const IconComponent = category.icon;
+                      return (
+                        <button
+                          key={category.value}
+                          onClick={() => handleCategoryClick(category.value)}
+                          className="flex items-center gap-3 w-full text-left px-8 py-3 text-sm font-medium text-foreground rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
+                        >
+                          <IconComponent className="h-4 w-4" />
+                          {category.name}
+                        </button>
+                      );
+                    })}
+                  </CollapsibleContent>
+                </Collapsible>
               </nav>
             </SheetContent>
           </Sheet>
