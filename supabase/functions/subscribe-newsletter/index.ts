@@ -52,6 +52,7 @@ const handler = async (req: Request): Promise<Response> => {
         headers: {
           "Content-Type": "application/json",
           "X-Kit-Api-Key": kitApiKey,
+          "Authorization": `Bearer ${kitApiKey}`,
         },
         body: JSON.stringify({
           email_address: email,

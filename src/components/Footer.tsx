@@ -1,9 +1,62 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CreditCard, Youtube } from "lucide-react";
 import logoWhite from "@/assets/logo-white.png";
 import moonpayLogo from "@/assets/moonpay-logo.png";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
 
 export const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const emailSchema = z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const result = emailSchema.safeParse(email);
+    if (!result.success) {
+      toast({
+        title: "Invalid email",
+        description: result.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/subscribe-newsletter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to subscribe");
+      }
+
+      toast({
+        title: "Thanks for joining the movement",
+        description: "You're officially part of Skill Stacker.",
+      });
+      setEmail("");
+    } catch (error: any) {
+      console.error("Footer newsletter subscription error:", error);
+      toast({
+        title: "Something went wrong",
+        description: error.message || "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-16 md:py-20">
@@ -70,6 +123,32 @@ export const Footer = () => {
                 </a>
               </li>
             </ul>
+          </div>
+        </div>
+        
+        {/* Newsletter Footer Signup */}
+        <div className="mt-8 md:mt-12">
+          <div className="rounded-lg border border-border/50 bg-card/40 p-4 md:p-6">
+            <h3 className="font-semibold text-base md:text-lg mb-3 text-center md:text-left">Join the movement</h3>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-background border-border h-10 md:h-11 text-sm"
+                required
+                maxLength={255}
+              />
+              <Button
+                type="submit"
+                size="sm"
+                disabled={isSubmitting}
+                className="shadow-glow hover:shadow-glow-blue"
+              >
+                {isSubmitting ? "Joining..." : "Join"}
+              </Button>
+            </form>
           </div>
         </div>
         
