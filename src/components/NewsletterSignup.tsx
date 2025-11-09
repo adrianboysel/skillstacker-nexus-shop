@@ -105,7 +105,7 @@ export const NewsletterSignup = () => {
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8">
+          <div className="rounded-lg border border-border/50 bg-card p-6 md:p-8">
             <div className="text-center space-y-4 mb-8">
               <h2 className="text-3xl md:text-5xl font-bold">
                 BE FREE.{" "}
