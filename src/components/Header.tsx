@@ -32,9 +32,9 @@ const categories = [
 
 const brands = [
   { name: "Skill Stacker", value: "skill stacker", icon: Tag },
-  { name: "Brand Butler", value: "brand butler", icon: Tag },
-  { name: "Brand Hacker", value: "brand hacker", icon: Tag },
   { name: "Meme Militia", value: "meme militia", icon: Tag },
+  { name: "Brand Hacker", value: "brand hacker", icon: Tag },
+  { name: "Brand Butler (Coming Soon)", value: "brand butler", icon: Tag },
 ];
 
 export const Header = () => {
