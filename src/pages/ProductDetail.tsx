@@ -29,6 +29,7 @@ const PRODUCT_BY_HANDLE_QUERY = `
       title
       description
       handle
+      productType
       priceRange {
         minVariantPrice {
           amount
@@ -156,11 +157,13 @@ const ProductDetail = () => {
   // Determine product type for size guide
   const getProductType = () => {
     const title = data.title.toLowerCase();
-    if (title.includes("sticker")) return "sticker";
-    if (title.includes("canvas") || title.includes("print")) return "canvas";
-    if (title.includes("hat") || title.includes("cap")) return "hat";
-    if (title.includes("hoodie") || title.includes("sweatshirt")) return "hoodie";
-    if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt")) return "shirt";
+    const shopifyType = data.productType?.toLowerCase() || "";
+    
+    if (title.includes("sticker") || shopifyType.includes("sticker")) return "sticker";
+    if (title.includes("canvas") || title.includes("print") || shopifyType.includes("canvas")) return "canvas";
+    if (title.includes("hat") || title.includes("cap") || shopifyType.includes("hat")) return "hat";
+    if (title.includes("hoodie") || title.includes("sweatshirt") || shopifyType.includes("hoodie")) return "hoodie";
+    if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt") || shopifyType.includes("shirt")) return "shirt";
     return "default";
   };
 
