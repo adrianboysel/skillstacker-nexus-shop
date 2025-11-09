@@ -150,6 +150,65 @@ const ProductDetail = () => {
   // Get all available images (limit to 5)
   const displayImages = data.images.edges.slice(0, 5);
 
+  // Determine product type for size guide
+  const getProductType = () => {
+    const title = data.title.toLowerCase();
+    if (title.includes("hat") || title.includes("cap")) return "hat";
+    if (title.includes("hoodie") || title.includes("sweatshirt")) return "hoodie";
+    if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt")) return "shirt";
+    return "default";
+  };
+
+  const productType = getProductType();
+
+  // Size guide data by product type
+  const sizeGuides = {
+    hat: {
+      headers: ["Size", "Head Circumference (in)", "Head Circumference (cm)"],
+      rows: [
+        ["One Size", "22-24", "56-61"],
+      ],
+      note: "Adjustable strap fits most head sizes comfortably."
+    },
+    shirt: {
+      headers: ["Size", "Chest (in)", "Length (in)", "Shoulder (in)"],
+      rows: [
+        ["S", "18", "28", "15.5"],
+        ["M", "20", "29", "17"],
+        ["L", "22", "30", "18.5"],
+        ["XL", "24", "31", "20"],
+        ["2XL", "26", "32", "21.5"],
+        ["3XL", "28", "33", "23"],
+      ],
+      note: "All measurements are approximate. Lay your favorite shirt flat and compare measurements."
+    },
+    hoodie: {
+      headers: ["Size", "Chest (in)", "Length (in)", "Sleeve (in)"],
+      rows: [
+        ["S", "20", "27", "33"],
+        ["M", "22", "28", "34"],
+        ["L", "24", "29", "35"],
+        ["XL", "26", "30", "36"],
+        ["2XL", "28", "31", "37"],
+        ["3XL", "30", "32", "38"],
+      ],
+      note: "Hoodies are designed for a relaxed fit. For a tighter fit, consider sizing down."
+    },
+    default: {
+      headers: ["Size", "Chest (in)", "Length (in)", "Sleeve (in)"],
+      rows: [
+        ["S", "18", "28", "15.5"],
+        ["M", "20", "29", "17"],
+        ["L", "22", "30", "18.5"],
+        ["XL", "24", "31", "20"],
+        ["2XL", "26", "32", "21.5"],
+      ],
+      note: "All measurements are approximate and may vary slightly."
+    }
+  };
+
+  const currentSizeGuide = sizeGuides[productType as keyof typeof sizeGuides];
+
   // Structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
@@ -320,48 +379,34 @@ const ProductDetail = () => {
                     <table className="w-full text-left">
                       <thead>
                         <tr className="border-b border-border/50">
-                          <th className="pb-2 pr-4 font-medium">Size</th>
-                          <th className="pb-2 pr-4 font-medium">Chest (in)</th>
-                          <th className="pb-2 pr-4 font-medium">Length (in)</th>
-                          <th className="pb-2 font-medium">Sleeve (in)</th>
+                          {currentSizeGuide.headers.map((header, idx) => (
+                            <th key={idx} className={`pb-2 font-medium ${idx < currentSizeGuide.headers.length - 1 ? 'pr-4' : ''}`}>
+                              {header}
+                            </th>
+                          ))}
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="border-b border-border/30">
-                          <td className="py-2 pr-4">S</td>
-                          <td className="py-2 pr-4">18</td>
-                          <td className="py-2 pr-4">28</td>
-                          <td className="py-2">15.5</td>
-                        </tr>
-                        <tr className="border-b border-border/30">
-                          <td className="py-2 pr-4">M</td>
-                          <td className="py-2 pr-4">20</td>
-                          <td className="py-2 pr-4">29</td>
-                          <td className="py-2">17</td>
-                        </tr>
-                        <tr className="border-b border-border/30">
-                          <td className="py-2 pr-4">L</td>
-                          <td className="py-2 pr-4">22</td>
-                          <td className="py-2 pr-4">30</td>
-                          <td className="py-2">18.5</td>
-                        </tr>
-                        <tr className="border-b border-border/30">
-                          <td className="py-2 pr-4">XL</td>
-                          <td className="py-2 pr-4">24</td>
-                          <td className="py-2 pr-4">31</td>
-                          <td className="py-2">20</td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 pr-4">2XL</td>
-                          <td className="py-2 pr-4">26</td>
-                          <td className="py-2 pr-4">32</td>
-                          <td className="py-2">21.5</td>
-                        </tr>
+                        {currentSizeGuide.rows.map((row, rowIdx) => (
+                          <tr 
+                            key={rowIdx} 
+                            className={rowIdx < currentSizeGuide.rows.length - 1 ? "border-b border-border/30" : ""}
+                          >
+                            {row.map((cell, cellIdx) => (
+                              <td 
+                                key={cellIdx} 
+                                className={`py-2 ${cellIdx < row.length - 1 ? 'pr-4' : ''}`}
+                              >
+                                {cell}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
                   <p className="text-xs text-muted-foreground mt-3">
-                    All measurements are approximate and may vary slightly. Measure your favorite garment and compare with the chart above.
+                    {currentSizeGuide.note}
                   </p>
                 </div>
               </CollapsibleContent>
