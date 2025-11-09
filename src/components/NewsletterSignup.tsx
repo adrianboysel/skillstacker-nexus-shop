@@ -27,20 +27,34 @@ export const NewsletterSignup = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call - replace with actual newsletter API integration
     try {
-      // TODO: Add newsletter service integration here (e.g., Mailchimp, ConvertKit, etc.)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/subscribe-newsletter`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to subscribe");
+      }
       
       toast({
         title: "You're in!",
         description: "Welcome to the movement. Check your inbox.",
       });
       setEmail("");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Newsletter subscription error:", error);
       toast({
         title: "Something went wrong",
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
         variant: "destructive",
       });
     } finally {
