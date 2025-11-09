@@ -140,7 +140,13 @@ export const useCartStore = create<CartStore>()(
           console.log('[Checkout] Opening URL:', checkoutUrl);
           setCheckoutUrl(checkoutUrl);
           toast.success('Checkout ready', {
-            description: new URL(checkoutUrl).hostname,
+            description: checkoutUrl,
+            action: {
+              label: 'Copy URL',
+              onClick: async () => {
+                try { await navigator.clipboard.writeText(checkoutUrl); } catch {}
+              },
+            },
           });
         } catch (error) {
           console.error('Failed to create checkout (attempt 1):', error);
