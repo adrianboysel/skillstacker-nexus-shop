@@ -6,6 +6,7 @@ import { useCartStore, type ShopifyProduct } from "@/stores/cartStore";
 import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og.png";
+import shirtImage from "@/assets/products/shirt-og.png";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -22,6 +23,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   // Check if this is the Meme Militia OG Hat to show video
   const isOGHat = node.title.toLowerCase().includes("meme militia og hat");
   const isOGHoodie = node.title.toLowerCase().includes("meme militia og hoodie");
+  const isOGShirt = node.title.toLowerCase().includes("meme militia og shirt");
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,6 +66,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           ) : isOGHoodie ? (
             <img 
               src={hoodieImage} 
+              alt={node.title}
+              width="403"
+              height="403"
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : isOGShirt ? (
+            <img 
+              src={shirtImage} 
               alt={node.title}
               width="403"
               height="403"
