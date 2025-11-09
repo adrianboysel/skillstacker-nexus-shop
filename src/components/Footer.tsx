@@ -102,7 +102,7 @@ export const Footer = () => {
                 <Youtube className="h-4 w-4" />
                 YouTube
               </a>
-              <a href="https://twitter.com/skillstacker" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://x.com/skillstkr" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
                 Follow on X
               </a>
             </div>
