@@ -12,32 +12,27 @@ import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
-
 const Home = () => {
-  const { data: products, isLoading } = useQuery({
+  const {
+    data: products,
+    isLoading
+  } = useQuery({
     queryKey: ['featured-products'],
     queryFn: async () => {
-      const response = await storefrontApiRequest(PRODUCTS_QUERY, { first: 6 });
+      const response = await storefrontApiRequest(PRODUCTS_QUERY, {
+        first: 6
+      });
       return response.data.products.edges as ShopifyProduct[];
-    },
+    }
   });
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <PromoBanner />
       <Header />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[108px]">
         <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            poster={heroBg}
-            className="w-full h-full object-cover"
-          >
+          <video autoPlay muted loop playsInline poster={heroBg} className="w-full h-full object-cover">
             <source src={heroVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-hero" />
@@ -45,16 +40,11 @@ const Home = () => {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-2 sm:space-y-8 -mt-[150px] md:mt-0">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-              Where skills become capital —{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                and style makes a statement
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">For people building the future — and style makes a statement{" "}
+              <span className="bg-gradient-primary bg-clip-text text-transparent">and dressing like it.</span>
             </h1>
             
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              The official Skill Stacker Store. Exclusive drops, Meme Militia merch, and apparel built for the creators of the new digital economy.
-            </p>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Limited drops of official Skill Stacker clothing, art, and collectibles designed for the Web3 generation. Stack skills. Stack style.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center -mb-[150px] md:mb-0">
               <Link to="/shop">
@@ -76,10 +66,7 @@ const Home = () => {
       </section>
 
       {/* Video Section */}
-      <VideoSection 
-        videoUrl="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-        title="Watch the Video"
-      />
+      <VideoSection videoUrl="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Watch the Video" />
 
       {/* Featured Products Section */}
       <section className="py-20 bg-background">
@@ -97,28 +84,19 @@ const Home = () => {
               </p>
             </div>
 
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="space-y-4 animate-fade-in">
+            {isLoading ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[...Array(3)].map((_, i) => <div key={i} className="space-y-4 animate-fade-in">
                     <Skeleton className="w-full aspect-square rounded-lg" />
                     <Skeleton className="h-6 w-3/4" />
                     <Skeleton className="h-4 w-1/2" />
-                  </div>
-                ))}
-              </div>
-            ) : products && products.length > 0 ? (
-              <>
+                  </div>)}
+              </div> : products && products.length > 0 ? <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                  {products.slice(0, 3).map((product, idx) => (
-                    <div 
-                      key={product.node.id} 
-                      className="animate-fade-in"
-                      style={{ animationDelay: `${idx * 0.1}s` }}
-                    >
+                  {products.slice(0, 3).map((product, idx) => <div key={product.node.id} className="animate-fade-in" style={{
+                animationDelay: `${idx * 0.1}s`
+              }}>
                       <ProductCard product={product} />
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
                 
                 <div className="text-center">
@@ -129,20 +107,15 @@ const Home = () => {
                     </Button>
                   </Link>
                 </div>
-              </>
-            ) : (
-              <div className="text-center py-12">
+              </> : <div className="text-center py-12">
                 <p className="text-muted-foreground mb-6">No products yet. Ready to add your first product?</p>
                 <p className="text-sm text-muted-foreground">Tell me what you want to create!</p>
-              </div>
-            )}
+              </div>}
           </div>
         </div>
       </section>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
