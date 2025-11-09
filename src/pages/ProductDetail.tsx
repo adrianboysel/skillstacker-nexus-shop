@@ -12,6 +12,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
 import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
+import hoodieImage from "@/assets/products/hoodie-og.png";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -136,6 +137,7 @@ const ProductDetail = () => {
   const variant = data.variants.edges[selectedVariant]?.node;
   const currentImage = data.images.edges[selectedImage]?.node.url;
   const isOGHat = data.title.toLowerCase().includes("meme militia og hat");
+  const isOGHoodie = data.title.toLowerCase().includes("meme militia og hoodie");
 
   // Structured data for SEO
   const structuredData = {
@@ -188,6 +190,14 @@ const ProductDetail = () => {
                   preload="metadata"
                   className="w-full h-full object-cover"
                   aria-label={data.title}
+                />
+              ) : isOGHoodie ? (
+                <img 
+                  src={hoodieImage} 
+                  alt={data.title}
+                  width="600"
+                  height="600"
+                  className="w-full h-full object-cover"
                 />
               ) : currentImage ? (
                 <img 
