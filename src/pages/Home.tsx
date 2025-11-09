@@ -40,7 +40,7 @@ const Home = () => {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-2 sm:space-y-8 -mt-[150px] md:mt-0">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">For people building the future and dressing like it.{" "}
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">For people building the future{" "}
               <span className="bg-gradient-primary bg-clip-text text-transparent">and dressing like it.</span>
             </h1>
             
