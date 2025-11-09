@@ -77,7 +77,7 @@ export const VideoSection = ({
   const handlePlay = () => {
     setIsPlaying(true);
   };
-  return <section className="pt-4 md:pt-6 pb-8 md:pb-12 bg-background">
+  return <section className="pt-2 md:pt-6 pb-8 md:pb-12 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Custom shape container with angled bottom-right corner */}
