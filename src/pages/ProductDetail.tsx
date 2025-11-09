@@ -207,7 +207,7 @@ const ProductDetail = () => {
                   alt={data.title}
                   width="600"
                   height="600"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               ) : currentImage ? (
                 <img 
