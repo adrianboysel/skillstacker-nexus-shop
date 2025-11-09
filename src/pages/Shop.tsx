@@ -79,9 +79,9 @@ const Shop = () => {
           <div className="mb-16 space-y-8">
             <div className="text-center space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold">
-                {getCategoryTitle()}{" "}
+                <span className="text-white">{category ? category.split(' ')[0].charAt(0).toUpperCase() + category.split(' ')[0].slice(1) : 'All'}</span>{" "}
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  Collection
+                  {category ? 'Collection' : 'Products'}
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
