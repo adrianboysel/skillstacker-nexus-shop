@@ -16,11 +16,13 @@ const emailSchema = z.string().trim().email({ message: "Invalid email address" }
 
 const POPUP_DELAY = 30000; // 30 seconds
 const STORAGE_KEY = "newsletter-popup-dismissed";
+const EXIT_INTENT_THRESHOLD = 50; // pixels from top before triggering
 
 export const NewsletterPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [exitIntentTriggered, setExitIntentTriggered] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -28,13 +30,29 @@ export const NewsletterPopup = () => {
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (dismissed) return;
 
-    // Show popup after delay
+    // Exit intent detection
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Check if mouse is leaving from the top of the viewport
+      if (e.clientY <= EXIT_INTENT_THRESHOLD && !exitIntentTriggered && !isOpen) {
+        setExitIntentTriggered(true);
+        setIsOpen(true);
+      }
+    };
+
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    // Show popup after delay as fallback
     const timer = setTimeout(() => {
-      setIsOpen(true);
+      if (!exitIntentTriggered && !isOpen) {
+        setIsOpen(true);
+      }
     }, POPUP_DELAY);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      clearTimeout(timer);
+    };
+  }, [exitIntentTriggered, isOpen]);
 
   const handleClose = () => {
     setIsOpen(false);
