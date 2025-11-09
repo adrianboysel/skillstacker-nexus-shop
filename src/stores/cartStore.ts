@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { createStorefrontCheckout } from '@/lib/shopify';
-
+import { toast } from 'sonner';
 export interface ShopifyProduct {
   node: {
     id: string;
@@ -139,9 +139,34 @@ export const useCartStore = create<CartStore>()(
           const checkoutUrl = await createStorefrontCheckout(items);
           console.log('[Checkout] Opening URL:', checkoutUrl);
           setCheckoutUrl(checkoutUrl);
+          toast.success('Checkout ready', {
+            description: new URL(checkoutUrl).hostname,
+          });
         } catch (error) {
-          console.error('Failed to create checkout:', error);
-          throw error;
+          console.error('Failed to create checkout (attempt 1):', error);
+          // Automatic single retry after a short delay
+          try {
+            await new Promise((r) => setTimeout(r, 800));
+            const retryUrl = await createStorefrontCheckout(items);
+            console.log('[Checkout] Opening URL (retry):', retryUrl);
+            setCheckoutUrl(retryUrl);
+            toast.success('Checkout ready after retry', {
+              description: new URL(retryUrl).hostname,
+            });
+          } catch (err2) {
+            console.error('Failed to create checkout (retry):', err2);
+            toast.error('Checkout failed', {
+              description: 'We could not create the checkout. You can retry now.',
+              action: {
+                label: 'Retry',
+                onClick: () => {
+                  // fire-and-forget retry from UI action
+                  get().createCheckout();
+                },
+              },
+            });
+            throw err2;
+          }
         } finally {
           setLoading(false);
         }

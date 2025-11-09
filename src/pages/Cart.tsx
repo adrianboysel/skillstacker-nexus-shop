@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { toast } from "sonner";
 const Cart = () => {
   const { items, isLoading, updateQuantity, removeItem, createCheckout } = useCartStore();
   
@@ -17,10 +17,25 @@ const Cart = () => {
       await createCheckout();
       const checkoutUrl = useCartStore.getState().checkoutUrl;
       if (checkoutUrl) {
+        console.log('[Checkout] Opening URL (from Cart page):', checkoutUrl);
+        toast.message('Opening Shopify checkout...', {
+          description: new URL(checkoutUrl).hostname,
+        });
         window.open(checkoutUrl, '_blank');
+      } else {
+        toast.error('No checkout URL returned', {
+          description: 'Please try again.',
+        });
       }
-    } catch (error) {
-      console.error('Checkout failed:', error);
+    } catch (error: any) {
+      console.error('Checkout failed (Cart page):', error);
+      toast.error('Checkout failed', {
+        description: 'We will retry automatically in a moment. You can also retry now.',
+        action: {
+          label: 'Retry now',
+          onClick: () => handleCheckout(),
+        },
+      });
     }
   };
 

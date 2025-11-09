@@ -27,12 +27,15 @@ export async function storefrontApiRequest(query: string, variables: any = {}) {
   }
 
   if (!response.ok) {
+    const text = await response.text().catch(() => '');
+    console.error('[Shopify] Storefront API error response:', response.status, text);
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   const data = await response.json();
   
   if (data.errors) {
+    console.error('[Shopify] GraphQL errors:', data.errors);
     throw new Error(`Error calling Shopify: ${data.errors.map((e: any) => e.message).join(', ')}`);
   }
 
@@ -138,9 +141,17 @@ export async function createStorefrontCheckout(items: CartItem[]): Promise<strin
     const url = new URL(cart.checkoutUrl);
     // Use checkout URL as returned by Shopify; only ensure required params
     url.searchParams.set('channel', 'online_store');
-    return url.toString();
+
+    // Log the exact URL we will open for easier debugging
+    const finalUrl = url.toString();
+    console.log('[Shopify] Checkout URL generated:', finalUrl);
+    return finalUrl;
   } catch (error) {
     console.error('Error creating storefront checkout:', error);
+    // Surface a toast for visibility
+    toast.error('Could not create checkout', {
+      description: error instanceof Error ? error.message : 'Unknown error',
+    });
     throw error;
   }
 }
