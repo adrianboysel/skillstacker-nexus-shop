@@ -45,13 +45,13 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Subscribe to Kit.com form using v4 API
+    console.log(`Subscribing to Kit.com form ID: ${kitFormId}`);
     const kitResponse = await fetch(
       `https://api.kit.com/v4/forms/${kitFormId}/subscribers`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Kit-Api-Key": kitApiKey,
           "Authorization": `Bearer ${kitApiKey}`,
         },
         body: JSON.stringify({
