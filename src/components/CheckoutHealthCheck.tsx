@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertCircle, CheckCircle2, Loader2, Copy, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import { createStorefrontCheckout } from "@/lib/shopify";
+import { storefrontApiRequest } from "@/lib/shopify";
 
 const EXPECTED_DOMAIN = 'skillstackershop.myshopify.com';
 
@@ -25,47 +25,31 @@ export const CheckoutHealthCheck = () => {
     const timestamp = new Date().toISOString();
     
     try {
-      // Create a minimal test cart with a mock item
-      const testItem = {
-        product: {
-          node: {
-            id: 'test',
-            title: 'Health Check Test',
-            description: 'Test',
-            handle: 'test',
-            productType: 'test',
-            priceRange: {
-              minVariantPrice: {
-                amount: '1.00',
-                currencyCode: 'USD'
-              }
-            },
-            images: { edges: [] },
-            variants: {
-              edges: [{
-                node: {
-                  id: 'gid://shopify/ProductVariant/0',
-                  title: 'Test',
-                  price: { amount: '1.00', currencyCode: 'USD' },
-                  availableForSale: true,
-                  selectedOptions: []
-                }
-              }]
-            },
-            options: []
+      // Create an empty cart (no lines) to test the returned checkout URL without using fake products
+      const CART_CREATE_MUTATION = `
+        mutation cartCreate($input: CartInput!) {
+          cartCreate(input: $input) {
+            cart { id checkoutUrl }
+            userErrors { field message }
           }
-        },
-        variantId: 'gid://shopify/ProductVariant/0',
-        variantTitle: 'Test',
-        price: { amount: '1.00', currencyCode: 'USD' },
-        quantity: 1,
-        selectedOptions: []
-      };
-
-      console.log('[Health Check] Starting test cart creation...');
-      const checkoutUrl = await createStorefrontCheckout([testItem]);
+        }
+      `;
+      console.log('[Health Check] Creating empty cart for domain verification...');
+      const response: any = await storefrontApiRequest(CART_CREATE_MUTATION, { input: {} });
+      const userErrors = response?.data?.cartCreate?.userErrors || [];
+      if (userErrors.length) {
+        throw new Error(userErrors.map((e: any) => e.message).join(', '));
+      }
+      const rawCheckout = response?.data?.cartCreate?.cart?.checkoutUrl;
+      if (!rawCheckout) {
+        throw new Error('No checkout URL returned from Shopify');
+      }
+      // Ensure channel param for parity with live flow
+      const urlWithChannel = new URL(rawCheckout);
+      urlWithChannel.searchParams.set('channel', 'online_store');
+      const checkoutUrl = urlWithChannel.toString();
       console.log('[Health Check] Checkout URL received:', checkoutUrl);
-      
+
       const url = new URL(checkoutUrl);
       const returnedDomain = url.hostname;
       const domainMatches = returnedDomain === EXPECTED_DOMAIN;
