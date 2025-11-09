@@ -1,61 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CreditCard, Youtube } from "lucide-react";
 import logoWhite from "@/assets/logo-white.png";
 import moonpayLogo from "@/assets/moonpay-logo.png";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
 
 export const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-  const emailSchema = z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const result = emailSchema.safeParse(email);
-    if (!result.success) {
-      toast({
-        title: "Invalid email",
-        description: result.error.errors[0].message,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/subscribe-newsletter`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to subscribe");
-      }
-
-      toast({
-        title: "Thanks for joining the movement",
-        description: "You're officially part of Skill Stacker.",
-      });
-      setEmail("");
-    } catch (error: any) {
-      console.error("Footer newsletter subscription error:", error);
-      toast({
-        title: "Something went wrong",
-        description: error.message || "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <footer className="border-t border-border/50 bg-card/50">
@@ -126,45 +74,7 @@ export const Footer = () => {
           </div>
         </div>
         
-        {/* Newsletter Footer Signup */}
-        <div className="mt-8 md:mt-12">
-          <div className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8">
-            <div className="text-center space-y-4 mb-6">
-              <h3 className="text-2xl md:text-3xl font-bold">
-                BE FREE.{" "}
-                <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  STAY IN THE LOOP
-                </span>
-              </h3>
-              <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-                This isn't just a newsletter—it's a statement.
-              </p>
-              <p className="text-xs md:text-sm text-muted-foreground max-w-xl mx-auto">
-                Get early access to drops, raw updates, and gear that doesn't apologize.<br />
-                For those who lead, not follow.
-              </p>
-            </div>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-background border-border h-12 text-base"
-                required
-                maxLength={255}
-              />
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSubmitting}
-                className="shadow-glow hover:shadow-glow-blue transition-all"
-              >
-                {isSubmitting ? "Joining..." : "Join the Movement"}
-              </Button>
-            </form>
-          </div>
-        </div>
+        {/* Newsletter Footer Signup - Removed (now using main section above) */}
         
         <div className="pt-8 md:pt-10 border-t border-border/50 flex flex-col items-center gap-6">
           {/* Payment Methods */}

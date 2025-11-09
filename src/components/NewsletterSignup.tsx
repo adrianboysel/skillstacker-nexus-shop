@@ -65,42 +65,44 @@ export const NewsletterSignup = () => {
   return (
     <section className="py-16 md:py-24 bg-card/30 backdrop-blur-sm border-y border-border/50">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold">
-              BE FREE.{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                STAY IN THE LOOP
-              </span>
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              This isn't just a newsletter—it's a statement.
-            </p>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Get early access to drops, raw updates, and gear that doesn't apologize.<br />
-              For those who lead, not follow.
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8">
+            <div className="text-center space-y-4 mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                BE FREE.{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  STAY IN THE LOOP
+                </span>
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+                This isn't just a newsletter—it's a statement.
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground max-w-xl mx-auto">
+                Get early access to drops, raw updates, and gear that doesn't apologize.<br />
+                For those who lead, not follow.
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-background border-border h-12 text-base"
-              required
-              maxLength={255}
-            />
-            <Button 
-              type="submit" 
-              size="lg" 
-              disabled={isSubmitting}
-              className="shadow-glow hover:shadow-glow-blue transition-all"
-            >
-              {isSubmitting ? "Joining..." : "Join the Movement"}
-            </Button>
-          </form>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-background border-border h-12 text-base"
+                required
+                maxLength={255}
+              />
+              <Button 
+                type="submit" 
+                size="lg" 
+                disabled={isSubmitting}
+                className="shadow-glow hover:shadow-glow-blue transition-all"
+              >
+                {isSubmitting ? "Joining..." : "Join the Movement"}
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
