@@ -37,8 +37,8 @@ const Home = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[108px] pb-8 md:pb-6 lg:pb-16">
-        <div className="absolute inset-0 z-0">
-          <video autoPlay muted loop playsInline poster={heroBg} className="w-full h-full object-cover">
+        <div className="absolute inset-0 z-0 bg-black">
+          <video autoPlay muted loop playsInline className="w-full h-full object-cover">
             <source src={heroVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-hero" />
