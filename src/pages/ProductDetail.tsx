@@ -12,8 +12,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
 import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
-import hoodieImage from "@/assets/products/hoodie-og.png";
-import shirtImage from "@/assets/products/shirt-og.png";
+import hoodieImage from "@/assets/products/hoodie-og-new.jpg";
+import shirtImage from "@/assets/products/shirt-og-new.png";
 import { ImageLightbox } from "@/components/ImageLightbox";
 import {
   Collapsible,
