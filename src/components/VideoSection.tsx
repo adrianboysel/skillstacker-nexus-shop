@@ -27,10 +27,19 @@ export const VideoSection = ({
           <div 
             className="relative w-full overflow-hidden bg-muted"
             style={{
-              clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%)',
               aspectRatio: '21/7'
             }}
           >
+            <style>
+              {`
+                @media (min-width: 768px) {
+                  .video-container {
+                    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%) !important;
+                  }
+                }
+              `}
+            </style>
+            <div className="video-container absolute inset-0">
             {!isPlaying ? (
               <>
                 {/* Thumbnail/Background */}
@@ -45,8 +54,8 @@ export const VideoSection = ({
                   <div className="absolute inset-0 bg-gradient-to-t from-background/30 to-transparent" />
                 </div>
 
-                {/* Left side text */}
-                <div className="absolute left-8 md:left-12 top-1/2 -translate-y-1/2 z-20">
+                {/* Left side text - hidden on mobile */}
+                <div className="hidden md:block absolute left-8 md:left-12 top-1/2 -translate-y-1/2 z-20">
                   <div 
                     className="text-foreground/90 font-bold tracking-wider"
                     style={{
@@ -100,6 +109,7 @@ export const VideoSection = ({
                 className="absolute inset-0 w-full h-full"
               />
             )}
+            </div>
           </div>
         </div>
       </div>
