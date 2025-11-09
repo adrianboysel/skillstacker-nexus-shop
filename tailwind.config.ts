@@ -115,7 +115,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out forwards",
         "spin-slow": "spin 20s linear infinite",
-        "gradient-shift": "gradient-shift 4.5s ease infinite",
+        "gradient-shift": "gradient-shift 5.6s linear infinite",
       },
     },
   },
