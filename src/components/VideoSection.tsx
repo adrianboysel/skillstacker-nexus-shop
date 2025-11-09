@@ -20,7 +20,7 @@ export const VideoSection = ({
   };
 
   return (
-    <section className="py-12 md:py-[4.5rem] bg-background">
+    <section className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <AspectRatio ratio={21/9} className="bg-muted rounded-lg overflow-hidden relative group">
