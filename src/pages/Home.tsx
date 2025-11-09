@@ -70,7 +70,7 @@ const Home = () => {
       </section>
 
       {/* Video Section */}
-      <VideoSection videoUrl="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Watch the Video" />
+      <VideoSection videoUrl="https://www.youtube.com/embed/Tw7LEpmiq5Q" title="Watch the Video" />
 
       {/* Featured Products Section */}
       <section className="py-20 bg-background">

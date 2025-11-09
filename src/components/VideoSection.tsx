@@ -76,7 +76,7 @@ export const VideoSection = ({
                     </div>
                   </button>
                 </div>
-              </> : <iframe src={`${videoUrl}?autoplay=1`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="absolute inset-0 w-full h-full" />}
+              </> : <iframe src={`${videoUrl}?autoplay=1&rel=0`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="absolute inset-0 w-full h-full" />}
             </div>
           </div>
         </div>
