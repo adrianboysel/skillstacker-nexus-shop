@@ -52,7 +52,7 @@ const handler = async (req: Request): Promise<Response> => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${kitApiKey}`,
+          "Authorization": `Kit ${kitApiKey}`,
         },
         body: JSON.stringify({
           email_address: email,
