@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 interface VideoSectionProps {
@@ -14,6 +14,66 @@ export const VideoSection = ({
   rotatingText = "WATCH VIDEO • PLAY NOW • "
 }: VideoSectionProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const playerContainerRef = useRef<HTMLDivElement | null>(null);
+  const playerRef = useRef<any>(null);
+
+  const extractYouTubeId = (url: string): string | null => {
+    try {
+      const u = new URL(url);
+      const parts = u.pathname.split('/').filter(Boolean);
+      const embedIdx = parts.indexOf('embed');
+      if (embedIdx !== -1 && parts[embedIdx + 1]) return parts[embedIdx + 1];
+      const liveIdx = parts.indexOf('live');
+      if (liveIdx !== -1 && parts[liveIdx + 1]) return parts[liveIdx + 1];
+      return u.searchParams.get('v');
+    } catch {
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const loadYT = () =>
+      new Promise<void>((resolve) => {
+        if ((window as any).YT?.Player) return resolve();
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        (window as any).onYouTubeIframeAPIReady = () => resolve();
+        document.body.appendChild(tag);
+      });
+
+    loadYT().then(() => {
+      const YT = (window as any).YT;
+      const id = extractYouTubeId(videoUrl);
+      if (!playerContainerRef.current || !id) return;
+      playerRef.current = new YT.Player(playerContainerRef.current, {
+        videoId: id,
+        playerVars: {
+          autoplay: 1,
+          rel: 0,
+          modestbranding: 1,
+          showinfo: 0,
+          playsinline: 1,
+        },
+        events: {
+          onStateChange: (event: any) => {
+            if (event.data === YT.PlayerState.ENDED) {
+              playerRef.current?.destroy();
+              playerRef.current = null;
+              setIsPlaying(false);
+            }
+          },
+        },
+      });
+    });
+
+    return () => {
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+  }, [isPlaying, videoUrl]);
+
   const handlePlay = () => {
     setIsPlaying(true);
   };
@@ -76,7 +136,7 @@ export const VideoSection = ({
                     </div>
                   </button>
                 </div>
-              </> : <iframe src={`${videoUrl}?autoplay=1&rel=0`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="absolute inset-0 w-full h-full" />}
+              </> : <div ref={playerContainerRef} className="absolute inset-0 w-full h-full" />}
             </div>
           </div>
         </div>
