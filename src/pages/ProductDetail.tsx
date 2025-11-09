@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, ArrowLeft, Ruler } from "lucide-react";
+import { ShoppingCart, ArrowLeft, Ruler, Expand } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og.png";
 import shirtImage from "@/assets/products/shirt-og.png";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import {
   Collapsible,
   CollapsibleContent,
@@ -72,6 +73,7 @@ const ProductDetail = () => {
   const [selectedVariant, setSelectedVariant] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['product', handle],
@@ -249,7 +251,10 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Images */}
           <div className="space-y-4">
-            <div className="aspect-square rounded-lg overflow-hidden bg-muted border border-border/50">
+            <div 
+              className="relative aspect-square rounded-lg overflow-hidden bg-muted border border-border/50 cursor-pointer group"
+              onClick={() => setLightboxOpen(true)}
+            >
               {isOGHat ? (
                 <video 
                   src={hatVideo}
@@ -290,6 +295,14 @@ const ProductDetail = () => {
                   No image
                 </div>
               )}
+              
+              {/* Zoom Overlay */}
+              <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="flex items-center gap-2 text-foreground">
+                  <Expand className="h-6 w-6" />
+                  <span className="text-sm font-medium">Click to zoom</span>
+                </div>
+              </div>
             </div>
             
             {displayImages.length > 1 && (
@@ -315,6 +328,19 @@ const ProductDetail = () => {
               </div>
             )}
           </div>
+          
+          {/* Lightbox */}
+          <ImageLightbox
+            images={displayImages.map(img => ({
+              url: isOGHat ? hatVideo : (isOGHoodie ? hoodieImage : (isOGShirt ? shirtImage : img.node.url)),
+              alt: img.node.altText || data.title
+            }))}
+            initialIndex={selectedImage}
+            isOpen={lightboxOpen}
+            onClose={() => setLightboxOpen(false)}
+            isVideo={isOGHat}
+            videoSrc={isOGHat ? hatVideo : undefined}
+          />
           
           {/* Details */}
           <div className="space-y-6">
