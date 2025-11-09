@@ -8,14 +8,14 @@ export const Footer = () => {
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-center md:items-start">
             <div className="mb-6 md:ml-[-65px]">
               <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="block h-10 md:h-12 w-auto object-contain mx-auto md:mx-0 md:ml-[10px] lg:ml-[5px] md:object-left" />
             </div>
-            <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed text-center md:text-left">
               Built on Solana. Fueled by $STKR.
             </p>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-center md:text-left">
               Where skills become capital — and style makes a statement.
             </p>
           </div>
