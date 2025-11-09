@@ -89,7 +89,7 @@ export const Footer = () => {
               <span className="text-xs font-medium">Amex</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 hover:shadow-glow transition-all cursor-pointer">
-              <img src={moonpayLogo} alt="MoonPay" width="63" height="16" className="h-4 brightness-[1.2] saturate-150 hue-rotate-[280deg]" loading="lazy" />
+              <img src={moonpayLogo} alt="MoonPay" width="63" height="16" className="h-4 brightness-0 invert" loading="lazy" />
             </div>
           </div>
           
