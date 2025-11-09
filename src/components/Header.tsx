@@ -78,7 +78,7 @@ export const Header = () => {
     <header className={`fixed left-0 right-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl transition-all duration-300 ${bannerVisible ? 'top-[28px]' : 'top-0'}`}>
       <div className="container mx-auto pl-0 pr-3 sm:pr-4 md:pr-6 h-16 md:h-18 lg:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group mr-auto">
+        <Link to="/" className="flex items-center gap-3 group mr-auto -ml-2 sm:-ml-1 md:-ml-0.5 lg:ml-0">
           <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-6 sm:h-7 md:h-8 lg:h-10 w-auto transition-transform group-hover:scale-105" />
         </Link>
         
