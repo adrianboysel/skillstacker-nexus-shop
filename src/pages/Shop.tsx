@@ -89,7 +89,7 @@ const Shop = () => {
               </p>
             </div>
             
-            <div className="flex justify-end">
+            <div className="flex justify-center md:justify-end">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-[200px] bg-card border-border">
                   <SelectValue placeholder="Sort by" />
