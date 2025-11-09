@@ -51,7 +51,7 @@ const Home = () => {
             
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Limited drops of official Skill Stacker clothing, art, and collectibles designed for the Web3 generation. Stack skills. Stack style.</p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center -mb-[150px] md:mb-0">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center -mb-[75px] md:mb-0">
               <Link to="/shop">
                 <Button size="lg" className="group shadow-glow hover:shadow-glow-blue transition-all">
                   Enter the Store
