@@ -6,6 +6,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+
+const SHOPIFY_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
 const Cart = () => {
   const { items, isLoading, updateQuantity, removeItem, createCheckout } = useCartStore();
   
@@ -17,11 +19,19 @@ const Cart = () => {
       await createCheckout();
       const checkoutUrl = useCartStore.getState().checkoutUrl;
       if (checkoutUrl) {
-        console.log('[Checkout] Navigating to URL (same tab):', checkoutUrl);
-        toast.message('Redirecting to Shopify checkout...', {
-          description: new URL(checkoutUrl).hostname,
+        const url = new URL(checkoutUrl);
+        let forcedHost = false;
+        if (url.hostname !== SHOPIFY_PERMANENT_DOMAIN) {
+          url.hostname = SHOPIFY_PERMANENT_DOMAIN;
+          forcedHost = true;
+        }
+        url.searchParams.set('channel', 'online_store');
+        const finalUrl = url.toString();
+        console.log('[Checkout] Navigating (same tab):', finalUrl);
+        toast.message(forcedHost ? 'Using secure Shopify domain' : 'Redirecting to Shopify checkout...', {
+          description: finalUrl,
         });
-        window.location.assign(checkoutUrl);
+        window.location.assign(finalUrl);
       } else {
         toast.error('No checkout URL returned', {
           description: 'Please try again.',
