@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, ChevronDown, Menu, Home, Store, X } from "lucide-react";
+import { ShoppingCart, ChevronDown, Menu, Home, Store, X, Shirt, CircleDot, Frame, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,18 +18,18 @@ import logoWhite from "@/assets/logo-white.png";
 import { useState, useEffect } from "react";
 
 const categories = [
-  { name: "Shirts", value: "shirts" },
-  { name: "Hats", value: "hats" },
-  { name: "Hoodies", value: "hoodies" },
-  { name: "Sweatshirts", value: "sweatshirts" },
-  { name: "Canvas", value: "canvas" },
+  { name: "Shirts", value: "shirts", icon: Shirt },
+  { name: "Hats", value: "hats", icon: CircleDot },
+  { name: "Hoodies", value: "hoodies", icon: Shirt },
+  { name: "Sweatshirts", value: "sweatshirts", icon: Shirt },
+  { name: "Canvas", value: "canvas", icon: Frame },
 ];
 
 const brands = [
-  { name: "Skill Stacker", value: "skill stacker" },
-  { name: "Brand Butler", value: "brand butler" },
-  { name: "Brand Hacker", value: "brand hacker" },
-  { name: "Meme Militia", value: "meme militia" },
+  { name: "Skill Stacker", value: "skill stacker", icon: Tag },
+  { name: "Brand Butler", value: "brand butler", icon: Tag },
+  { name: "Brand Hacker", value: "brand hacker", icon: Tag },
+  { name: "Meme Militia", value: "meme militia", icon: Tag },
 ];
 
 export const Header = () => {
@@ -94,15 +94,19 @@ export const Header = () => {
               align="center" 
               className="w-56 bg-card border-border z-[100] shadow-glow-blue"
             >
-              {brands.map((brand) => (
-                <DropdownMenuItem
-                  key={brand.value}
-                  onClick={() => handleBrandClick(brand.value)}
-                  className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10"
-                >
-                  {brand.name}
-                </DropdownMenuItem>
-              ))}
+              {brands.map((brand) => {
+                const IconComponent = brand.icon;
+                return (
+                  <DropdownMenuItem
+                    key={brand.value}
+                    onClick={() => handleBrandClick(brand.value)}
+                    className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10"
+                  >
+                    <IconComponent className="h-4 w-4 mr-2" />
+                    {brand.name}
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
           
@@ -115,15 +119,19 @@ export const Header = () => {
               align="center" 
               className="w-56 bg-card border-border z-[100] shadow-glow-blue"
             >
-              {categories.map((category) => (
-                <DropdownMenuItem
-                  key={category.value}
-                  onClick={() => handleCategoryClick(category.value)}
-                  className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10"
-                >
-                  {category.name}
-                </DropdownMenuItem>
-              ))}
+              {categories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <DropdownMenuItem
+                    key={category.value}
+                    onClick={() => handleCategoryClick(category.value)}
+                    className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10"
+                  >
+                    <IconComponent className="h-4 w-4 mr-2" />
+                    {category.name}
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
@@ -199,15 +207,19 @@ export const Header = () => {
                       Shop By Brand
                     </p>
                   </div>
-                  {brands.map((brand) => (
-                    <button
-                      key={brand.value}
-                      onClick={() => handleBrandClick(brand.value)}
-                      className="block w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
-                    >
-                      {brand.name}
-                    </button>
-                  ))}
+                  {brands.map((brand) => {
+                    const IconComponent = brand.icon;
+                    return (
+                      <button
+                        key={brand.value}
+                        onClick={() => handleBrandClick(brand.value)}
+                        className="flex items-center gap-3 w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
+                      >
+                        <IconComponent className="h-5 w-5" />
+                        {brand.name}
+                      </button>
+                    );
+                  })}
                 </div>
                 
                 {/* Shop By Category */}
@@ -218,15 +230,19 @@ export const Header = () => {
                       Shop By Category
                     </p>
                   </div>
-                  {categories.map((category) => (
-                    <button
-                      key={category.value}
-                      onClick={() => handleCategoryClick(category.value)}
-                      className="block w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
-                    >
-                      {category.name}
-                    </button>
-                  ))}
+                  {categories.map((category) => {
+                    const IconComponent = category.icon;
+                    return (
+                      <button
+                        key={category.value}
+                        onClick={() => handleCategoryClick(category.value)}
+                        className="flex items-center gap-3 w-full text-left px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
+                      >
+                        <IconComponent className="h-5 w-5" />
+                        {category.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </nav>
             </SheetContent>
