@@ -8,7 +8,7 @@ export const Footer = () => {
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start -ml-3 md:-ml-8">
             <div className="mb-6">
               <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="h-10 md:h-12 w-auto object-contain object-left" />
             </div>
