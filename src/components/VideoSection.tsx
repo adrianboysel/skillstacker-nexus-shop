@@ -77,7 +77,7 @@ export const VideoSection = ({
   const handlePlay = () => {
     setIsPlaying(true);
   };
-  return <section className="py-16 md:py-24 bg-background">
+  return <section className="py-8 md:py-12 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Custom shape container with angled bottom-right corner */}
@@ -93,6 +93,10 @@ export const VideoSection = ({
                 }
               `}
             </style>
+            {/* Solid black triangle in corner - desktop only */}
+            <div className="hidden md:block absolute bottom-0 right-0 w-[80px] h-[80px] bg-background pointer-events-none z-10" style={{
+              clipPath: 'polygon(100% 0, 100% 100%, 0 100%)'
+            }} />
             <div className="video-container absolute inset-0">
             {!isPlaying ? <>
                 {/* Thumbnail/Background */}
