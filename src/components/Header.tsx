@@ -170,11 +170,22 @@ export const Header = () => {
         {/* Mobile Menu & Cart */}
         <div className="flex items-center gap-1 sm:gap-2">
           {isAdmin && (
-            <Link to="/admin/inventory">
-              <Button variant="ghost" size="sm" className="hidden md:flex hover:bg-primary/10">
-                Admin
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="hidden md:flex hover:bg-primary/10">
+                  Admin
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => navigate('/admin/inventory')} className="cursor-pointer">
+                  Inventory
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/admin/users')} className="cursor-pointer">
+                  Users
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           
           <Link to="/cart">

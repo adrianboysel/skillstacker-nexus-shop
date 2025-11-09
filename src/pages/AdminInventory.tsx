@@ -156,10 +156,15 @@ export default function AdminInventory() {
             <h1 className="text-3xl font-bold">Inventory Management</h1>
             <p className="text-muted-foreground mt-2">Manage your product stock levels</p>
           </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/admin/users')}>
+              Users
+            </Button>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </Button>
+          </div>
         </div>
 
         {isLoading ? (
