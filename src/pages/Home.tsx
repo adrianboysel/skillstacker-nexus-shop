@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCard } from "@/components/ProductCard";
 import { VideoSection } from "@/components/VideoSection";
+import { ProductCarousel } from "@/components/ProductCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
@@ -41,30 +42,38 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-2 sm:space-y-8">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-              Where skills become capital —{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                and style makes a statement
-              </span>
-            </h1>
-            
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              The official Skill Stacker Store. Exclusive drops, Meme Militia merch, and apparel built for the creators of the new digital economy.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/shop">
-                <Button size="lg" className="group shadow-glow hover:shadow-glow-blue transition-all">
-                  Enter the Store
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10">
-                  Learn About $STKR
-                </Button>
-              </a>
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+            {/* Left: Text Content */}
+            <div className="text-center lg:text-left space-y-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+                Where skills become capital —{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  and style makes a statement
+                </span>
+              </h1>
+              
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
+                The official Skill Stacker Store. Exclusive drops, Meme Militia merch, and apparel built for the creators of the new digital economy.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Link to="/shop">
+                  <Button size="lg" className="group shadow-glow hover:shadow-glow-blue transition-all">
+                    Enter the Store
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10">
+                    Learn About $STKR
+                  </Button>
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Product Carousel */}
+            <div className="animate-fade-in">
+              <ProductCarousel />
             </div>
           </div>
         </div>
