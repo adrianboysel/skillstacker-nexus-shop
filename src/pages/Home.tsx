@@ -13,6 +13,7 @@ import type { ShopifyProduct } from "@/stores/cartStore";
 import { sortProductsByCustomOrder } from "@/lib/productSorting";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
+import videoThumbnail from "@/assets/video-thumbnail.jpg";
 const Home = () => {
   const {
     data: allProducts,
@@ -70,7 +71,11 @@ const Home = () => {
       </section>
 
       {/* Video Section */}
-      <VideoSection videoUrl="https://www.youtube.com/embed/Tw7LEpmiq5Q" title="Watch the Video" />
+      <VideoSection 
+        videoUrl="https://www.youtube.com/embed/Tw7LEpmiq5Q" 
+        thumbnailUrl={videoThumbnail}
+        title="Watch the Video" 
+      />
 
       {/* Featured Products Section */}
       <section className="py-20 bg-background">
