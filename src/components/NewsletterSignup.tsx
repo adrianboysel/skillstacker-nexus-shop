@@ -46,8 +46,8 @@ export const NewsletterSignup = () => {
       }
       
       toast({
-        title: "You're in!",
-        description: "Welcome to the movement. Check your inbox.",
+        title: "Thanks for joining the movement",
+        description: "You're officially part of Skill Stacker.",
       });
       setEmail("");
     } catch (error: any) {
