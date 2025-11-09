@@ -137,7 +137,11 @@ export const Footer = () => {
                 </span>
               </h3>
               <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-                Get early access to drops, raw updates, and gear that doesn't apologize.
+                This isn't just a newsletter—it's a statement.
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground max-w-xl mx-auto">
+                Get early access to drops, raw updates, and gear that doesn't apologize.<br />
+                For those who lead, not follow.
               </p>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
