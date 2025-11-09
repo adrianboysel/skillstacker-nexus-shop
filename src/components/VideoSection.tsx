@@ -87,7 +87,7 @@ export const VideoSection = ({
                         </defs>
                         <text className="text-xs md:text-sm fill-foreground font-bold tracking-[0.35em] uppercase">
                           <textPath href="#circlePath" startOffset="0%">
-                            VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • 
+                            SKILL STACKER • WATCH NOW • SKILL STACKER • WATCH NOW • 
                           </textPath>
                         </text>
                       </svg>
