@@ -20,6 +20,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { ProductReviews } from "@/components/ProductReviews";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -448,6 +449,14 @@ const ProductDetail = () => {
               {variant?.availableForSale ? 'Add to Cart' : 'Out of Stock'}
             </Button>
           </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-20">
+          <ProductReviews 
+            productHandle={data.handle}
+            reviews={[]}
+          />
         </div>
       </main>
       
