@@ -10,7 +10,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="flex flex-col items-start">
             <div className="mb-6 ml-[-49px] md:ml-[-65px]">
-              <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="block h-10 md:h-12 w-auto object-contain object-left" />
+              <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="block h-10 md:h-12 w-auto object-contain object-left ml-[10px]" />
             </div>
             <p className="text-sm md:text-base text-muted-foreground mb-3 leading-relaxed">
               Built on Solana. Fueled by $STKR.
