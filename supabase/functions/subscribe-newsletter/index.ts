@@ -30,8 +30,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const kitApiKey = Deno.env.get("KIT_API_KEY");
-    const kitFormId = Deno.env.get("KIT_FORM_ID");
+    const kitApiKey = Deno.env.get("KIT_API_KEY")?.trim();
+    const kitFormId = Deno.env.get("KIT_FORM_ID")?.trim();
 
     if (!kitApiKey || !kitFormId) {
       console.error("Missing Kit.com credentials");
@@ -44,41 +44,67 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Subscribe to Kit.com form using v4 API
-    console.log(`Subscribing to Kit.com form ID: ${kitFormId}`);
-    const kitResponse = await fetch(
-      `https://api.kit.com/v4/forms/${kitFormId}/subscribers`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Kit ${kitApiKey}`,
-        },
-        body: JSON.stringify({
-          email_address: email,
-        }),
-      }
-    );
+    // Subscribe to Kit.com form using v4 API with detailed debugging and endpoint fallbacks
+    const maskedKey = kitApiKey ? `${kitApiKey.slice(0, 4)}***${kitApiKey.slice(-4)}` : "missing";
+    console.log(`Subscribing to Kit.com form ID: ${kitFormId} with masked key: ${maskedKey}`);
 
-    if (!kitResponse.ok) {
-      const errorData = await kitResponse.text();
-      console.error("Kit.com API error:", kitResponse.status, errorData);
-      
-      // Check if already subscribed
-      if (kitResponse.status === 400 && errorData.includes("already")) {
-        return new Response(
-          JSON.stringify({ 
-            success: true, 
-            message: "You're already subscribed!" 
-          }),
-          {
-            status: 200,
-            headers: { "Content-Type": "application/json", ...corsHeaders },
-          }
-        );
+    const baseUrl = "https://api.kit.com/v4";
+
+    const baseHeaders: Record<string, string> = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "User-Agent": "SkillStackerNewsletter/1.0",
+      "X-Kit-Api-Key": kitApiKey!,
+    };
+
+    // Try multiple endpoints to maximize compatibility across Kit API changes
+    const endpoints = [
+      { name: "forms/{id}/subscribers", url: `${baseUrl}/forms/${kitFormId}/subscribers`, body: { email_address: email } },
+      { name: "forms/{id}/subscriptions", url: `${baseUrl}/forms/${kitFormId}/subscriptions`, body: { email_address: email } },
+      { name: "subscribers (with form_id)", url: `${baseUrl}/subscribers`, body: { email_address: email, form_id: Number(kitFormId) } },
+    ] as const;
+
+    let kitResponse: Response | null = null;
+    let lastErrorStatus = 0;
+    let lastErrorBody = "";
+
+    for (const ep of endpoints) {
+      try {
+        console.log(`Kit.com request → POST ${ep.name}: ${ep.url}`);
+        const resp = await fetch(ep.url, {
+          method: "POST",
+          headers: baseHeaders,
+          body: JSON.stringify(ep.body),
+        });
+
+        if (resp.ok) {
+          kitResponse = resp;
+          console.log(`Kit.com endpoint ${ep.name} succeeded with ${resp.status}`);
+          break;
+        }
+
+        const bodyText = await resp.text();
+        console.error(`Kit.com endpoint ${ep.name} failed:`, resp.status, bodyText);
+
+        // Handle already subscribed gracefully
+        if (resp.status === 400 && bodyText.toLowerCase().includes("already")) {
+          return new Response(
+            JSON.stringify({ success: true, message: "You're already subscribed!" }),
+            { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+          );
+        }
+
+        lastErrorStatus = resp.status;
+        lastErrorBody = bodyText;
+      } catch (err) {
+        console.error(`Kit.com endpoint ${ep.name} threw:`, err);
+        lastErrorStatus = 0;
+        lastErrorBody = (err as Error).message || "Unknown error";
       }
-      
-      throw new Error(`Kit.com API returned ${kitResponse.status}`);
+    }
+
+    if (!kitResponse) {
+      throw new Error(`Kit.com request failed across all endpoints. Last status ${lastErrorStatus}: ${lastErrorBody}`);
     }
 
     const data = await kitResponse.json();
