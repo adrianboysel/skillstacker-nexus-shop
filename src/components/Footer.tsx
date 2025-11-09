@@ -77,7 +77,7 @@ export const Footer = () => {
           {/* Payment Methods */}
           <div className="flex flex-col items-center gap-4 w-full">
             <h3 className="text-sm md:text-base font-semibold text-foreground">
-              We Accept Fiat and Crypto Payments
+              We Accept Credit Card and Crypto Payments
             </h3>
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
