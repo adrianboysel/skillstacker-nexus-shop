@@ -93,10 +93,7 @@ export const Footer = () => {
             </div>
           </div>
           
-          <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-8">
-            <p className="text-xs md:text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Skill Stacker. All rights reserved.
-            </p>
+          <div className="flex flex-col items-center gap-6">
             <div className="flex gap-6 md:gap-8">
               <a href="https://www.youtube.com/@adrianboysel" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Youtube className="h-4 w-4" />
@@ -106,6 +103,10 @@ export const Footer = () => {
                 Follow on X
               </a>
             </div>
+            
+            <p className="text-xs md:text-sm text-muted-foreground text-center">
+              © {new Date().getFullYear()} Skill Stacker. All rights reserved.
+            </p>
           </div>
         </div>
       </div>
