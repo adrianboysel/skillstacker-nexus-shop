@@ -5,11 +5,13 @@ interface VideoSectionProps {
   videoUrl?: string;
   thumbnailUrl?: string;
   title?: string;
+  rotatingText?: string;
 }
 export const VideoSection = ({
   videoUrl = "https://www.youtube.com/embed/dQw4w9WgxcQ",
   thumbnailUrl,
-  title = "Watch the Video"
+  title = "Watch the Video",
+  rotatingText = "WATCH VIDEO • PLAY NOW • "
 }: VideoSectionProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const handlePlay = () => {
@@ -62,7 +64,7 @@ export const VideoSection = ({
                         </defs>
                         <text className="text-xs md:text-sm fill-foreground font-bold tracking-[0.35em] uppercase">
                           <textPath href="#circlePath" startOffset="0%">
-                            SKILL STACKER • WATCH NOW • SKILL STACKER • WATCH NOW • 
+                            {rotatingText.repeat(2)}
                           </textPath>
                         </text>
                       </svg>
