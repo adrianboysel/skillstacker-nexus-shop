@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCard } from "@/components/ProductCard";
 import { VideoSection } from "@/components/VideoSection";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
@@ -123,6 +124,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
+      {/* Newsletter Signup */}
+      <NewsletterSignup />
       
       <Footer />
     </div>;
