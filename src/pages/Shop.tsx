@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
@@ -8,7 +8,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import { 
   sortProductsByCustomOrder, 
   sortProductsByPrice, 
@@ -26,7 +25,6 @@ const Shop = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category') || '';
   const [sortBy, setSortBy] = useState<string>("custom");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['products', category],
@@ -56,50 +54,19 @@ const Shop = () => {
     return categoryMap[category.toLowerCase()] || "Products";
   };
 
-  // Get all unique tags from products
-  const allTags = useMemo(() => {
-    if (!data) return [];
-    const tagsSet = new Set<string>();
-    data.forEach(product => {
-      product.node.tags?.forEach(tag => tagsSet.add(tag));
-    });
-    return Array.from(tagsSet).sort();
-  }, [data]);
-
-  // Filter products by selected tags
-  const filteredProducts = useMemo(() => {
-    if (!data) return [];
-    if (selectedTags.length === 0) return data;
-    
-    return data.filter(product => 
-      selectedTags.every(tag => product.node.tags?.includes(tag))
-    );
-  }, [data, selectedTags]);
-
-  // Sort filtered products
-  const sortedProducts = useMemo(() => {
-    if (!filteredProducts) return [];
-    
+  const sortedProducts = data ? (() => {
     switch (sortBy) {
       case "price-low":
-        return sortProductsByPrice(filteredProducts, 'asc');
+        return sortProductsByPrice(data, 'asc');
       case "price-high":
-        return sortProductsByPrice(filteredProducts, 'desc');
+        return sortProductsByPrice(data, 'desc');
       case "name":
-        return sortProductsByName(filteredProducts);
+        return sortProductsByName(data);
       case "custom":
       default:
-        return sortProductsByCustomOrder(filteredProducts);
+        return sortProductsByCustomOrder(data);
     }
-  }, [filteredProducts, sortBy]);
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
-  };
+  })() : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,31 +88,7 @@ const Shop = () => {
               </p>
             </div>
             
-            {allTags.length > 0 && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>Filter by:</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.map(tag => (
-                    <Badge
-                      key={tag}
-                      variant={selectedTags.includes(tag) ? "default" : "outline"}
-                      className="cursor-pointer hover:bg-primary/20 transition-colors"
-                      onClick={() => toggleTag(tag)}
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-muted-foreground">
-                {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
-                {selectedTags.length > 0 && ` with ${selectedTags.join(', ')}`}
-              </div>
+            <div className="flex justify-end">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-[200px] bg-card border-border">
                   <SelectValue placeholder="Sort by" />
