@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import heroBg from "@/assets/hero-bg.webp";
+import heroVideo from "@/assets/meme-bg.mp4";
 
 const Home = () => {
   const { data: products, isLoading } = useQuery({
@@ -37,7 +38,7 @@ const Home = () => {
             poster={heroBg}
             className="w-full h-full object-cover"
           >
-            <source src={heroBg} type="video/mp4" />
+            <source src={heroVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-hero" />
         </div>
