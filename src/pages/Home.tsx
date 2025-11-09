@@ -53,7 +53,7 @@ const Home = () => {
               The official Skill Stacker Store. Exclusive drops, Meme Militia merch, and apparel built for the creators of the new digital economy.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center -mb-[150px] md:mb-0">
               <Link to="/shop">
                 <Button size="lg" className="group shadow-glow hover:shadow-glow-blue transition-all">
                   Enter the Store
