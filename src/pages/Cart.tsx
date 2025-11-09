@@ -28,11 +28,11 @@ const Cart = () => {
         }
         url.searchParams.set('channel', 'online_store');
         const finalUrl = url.toString();
-        console.log('[Checkout] Navigating (same tab):', finalUrl);
+        console.log('[Checkout] Navigating (new tab):', finalUrl);
         toast.message(forcedHost ? 'Using secure Shopify domain' : 'Redirecting to Shopify checkout...', {
           description: finalUrl,
         });
-        window.location.assign(finalUrl);
+        window.open(finalUrl, '_blank', 'noopener,noreferrer');
       } else {
         toast.error('No checkout URL returned', {
           description: 'Please try again.',
