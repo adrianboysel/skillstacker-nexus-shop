@@ -19,6 +19,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useCartStore } from "@/stores/cartStore";
+import { supabase } from "@/integrations/supabase/client";
 import logoWhite from "@/assets/logo-white.png";
 import { useState, useEffect } from "react";
 
@@ -45,6 +46,7 @@ export const Header = () => {
   const [bannerVisible, setBannerVisible] = useState(true);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const checkBanner = () => {
@@ -62,6 +64,28 @@ export const Header = () => {
       window.removeEventListener('storage', checkBanner);
       clearInterval(interval);
     };
+  }, []);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('user_id', session.user.id)
+          .single();
+        setIsAdmin(profile?.is_admin || false);
+      }
+    };
+    
+    checkAdmin();
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      checkAdmin();
+    });
+    
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleCategoryClick = (category: string) => {
@@ -145,6 +169,14 @@ export const Header = () => {
 
         {/* Mobile Menu & Cart */}
         <div className="flex items-center gap-1 sm:gap-2">
+          {isAdmin && (
+            <Link to="/admin/inventory">
+              <Button variant="ghost" size="sm" className="hidden md:flex hover:bg-primary/10">
+                Admin
+              </Button>
+            </Link>
+          )}
+          
           <Link to="/cart">
             <Button variant="ghost" size="icon" className="relative hover:bg-primary/10 h-9 w-9 md:h-10 md:w-10">
               <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
