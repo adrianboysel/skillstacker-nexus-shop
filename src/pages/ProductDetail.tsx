@@ -156,6 +156,7 @@ const ProductDetail = () => {
   // Determine product type for size guide
   const getProductType = () => {
     const title = data.title.toLowerCase();
+    if (title.includes("canvas") || title.includes("print")) return "canvas";
     if (title.includes("hat") || title.includes("cap")) return "hat";
     if (title.includes("hoodie") || title.includes("sweatshirt")) return "hoodie";
     if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt")) return "shirt";
@@ -163,6 +164,7 @@ const ProductDetail = () => {
   };
 
   const productType = getProductType();
+  const showSizeGuide = productType !== "canvas";
 
   // Size guide data by product type
   const sizeGuides = {
@@ -385,59 +387,61 @@ const ProductDetail = () => {
             )}
             
             {/* Size Guide */}
-            <Collapsible open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
-              <CollapsibleTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-between px-0 hover:bg-transparent"
-                >
-                  <span className="flex items-center gap-2 text-sm font-medium">
-                    <Ruler className="h-4 w-4" />
-                    Size Guide
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {sizeGuideOpen ? "Hide" : "Show"}
-                  </span>
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2">
-                <div className="rounded-lg border border-border/50 bg-muted/30 p-4 space-y-3 text-sm">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr className="border-b border-border/50">
-                          {currentSizeGuide.headers.map((header, idx) => (
-                            <th key={idx} className={`pb-2 font-medium ${idx < currentSizeGuide.headers.length - 1 ? 'pr-4' : ''}`}>
-                              {header}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentSizeGuide.rows.map((row, rowIdx) => (
-                          <tr 
-                            key={rowIdx} 
-                            className={rowIdx < currentSizeGuide.rows.length - 1 ? "border-b border-border/30" : ""}
-                          >
-                            {row.map((cell, cellIdx) => (
-                              <td 
-                                key={cellIdx} 
-                                className={`py-2 ${cellIdx < row.length - 1 ? 'pr-4' : ''}`}
-                              >
-                                {cell}
-                              </td>
+            {showSizeGuide && (
+              <Collapsible open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-between px-0 hover:bg-transparent"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-medium">
+                      <Ruler className="h-4 w-4" />
+                      Size Guide
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {sizeGuideOpen ? "Hide" : "Show"}
+                    </span>
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-2">
+                  <div className="rounded-lg border border-border/50 bg-muted/30 p-4 space-y-3 text-sm">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left">
+                        <thead>
+                          <tr className="border-b border-border/50">
+                            {currentSizeGuide.headers.map((header, idx) => (
+                              <th key={idx} className={`pb-2 font-medium ${idx < currentSizeGuide.headers.length - 1 ? 'pr-4' : ''}`}>
+                                {header}
+                              </th>
                             ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {currentSizeGuide.rows.map((row, rowIdx) => (
+                            <tr 
+                              key={rowIdx} 
+                              className={rowIdx < currentSizeGuide.rows.length - 1 ? "border-b border-border/30" : ""}
+                            >
+                              {row.map((cell, cellIdx) => (
+                                <td 
+                                  key={cellIdx} 
+                                  className={`py-2 ${cellIdx < row.length - 1 ? 'pr-4' : ''}`}
+                                >
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3">
+                      {currentSizeGuide.note}
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    {currentSizeGuide.note}
-                  </p>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
+                </CollapsibleContent>
+              </Collapsible>
+            )}
             
             <Button 
               size="lg" 
