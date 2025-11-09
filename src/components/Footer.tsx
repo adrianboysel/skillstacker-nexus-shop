@@ -20,9 +20,9 @@ export const Footer = () => {
             </p>
           </div>
           
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="font-semibold text-base md:text-lg mb-6">Shop By Brand</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 flex flex-col items-center md:items-start">
               <li>
                 <Link to="/shop" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   All Products
@@ -51,9 +51,9 @@ export const Footer = () => {
             </ul>
           </div>
           
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="font-semibold text-base md:text-lg mb-6">Resources</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 flex flex-col items-center md:items-start">
               <li>
                 <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Whitepaper
