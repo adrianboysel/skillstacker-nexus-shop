@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, ArrowLeft } from "lucide-react";
+import { ShoppingCart, ArrowLeft, Ruler } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
@@ -14,6 +14,11 @@ import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og.png";
 import shirtImage from "@/assets/products/shirt-og.png";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -66,6 +71,7 @@ const ProductDetail = () => {
   const addItem = useCartStore(state => state.addItem);
   const [selectedVariant, setSelectedVariant] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<number>(0);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['product', handle],
@@ -140,6 +146,9 @@ const ProductDetail = () => {
   const isOGHat = data.title.toLowerCase().includes("meme militia og hat");
   const isOGHoodie = data.title.toLowerCase().includes("meme militia og hoodie");
   const isOGShirt = data.title.toLowerCase().includes("meme militia og shirt");
+
+  // Get all available images (limit to 5)
+  const displayImages = data.images.edges.slice(0, 5);
 
   // Structured data for SEO
   const structuredData = {
@@ -224,13 +233,13 @@ const ProductDetail = () => {
               )}
             </div>
             
-            {data.images.edges.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
-                {data.images.edges.map((image, idx) => (
+            {displayImages.length > 1 && (
+              <div className="grid grid-cols-5 gap-3">
+                {displayImages.map((image, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all hover:border-primary/50 ${
                       selectedImage === idx ? 'border-primary shadow-glow' : 'border-border/50'
                     }`}
                   >
@@ -288,6 +297,75 @@ const ProductDetail = () => {
                 ))}
               </div>
             )}
+            
+            {/* Size Guide */}
+            <Collapsible open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between px-0 hover:bg-transparent"
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium">
+                    <Ruler className="h-4 w-4" />
+                    Size Guide
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {sizeGuideOpen ? "Hide" : "Show"}
+                  </span>
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-2">
+                <div className="rounded-lg border border-border/50 bg-muted/30 p-4 space-y-3 text-sm">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="border-b border-border/50">
+                          <th className="pb-2 pr-4 font-medium">Size</th>
+                          <th className="pb-2 pr-4 font-medium">Chest (in)</th>
+                          <th className="pb-2 pr-4 font-medium">Length (in)</th>
+                          <th className="pb-2 font-medium">Sleeve (in)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-border/30">
+                          <td className="py-2 pr-4">S</td>
+                          <td className="py-2 pr-4">18</td>
+                          <td className="py-2 pr-4">28</td>
+                          <td className="py-2">15.5</td>
+                        </tr>
+                        <tr className="border-b border-border/30">
+                          <td className="py-2 pr-4">M</td>
+                          <td className="py-2 pr-4">20</td>
+                          <td className="py-2 pr-4">29</td>
+                          <td className="py-2">17</td>
+                        </tr>
+                        <tr className="border-b border-border/30">
+                          <td className="py-2 pr-4">L</td>
+                          <td className="py-2 pr-4">22</td>
+                          <td className="py-2 pr-4">30</td>
+                          <td className="py-2">18.5</td>
+                        </tr>
+                        <tr className="border-b border-border/30">
+                          <td className="py-2 pr-4">XL</td>
+                          <td className="py-2 pr-4">24</td>
+                          <td className="py-2 pr-4">31</td>
+                          <td className="py-2">20</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 pr-4">2XL</td>
+                          <td className="py-2 pr-4">26</td>
+                          <td className="py-2 pr-4">32</td>
+                          <td className="py-2">21.5</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-3">
+                    All measurements are approximate and may vary slightly. Measure your favorite garment and compare with the chart above.
+                  </p>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
             
             <Button 
               size="lg" 
