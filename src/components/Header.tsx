@@ -84,7 +84,7 @@ export const Header = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
-          <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link to="/" className="text-sm font-medium hover:text-primary transition-colors" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             Home
           </Link>
           
@@ -190,7 +190,10 @@ export const Header = () => {
                 <Link 
                   to="/" 
                   className="flex items-center gap-3 px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setMobileOpen(false);
+                  }}
                 >
                   <Home className="h-5 w-5" />
                   Home
