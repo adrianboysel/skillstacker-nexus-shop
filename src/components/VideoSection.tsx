@@ -46,7 +46,7 @@ export const VideoSection = ({
                   textOrientation: 'mixed',
                   fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
                   letterSpacing: '0.2em'
-                }}>F</div>
+                }}>Featured Video</div>
                 </div>
 
                 {/* Play Button Overlay */}
