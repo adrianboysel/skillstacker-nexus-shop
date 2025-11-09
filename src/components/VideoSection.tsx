@@ -76,7 +76,7 @@ export const VideoSection = ({
                             d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
                           />
                         </defs>
-                        <text className="text-[11px] md:text-[13px] fill-foreground font-semibold tracking-[0.3em]">
+                        <text className="text-[11px] md:text-sm fill-foreground font-bold tracking-[0.3em] uppercase">
                           <textPath href="#circlePath" startOffset="0%">
                             VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • 
                           </textPath>
@@ -85,8 +85,8 @@ export const VideoSection = ({
                     </div>
 
                     {/* Play button */}
-                    <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-foreground flex items-center justify-center shadow-2xl hover:scale-105 transition-all duration-300">
-                      <Play className="w-10 h-10 md:w-14 md:h-14 text-background fill-current ml-1.5" />
+                    <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary flex items-center justify-center shadow-glow hover:shadow-glow-blue transition-all duration-300 group-hover/btn:scale-105">
+                      <Play className="w-10 h-10 md:w-14 md:h-14 text-primary-foreground fill-current ml-1.5" />
                     </div>
                   </button>
                 </div>
