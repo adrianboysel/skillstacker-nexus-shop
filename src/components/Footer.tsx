@@ -75,21 +75,26 @@ export const Footer = () => {
         
         <div className="pt-8 md:pt-10 border-t border-border/50 flex flex-col items-center gap-6">
           {/* Payment Methods */}
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
-              <CreditCard className="h-4 w-4 text-primary" />
-              <span className="text-xs font-medium">Visa</span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
-              <CreditCard className="h-4 w-4 text-primary" />
-              <span className="text-xs font-medium">Mastercard</span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
-              <CreditCard className="h-4 w-4 text-primary" />
-              <span className="text-xs font-medium">Amex</span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 hover:shadow-glow transition-all cursor-pointer">
-              <img src={moonpayLogo} alt="MoonPay" width="63" height="16" className="h-4 brightness-0 invert" loading="lazy" />
+          <div className="flex flex-col items-center gap-4 w-full">
+            <h3 className="text-sm md:text-base font-semibold text-foreground">
+              We Accept Fiat and Crypto Payments
+            </h3>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
+                <CreditCard className="h-4 w-4 text-primary" />
+                <span className="text-xs font-medium">Visa</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
+                <CreditCard className="h-4 w-4 text-primary" />
+                <span className="text-xs font-medium">Mastercard</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
+                <CreditCard className="h-4 w-4 text-primary" />
+                <span className="text-xs font-medium">Amex</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 hover:shadow-glow transition-all cursor-pointer">
+                <img src={moonpayLogo} alt="MoonPay" width="63" height="16" className="h-4 brightness-0 invert" loading="lazy" />
+              </div>
             </div>
           </div>
           
