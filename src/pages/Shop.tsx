@@ -35,7 +35,7 @@ const Shop = () => {
       // Filter by category if specified
       if (category) {
         products = products.filter((product) => 
-          product.node.title.toLowerCase().includes(category.toLowerCase())
+          product.node.productType.toLowerCase() === category.toLowerCase()
         );
       }
       
@@ -50,6 +50,7 @@ const Shop = () => {
       "brand butler": "Brand Butler Merch",
       "brand hacker": "Brand Hacker Merch",
       "meme militia": "Meme Militia Merch",
+      "canvas": "Canvas Collection",
     };
     return categoryMap[category.toLowerCase()] || "Products";
   };
