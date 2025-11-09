@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
 import { useCartStore, type ShopifyProduct } from "@/stores/cartStore";
 import { toast } from "sonner";
+import hatVideo from "@/assets/products/hat-og.mp4";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -16,6 +17,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const image = node.images.edges[0]?.node.url;
   const price = node.priceRange.minVariantPrice;
   const variant = node.variants.edges[0]?.node;
+  
+  // Check if this is the Meme Militia OG Hat to show video
+  const isOGHat = node.title.toLowerCase().includes("meme militia og hat");
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,7 +48,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     <Link to={`/product/${node.handle}`}>
       <Card className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-glow">
         <div className="relative aspect-square overflow-hidden bg-muted">
-          {image ? (
+          {isOGHat ? (
+            <video 
+              src={hatVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              aria-label={node.title}
+            />
+          ) : image ? (
             <img 
               src={image} 
               alt={node.title}

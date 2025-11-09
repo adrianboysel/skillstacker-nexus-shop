@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
 import { toast } from "sonner";
+import hatVideo from "@/assets/products/hat-og.mp4";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -134,6 +135,7 @@ const ProductDetail = () => {
 
   const variant = data.variants.edges[selectedVariant]?.node;
   const currentImage = data.images.edges[selectedImage]?.node.url;
+  const isOGHat = data.title.toLowerCase().includes("meme militia og hat");
 
   // Structured data for SEO
   const structuredData = {
@@ -176,7 +178,18 @@ const ProductDetail = () => {
           {/* Images */}
           <div className="space-y-4">
             <div className="aspect-square rounded-lg overflow-hidden bg-muted border border-border/50">
-              {currentImage ? (
+              {isOGHat ? (
+                <video 
+                  src={hatVideo}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-cover"
+                  aria-label={data.title}
+                />
+              ) : currentImage ? (
                 <img 
                   src={currentImage} 
                   alt={data.title}
