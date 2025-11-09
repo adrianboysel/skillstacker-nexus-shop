@@ -22,20 +22,42 @@ export const VideoSection = ({
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <AspectRatio ratio={21/9} className="bg-muted rounded-lg overflow-hidden relative group">
+        <div className="max-w-7xl mx-auto">
+          {/* Custom shape container with angled bottom-right corner */}
+          <div 
+            className="relative w-full overflow-hidden bg-muted"
+            style={{
+              clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%)',
+              aspectRatio: '21/7'
+            }}
+          >
             {!isPlaying ? (
               <>
                 {/* Thumbnail/Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/30 to-pink-500/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-purple-500/40 to-pink-500/40">
                   {thumbnailUrl && (
                     <img 
                       src={thumbnailUrl} 
                       alt={title}
-                      className="w-full h-full object-cover opacity-60"
+                      className="w-full h-full object-cover opacity-70"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/30 to-transparent" />
+                </div>
+
+                {/* Left side text */}
+                <div className="absolute left-8 md:left-12 top-1/2 -translate-y-1/2 z-20">
+                  <div 
+                    className="text-foreground/90 font-bold tracking-wider"
+                    style={{
+                      writingMode: 'vertical-rl',
+                      textOrientation: 'mixed',
+                      fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
+                      letterSpacing: '0.2em'
+                    }}
+                  >
+                    LAST YEAR'S CONFERENCE
+                  </div>
                 </div>
 
                 {/* Play Button Overlay */}
@@ -46,24 +68,25 @@ export const VideoSection = ({
                     aria-label="Play video"
                   >
                     {/* Rotating text circle */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg className="w-32 h-32 md:w-40 md:h-40 animate-spin-slow" viewBox="0 0 200 200">
-                        <path
-                          id="circlePath"
-                          d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
-                          fill="none"
-                        />
-                        <text className="text-xs md:text-sm fill-foreground/80 font-medium tracking-wider">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <svg className="w-44 h-44 md:w-56 md:h-56 animate-spin-slow" viewBox="0 0 200 200">
+                        <defs>
+                          <path
+                            id="circlePath"
+                            d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
+                          />
+                        </defs>
+                        <text className="text-[11px] md:text-[13px] fill-foreground font-semibold tracking-[0.3em]">
                           <textPath href="#circlePath" startOffset="0%">
-                            {title.toUpperCase()} • {title.toUpperCase()} • 
+                            VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • VIDEO WATCH • 
                           </textPath>
                         </text>
                       </svg>
                     </div>
 
                     {/* Play button */}
-                    <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary flex items-center justify-center shadow-glow hover:shadow-glow-blue transition-all duration-300 group-hover/btn:scale-110">
-                      <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground fill-current ml-1" />
+                    <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-foreground flex items-center justify-center shadow-2xl hover:scale-105 transition-all duration-300">
+                      <Play className="w-10 h-10 md:w-14 md:h-14 text-background fill-current ml-1.5" />
                     </div>
                   </button>
                 </div>
@@ -77,7 +100,7 @@ export const VideoSection = ({
                 className="absolute inset-0 w-full h-full"
               />
             )}
-          </AspectRatio>
+          </div>
         </div>
       </div>
     </section>
