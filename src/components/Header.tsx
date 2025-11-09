@@ -69,14 +69,14 @@ export const Header = () => {
 
   return (
     <header className={`fixed left-0 right-0 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl transition-all duration-300 ${bannerVisible ? 'top-[28px]' : 'top-0'}`}>
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 h-16 md:h-18 lg:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group mr-auto md:ml-[-40px]">
-          <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-7 sm:h-8 md:h-10 transition-transform group-hover:scale-105" />
+        <Link to="/" className="flex items-center gap-3 group mr-auto lg:ml-[-40px]">
+          <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-6 sm:h-7 md:h-8 lg:h-10 transition-transform group-hover:scale-105" />
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
             Home
           </Link>
@@ -137,10 +137,10 @@ export const Header = () => {
         </nav>
 
         {/* Mobile Menu & Cart */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <Link to="/cart">
-            <Button variant="ghost" size="icon" className="relative hover:bg-primary/10">
-              <ShoppingCart className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="relative hover:bg-primary/10 h-9 w-9 md:h-10 md:w-10">
+              <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
               {totalItems > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary">
                   {totalItems}
@@ -155,10 +155,10 @@ export const Header = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="hover:bg-primary/10"
+                className="hover:bg-primary/10 h-9 w-9 md:h-10 md:w-10"
                 aria-label="Open menu"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5 md:h-6 md:w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent 
