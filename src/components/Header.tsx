@@ -70,12 +70,11 @@ export const Header = () => {
     const checkAdmin = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('user_id', session.user.id)
-          .single();
-        setIsAdmin(profile?.is_admin || false);
+        const { data: userRoles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id);
+        setIsAdmin(userRoles?.some(r => r.role === 'admin') || false);
       }
     };
     

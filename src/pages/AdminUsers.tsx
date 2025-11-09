@@ -11,19 +11,27 @@ import { Loader2, LogOut, Shield, ShieldOff } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
-interface Profile {
+interface UserRole {
+  id: string;
+  user_id: string;
+  role: 'admin' | 'moderator' | 'user';
+  created_at: string;
+}
+
+interface UserWithRole {
   id: string;
   user_id: string;
   email: string;
-  is_admin: boolean;
   created_at: string;
+  roles: UserRole[];
+  is_admin: boolean; // computed field
 }
 
 export default function AdminUsers() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [users, setUsers] = useState<Profile[]>([]);
+  const [users, setUsers] = useState<UserWithRole[]>([]);
   const [updatingUsers, setUpdatingUsers] = useState<Set<string>>(new Set());
   const [currentUserId, setCurrentUserId] = useState<string>('');
 
@@ -43,13 +51,14 @@ export default function AdminUsers() {
       setCurrentUserId(session.user.id);
 
       // Check if user is admin
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('user_id', session.user.id)
-        .single();
+      const { data: userRoles, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id);
 
-      if (profileError || !profile?.is_admin) {
+      const hasAdminRole = userRoles?.some(r => r.role === 'admin');
+
+      if (roleError || !hasAdminRole) {
         toast.error('Unauthorized: Admin access required');
         navigate('/');
         return;
@@ -67,13 +76,32 @@ export default function AdminUsers() {
   const loadUsers = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      // Get all profiles
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setUsers(data || []);
+      if (profilesError) throw profilesError;
+
+      // Get all user roles
+      const { data: roles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('*');
+
+      if (rolesError) throw rolesError;
+
+      // Combine profiles with their roles
+      const usersWithRoles: UserWithRole[] = (profiles || []).map(profile => {
+        const userRoles = (roles || []).filter(r => r.user_id === profile.user_id);
+        return {
+          ...profile,
+          roles: userRoles,
+          is_admin: userRoles.some(r => r.role === 'admin'),
+        };
+      });
+
+      setUsers(usersWithRoles);
     } catch (error: any) {
       console.error('Error loading users:', error);
       toast.error('Failed to load users');
@@ -86,12 +114,23 @@ export default function AdminUsers() {
     setUpdatingUsers(prev => new Set(prev).add(userId));
 
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ is_admin: !currentStatus })
-        .eq('user_id', userId);
+      if (currentStatus) {
+        // Remove admin role
+        const { error } = await supabase
+          .from('user_roles')
+          .delete()
+          .eq('user_id', userId)
+          .eq('role', 'admin');
 
-      if (error) throw error;
+        if (error) throw error;
+      } else {
+        // Add admin role
+        const { error } = await supabase
+          .from('user_roles')
+          .insert({ user_id: userId, role: 'admin' });
+
+        if (error) throw error;
+      }
 
       toast.success(`User ${!currentStatus ? 'promoted to' : 'removed from'} admin`);
       await loadUsers();
