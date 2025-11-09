@@ -7,14 +7,21 @@ import type { ShopifyProduct } from "@/stores/cartStore";
  * Lower numbers appear first. Products not listed will appear last.
  */
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
-  // Example: Add product titles (lowercase) with their priority (lower = first)
-  "skill stacker hoodie": 1,
-  "skill stacker og hat": 2,
-  "skill stacker t-shirt": 3,
-  "skill stacker premium framed canvas print": 4,
+  // Meme Militia products (featured first)
+  "meme militia og hoodie": 1,
+  "meme militia og t-shirt": 2,
+  "meme militia og hat": 3,
   
-  // Add more products here as needed
-  // "product title": priority_number,
+  // Brand Hacker products
+  "brand hacker t-shirt": 4,
+  "brand hacker hat": 5,
+  "brand hacker sticker pack": 6,
+  
+  // Skill Stacker products
+  "skill stacker wizard t-shirt": 7,
+  "flow": 8,
+  "stack skills": 9,
+  "stumpy meadows": 10,
 };
 
 /**
