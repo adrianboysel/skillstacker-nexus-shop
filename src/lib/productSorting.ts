@@ -9,8 +9,8 @@ import type { ShopifyProduct } from "@/stores/cartStore";
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   // Meme Militia products (featured first)
   "meme militia og hoodie": 1,
-  "meme militia og t-shirt": 2,
-  "meme militia og hat": 3,
+  "meme militia og hat": 2,
+  "meme militia og t-shirt": 3,
   
   // Brand Hacker products
   "brand hacker t-shirt": 4,
