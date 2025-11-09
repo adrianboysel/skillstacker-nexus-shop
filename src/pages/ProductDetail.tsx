@@ -156,6 +156,7 @@ const ProductDetail = () => {
   // Determine product type for size guide
   const getProductType = () => {
     const title = data.title.toLowerCase();
+    if (title.includes("sticker")) return "sticker";
     if (title.includes("canvas") || title.includes("print")) return "canvas";
     if (title.includes("hat") || title.includes("cap")) return "hat";
     if (title.includes("hoodie") || title.includes("sweatshirt")) return "hoodie";
@@ -164,7 +165,8 @@ const ProductDetail = () => {
   };
 
   const productType = getProductType();
-  const showSizeGuide = productType !== "canvas";
+  const isSticker = productType === "sticker";
+  const showSizeGuide = productType !== "canvas" && !isSticker;
 
   // Size guide data by product type
   const sizeGuides = {
@@ -359,30 +361,32 @@ const ProductDetail = () => {
             
             {data.options.length > 0 && (
               <div className="space-y-4">
-                {data.options.map((option, idx) => (
-                  <div key={idx}>
-                    <label className="text-sm font-medium mb-2 block">
-                      {option.name}
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {option.values.map((value, valueIdx) => {
-                        const variantIdx = data.variants.edges.findIndex(v =>
-                          v.node.selectedOptions.some(opt => opt.value === value)
-                        );
-                        return (
-                          <Button
-                            key={valueIdx}
-                            variant={selectedVariant === variantIdx ? "default" : "outline"}
-                            onClick={() => setSelectedVariant(variantIdx)}
-                            className={selectedVariant === variantIdx ? "shadow-glow" : ""}
-                          >
-                            {value}
-                          </Button>
-                        );
-                      })}
+                {data.options
+                  .filter(option => !(isSticker && option.name.toLowerCase() === 'style'))
+                  .map((option, idx) => (
+                    <div key={idx}>
+                      <label className="text-sm font-medium mb-2 block">
+                        {option.name}
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {option.values.map((value, valueIdx) => {
+                          const variantIdx = data.variants.edges.findIndex(v =>
+                            v.node.selectedOptions.some(opt => opt.value === value)
+                          );
+                          return (
+                            <Button
+                              key={valueIdx}
+                              variant={selectedVariant === variantIdx ? "default" : "outline"}
+                              onClick={() => setSelectedVariant(variantIdx)}
+                              className={selectedVariant === variantIdx ? "shadow-glow" : ""}
+                            >
+                              {value}
+                            </Button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
             
