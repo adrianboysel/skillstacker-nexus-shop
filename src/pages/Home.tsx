@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import heroBg from "@/assets/hero-bg.webp";
-import heroVideo from "@/assets/meme-bg.mp4";
+import heroVideo from "@/assets/meme-bg-2.mp4";
 
 const Home = () => {
   const { data: products, isLoading } = useQuery({
