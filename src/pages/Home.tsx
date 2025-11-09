@@ -10,21 +10,25 @@ import { VideoSection } from "@/components/VideoSection";
 import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
+import { sortProductsByCustomOrder } from "@/lib/productSorting";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
 const Home = () => {
   const {
-    data: products,
+    data: allProducts,
     isLoading
   } = useQuery({
     queryKey: ['featured-products'],
     queryFn: async () => {
       const response = await storefrontApiRequest(PRODUCTS_QUERY, {
-        first: 6
+        first: 10
       });
       return response.data.products.edges as ShopifyProduct[];
     }
   });
+
+  // Sort products and take first 3 for featured section
+  const products = allProducts ? sortProductsByCustomOrder(allProducts).slice(0, 3) : [];
   return <div className="min-h-screen bg-background">
       <PromoBanner />
       <Header />

@@ -8,6 +8,11 @@ import { ProductCard } from "@/components/ProductCard";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import { Skeleton } from "@/components/ui/skeleton";
+import { 
+  sortProductsByCustomOrder, 
+  sortProductsByPrice, 
+  sortProductsByName 
+} from "@/lib/productSorting";
 import {
   Select,
   SelectContent,
@@ -49,32 +54,19 @@ const Shop = () => {
     return categoryMap[category.toLowerCase()] || "Products";
   };
 
-  const sortedProducts = data ? [...data].sort((a, b) => {
+  const sortedProducts = data ? (() => {
     switch (sortBy) {
       case "price-low":
-        return parseFloat(a.node.priceRange.minVariantPrice.amount) - 
-               parseFloat(b.node.priceRange.minVariantPrice.amount);
+        return sortProductsByPrice(data, 'asc');
       case "price-high":
-        return parseFloat(b.node.priceRange.minVariantPrice.amount) - 
-               parseFloat(a.node.priceRange.minVariantPrice.amount);
+        return sortProductsByPrice(data, 'desc');
       case "name":
-        return a.node.title.localeCompare(b.node.title);
+        return sortProductsByName(data);
       case "custom":
       default:
-        // Custom sort: Hoodie, Hat, Shirt
-        const titleA = a.node.title.toLowerCase();
-        const titleB = b.node.title.toLowerCase();
-        
-        const getOrder = (title: string) => {
-          if (title.includes("hoodie")) return 1;
-          if (title.includes("hat")) return 2;
-          if (title.includes("shirt") || title.includes("t-shirt")) return 3;
-          return 4;
-        };
-        
-        return getOrder(titleA) - getOrder(titleB);
+        return sortProductsByCustomOrder(data);
     }
-  }) : [];
+  })() : [];
 
   return (
     <div className="min-h-screen bg-background">
