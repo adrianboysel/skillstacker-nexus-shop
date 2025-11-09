@@ -16,14 +16,29 @@ const Shop = () => {
     queryKey: ['products', category],
     queryFn: async () => {
       const response = await storefrontApiRequest(PRODUCTS_QUERY, { first: 50 });
-      const products = response.data.products.edges as ShopifyProduct[];
+      let products = response.data.products.edges as ShopifyProduct[];
       
       // Filter by category if specified
       if (category) {
-        return products.filter((product) => 
+        products = products.filter((product) => 
           product.node.title.toLowerCase().includes(category.toLowerCase())
         );
       }
+      
+      // Custom sort: Hoodie, Hat, Shirt
+      products.sort((a, b) => {
+        const titleA = a.node.title.toLowerCase();
+        const titleB = b.node.title.toLowerCase();
+        
+        const getOrder = (title: string) => {
+          if (title.includes("hoodie")) return 1;
+          if (title.includes("hat")) return 2;
+          if (title.includes("shirt") || title.includes("t-shirt")) return 3;
+          return 4;
+        };
+        
+        return getOrder(titleA) - getOrder(titleB);
+      });
       
       return products;
     },
