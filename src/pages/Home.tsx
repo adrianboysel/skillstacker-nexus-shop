@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCard } from "@/components/ProductCard";
+import { VideoSection } from "@/components/VideoSection";
 import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
@@ -70,6 +71,12 @@ const Home = () => {
         
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </section>
+
+      {/* Video Section */}
+      <VideoSection 
+        videoUrl="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        title="Watch the Video"
+      />
 
       {/* Featured Products Section */}
       <section className="py-20 bg-background">
