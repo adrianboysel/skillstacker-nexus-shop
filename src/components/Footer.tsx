@@ -128,25 +128,35 @@ export const Footer = () => {
         
         {/* Newsletter Footer Signup */}
         <div className="mt-8 md:mt-12">
-          <div className="rounded-lg border border-border/50 bg-card/40 p-4 md:p-6">
-            <h3 className="font-semibold text-base md:text-lg mb-3 text-center md:text-left">Join the movement</h3>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <div className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8">
+            <div className="text-center space-y-4 mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold">
+                BE FREE.{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  STAY IN THE LOOP
+                </span>
+              </h3>
+              <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+                Get early access to drops, raw updates, and gear that doesn't apologize.
+              </p>
+            </div>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-background border-border h-10 md:h-11 text-sm"
+                className="flex-1 bg-background border-border h-12 text-base"
                 required
                 maxLength={255}
               />
               <Button
                 type="submit"
-                size="sm"
+                size="lg"
                 disabled={isSubmitting}
-                className="shadow-glow hover:shadow-glow-blue"
+                className="shadow-glow hover:shadow-glow-blue transition-all"
               >
-                {isSubmitting ? "Joining..." : "Join"}
+                {isSubmitting ? "Joining..." : "Join the Movement"}
               </Button>
             </form>
           </div>
