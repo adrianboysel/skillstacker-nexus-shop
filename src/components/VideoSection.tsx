@@ -81,9 +81,7 @@ export const VideoSection = ({
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Custom shape container with angled bottom-right corner */}
-          <div className="relative w-full overflow-hidden bg-muted" style={{
-          aspectRatio: '21/7'
-        }}>
+          <div className="relative w-full overflow-hidden bg-muted aspect-video md:aspect-[21/7]">
             <style>
               {`
                 @media (min-width: 768px) {
