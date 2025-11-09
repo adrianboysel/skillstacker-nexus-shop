@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import newsletterBg from "@/assets/newsletter-bg.jpg";
 
 const emailSchema = z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" });
 
@@ -63,8 +64,16 @@ export const NewsletterSignup = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-card/30 backdrop-blur-sm border-y border-border/50">
-      <div className="container mx-auto px-4">
+    <section 
+      className="py-16 md:py-24 border-y border-border/50 relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${newsletterBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8">
             <div className="text-center space-y-4 mb-8">
