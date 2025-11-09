@@ -17,11 +17,11 @@ const Cart = () => {
       await createCheckout();
       const checkoutUrl = useCartStore.getState().checkoutUrl;
       if (checkoutUrl) {
-        console.log('[Checkout] Opening URL (from Cart page):', checkoutUrl);
-        toast.message('Opening Shopify checkout...', {
+        console.log('[Checkout] Navigating to URL (same tab):', checkoutUrl);
+        toast.message('Redirecting to Shopify checkout...', {
           description: new URL(checkoutUrl).hostname,
         });
-        window.open(checkoutUrl, '_blank');
+        window.location.assign(checkoutUrl);
       } else {
         toast.error('No checkout URL returned', {
           description: 'Please try again.',

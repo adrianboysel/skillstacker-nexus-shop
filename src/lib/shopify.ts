@@ -2,7 +2,7 @@ import { toast } from 'sonner';
 import type { CartItem } from '@/stores/cartStore';
 
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 const SHOPIFY_STOREFRONT_TOKEN = '0bc2514aea611d0f8ea39b755a3fc570';
 
@@ -139,8 +139,14 @@ export async function createStorefrontCheckout(items: CartItem[]): Promise<strin
     }
 
     const url = new URL(cart.checkoutUrl);
-    // Use checkout URL as returned by Shopify; only ensure required params
+    // Use checkout URL as returned by Shopify; ensure required params
     url.searchParams.set('channel', 'online_store');
+
+    // If Shopify returned a custom domain that causes 404s, force permanent domain
+    if (url.hostname !== SHOPIFY_STORE_PERMANENT_DOMAIN) {
+      console.warn('[Shopify] Rewriting checkout hostname to permanent domain:', SHOPIFY_STORE_PERMANENT_DOMAIN);
+      url.hostname = SHOPIFY_STORE_PERMANENT_DOMAIN;
+    }
 
     // Log the exact URL we will open for easier debugging
     const finalUrl = url.toString();
