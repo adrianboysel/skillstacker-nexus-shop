@@ -41,7 +41,7 @@ export default function Auth() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -49,7 +49,14 @@ export default function Auth() {
           },
         });
         if (error) throw error;
-        toast.success('Account created! Please check your email to confirm.');
+        
+        // With auto-confirm enabled, user is logged in immediately
+        if (data.session) {
+          toast.success('Account created successfully!');
+          navigate('/admin/inventory');
+        } else {
+          toast.success('Account created! Please check your email to confirm.');
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -57,6 +64,7 @@ export default function Auth() {
         });
         if (error) throw error;
         toast.success('Logged in successfully!');
+        navigate('/admin/inventory');
       }
     } catch (error: any) {
       toast.error(error.message || 'An error occurred');
