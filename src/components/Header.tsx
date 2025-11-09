@@ -79,7 +79,7 @@ export const Header = () => {
       <div className="container mx-auto pl-[5px] pr-3 sm:pr-4 md:pr-6 h-16 md:h-18 lg:h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group mr-auto">
-          <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-6 sm:h-7 md:h-8 lg:h-10 transition-transform group-hover:scale-105" />
+          <img src={logoWhite} alt="Skill Stacker" width="366" height="40" className="h-6 sm:h-7 md:h-8 lg:h-10 w-auto transition-transform group-hover:scale-105" />
         </Link>
         
         {/* Desktop Navigation */}
