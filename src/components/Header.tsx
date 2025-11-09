@@ -76,7 +76,7 @@ export const Header = () => {
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+        <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
             Home
           </Link>
@@ -151,7 +151,7 @@ export const Header = () => {
 
           {/* Mobile Menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger asChild className="lg:hidden">
               <Button 
                 variant="ghost" 
                 size="icon" 
