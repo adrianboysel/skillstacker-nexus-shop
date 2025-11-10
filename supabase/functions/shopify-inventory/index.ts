@@ -26,7 +26,14 @@ Deno.serve(async (req) => {
     // Verify user is authenticated and is admin
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      throw new Error('Missing authorization header');
+      console.error('Missing authorization header');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        }
+      );
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -37,8 +44,14 @@ Deno.serve(async (req) => {
     const { data: { user }, error: userError } = await supabase.auth.getUser(token);
 
     if (userError || !user) {
-      console.error('Auth error:', userError);
-      throw new Error('Unauthorized');
+      console.error('Auth error');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        }
+      );
     }
 
     // Check if user is admin
@@ -50,8 +63,14 @@ Deno.serve(async (req) => {
     const hasAdminRole = userRoles?.some((r: { role: string }) => r.role === 'admin');
 
     if (roleError || !hasAdminRole) {
-      console.error('Admin check failed:', roleError);
-      throw new Error('Unauthorized: Admin access required');
+      console.error('Admin check failed');
+      return new Response(
+        JSON.stringify({ error: 'Forbidden' }),
+        {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        }
+      );
     }
 
     const { action } = await req.json();
@@ -112,10 +131,17 @@ Deno.serve(async (req) => {
       );
 
       const data = await response.json();
-      console.log('Shopify response:', JSON.stringify(data, null, 2));
+      console.log('Shopify products fetched successfully');
 
       if (data.errors) {
-        throw new Error(`Shopify API error: ${JSON.stringify(data.errors)}`);
+        console.error('Shopify API returned errors');
+        return new Response(
+          JSON.stringify({ error: 'Failed to fetch products' }),
+          {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          }
+        );
       }
 
       return new Response(JSON.stringify(data.data), {
@@ -168,10 +194,17 @@ Deno.serve(async (req) => {
       );
 
       const data = await response.json();
-      console.log('Inventory update response:', JSON.stringify(data, null, 2));
+      console.log('Shopify inventory updated successfully');
 
       if (data.errors || data.data?.inventoryAdjustQuantity?.userErrors?.length > 0) {
-        throw new Error(`Failed to update inventory: ${JSON.stringify(data.errors || data.data.inventoryAdjustQuantity.userErrors)}`);
+        console.error('Shopify API returned errors for inventory update');
+        return new Response(
+          JSON.stringify({ error: 'Failed to update inventory' }),
+          {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          }
+        );
       }
 
       return new Response(JSON.stringify(data.data), {
@@ -179,13 +212,22 @@ Deno.serve(async (req) => {
       });
     }
 
-    throw new Error('Invalid action');
+    console.error('Invalid action requested');
+    return new Response(
+      JSON.stringify({ error: 'Invalid action' }),
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      }
+    );
   } catch (error) {
-    console.error('Error in shopify-inventory function:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    return new Response(JSON.stringify({ error: errorMessage }), {
-      status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    console.error('Error in shopify-inventory function:', error instanceof Error ? error.message : 'Unknown error');
+    return new Response(
+      JSON.stringify({ error: 'Operation failed' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      }
+    );
   }
 });
