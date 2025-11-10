@@ -15,7 +15,6 @@ import { sortProductsByCustomOrder } from "@/lib/productSorting";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
 import videoThumbnail from "@/assets/video-thumbnail.jpg";
-import wizardFlying from "@/assets/wizard-flying.webp";
 const Home = () => {
   const {
     data: allProducts,
@@ -67,14 +66,6 @@ const Home = () => {
               </a>
             </div>
           </div>
-
-          {/* Wizard mascot */}
-          <img 
-            src={wizardFlying} 
-            alt="Skill Stacker Wizard" 
-            className="absolute bottom-8 right-4 md:bottom-16 md:right-12 lg:right-24 w-48 md:w-64 lg:w-80 xl:w-96 animate-fade-in pointer-events-none z-20"
-            style={{ animationDelay: '0.5s' }}
-          />
         </div>
         
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
