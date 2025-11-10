@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.80.0';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,6 +16,14 @@ interface InventoryUpdateRequest {
   locationId: string;
   availableAdjustment: number;
 }
+
+// Validation schema for inventory updates
+const inventoryUpdateSchema = z.object({
+  variantId: z.string().min(1, 'Variant ID is required').max(100, 'Variant ID too long'),
+  inventoryItemId: z.string().min(1, 'Inventory Item ID is required').max(100, 'Inventory Item ID too long'),
+  locationId: z.string().min(1, 'Location ID is required').max(100, 'Location ID too long'),
+  availableAdjustment: z.number().int('Adjustment must be an integer').min(-1000, 'Adjustment too low').max(1000, 'Adjustment too high')
+});
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -150,7 +159,22 @@ Deno.serve(async (req) => {
     }
 
     if (action === 'updateInventory') {
-      const { variantId, inventoryItemId, locationId, availableAdjustment }: InventoryUpdateRequest = await req.json();
+      const requestData = await req.json();
+      
+      // Validate input parameters
+      const validationResult = inventoryUpdateSchema.safeParse(requestData);
+      if (!validationResult.success) {
+        console.error('Invalid inventory update parameters');
+        return new Response(
+          JSON.stringify({ error: 'Invalid parameters provided' }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          }
+        );
+      }
+
+      const { variantId, inventoryItemId, locationId, availableAdjustment } = validationResult.data;
 
       console.log('Updating inventory:', { variantId, inventoryItemId, locationId, availableAdjustment });
 
