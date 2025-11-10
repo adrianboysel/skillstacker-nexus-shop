@@ -17,10 +17,11 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const { email }: SubscribeRequest = await req.json();
-    console.log("Newsletter subscription request for:", email);
+    console.log("Newsletter subscription request received");
 
-    // Validate email
-    if (!email || !email.includes("@")) {
+    // Validate email with proper regex and length limits
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || typeof email !== 'string' || email.length > 255 || !emailRegex.test(email)) {
       return new Response(
         JSON.stringify({ error: "Invalid email address" }),
         {
@@ -84,7 +85,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
 
         const bodyText = await resp.text();
-        console.error(`Kit.com endpoint ${ep.name} failed:`, resp.status, bodyText);
+        console.error(`Kit.com endpoint ${ep.name} failed with status ${resp.status}`);
 
         // Handle already subscribed gracefully
         if (resp.status === 400 && bodyText.toLowerCase().includes("already")) {
@@ -97,18 +98,25 @@ const handler = async (req: Request): Promise<Response> => {
         lastErrorStatus = resp.status;
         lastErrorBody = bodyText;
       } catch (err) {
-        console.error(`Kit.com endpoint ${ep.name} threw:`, err);
+        console.error(`Kit.com endpoint ${ep.name} error:`, (err as Error).message);
         lastErrorStatus = 0;
         lastErrorBody = (err as Error).message || "Unknown error";
       }
     }
 
     if (!kitResponse) {
-      throw new Error(`Kit.com request failed across all endpoints. Last status ${lastErrorStatus}: ${lastErrorBody}`);
+      console.error(`Kit.com request failed across all endpoints. Last status: ${lastErrorStatus}`);
+      return new Response(
+        JSON.stringify({ error: "Failed to subscribe to newsletter" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
     const data = await kitResponse.json();
-    console.log("Successfully subscribed to Kit.com:", data);
+    console.log("Successfully subscribed to Kit.com");
 
     return new Response(
       JSON.stringify({ 
@@ -123,7 +131,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in subscribe-newsletter function:", error);
     return new Response(
-      JSON.stringify({ error: error.message || "Failed to subscribe" }),
+      JSON.stringify({ error: "Failed to subscribe to newsletter" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
