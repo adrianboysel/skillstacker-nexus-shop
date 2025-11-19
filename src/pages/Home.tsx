@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { storefrontApiRequest, PRODUCTS_QUERY } from "@/lib/shopify";
 import type { ShopifyProduct } from "@/stores/cartStore";
 import { sortProductsByCustomOrder } from "@/lib/productSorting";
+import { SEO } from "@/components/SEO";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
 import videoThumbnail from "@/assets/video-thumbnail.jpg";
@@ -32,6 +33,12 @@ const Home = () => {
   // Sort products and take first 3 for featured section
   const products = allProducts ? sortProductsByCustomOrder(allProducts).slice(0, 3) : [];
   return <div className="min-h-screen bg-background">
+      <SEO 
+        title="Skill Stacker Shop - Premium Merchandise"
+        description="Shop exclusive Skill Stacker merchandise including hoodies, hats, and t-shirts. Join the movement and stack your skills in style."
+        keywords="skill stacker, merchandise, hoodies, hats, t-shirts, shop"
+        canonicalUrl="/"
+      />
       <PromoBanner />
       <Header />
       
