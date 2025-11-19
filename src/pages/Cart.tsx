@@ -6,7 +6,6 @@ import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { CheckoutHealthCheck } from "@/components/CheckoutHealthCheck";
 import { SEO } from "@/components/SEO";
 
 const SHOPIFY_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
@@ -69,11 +68,6 @@ const Cart = () => {
         </Link>
         
         <h1 className="text-4xl font-bold mb-8">Shopping Cart</h1>
-        
-        {/* Debug Health Check */}
-        <div className="mb-8">
-          <CheckoutHealthCheck />
-        </div>
         
         {items.length === 0 ? (
           <div className="text-center py-20">
