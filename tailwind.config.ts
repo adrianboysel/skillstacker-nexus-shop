@@ -109,6 +109,14 @@ export default {
             backgroundPosition: "100% 50%"
           }
         },
+        "pulse-scale": {
+          "0%, 100%": {
+            transform: "scale(1)"
+          },
+          "50%": {
+            transform: "scale(1.05)"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +124,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "spin-slow": "spin 20s linear infinite",
         "gradient-shift": "gradient-shift 5.6s linear infinite",
+        "pulse-scale": "pulse-scale 2s ease-in-out infinite",
       },
     },
   },
