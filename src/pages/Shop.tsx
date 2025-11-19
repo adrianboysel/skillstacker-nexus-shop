@@ -59,6 +59,11 @@ const Shop = () => {
             )
           );
         }
+      } else {
+        // When no category is selected, show only products tagged as "new"
+        products = products.filter((product) => 
+          product.node.tags?.some((tag: string) => tag.toLowerCase() === 'new')
+        );
       }
       
       return products;
