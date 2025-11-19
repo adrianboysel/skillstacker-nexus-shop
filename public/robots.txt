@@ -70,4 +70,4 @@ User-agent: *
 Allow: /
 
 # Sitemap Location
-# Sitemap: https://skillstackershop.myshopify.com/sitemap.xml
+Sitemap: https://skillstackershop.myshopify.com/sitemap.xml

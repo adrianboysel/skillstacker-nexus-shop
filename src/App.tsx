@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AdminInventory from "./pages/AdminInventory";
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/shop" element={<Shop />} />
           <Route path="/product/:handle" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
