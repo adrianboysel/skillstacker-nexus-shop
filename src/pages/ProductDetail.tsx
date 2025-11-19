@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
 import { toast } from "sonner";
+import { SEO } from "@/components/SEO";
 import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og-new.jpg";
 import shirtImage from "@/assets/products/shirt-og-new.png";
@@ -243,6 +244,14 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${data.title} - Skill Stacker Shop`}
+        description={`Buy ${data.title} from Skill Stacker. ${data.description?.substring(0, 100) || 'Premium quality merchandise for the Web3 generation.'}${data.description && data.description.length > 100 ? '...' : ''}`}
+        keywords={`${data.title}, skill stacker merchandise, ${data.productType?.toLowerCase()}, web3 apparel, buy ${data.productType?.toLowerCase()}, meme militia gear`}
+        ogImage={data.images.edges[0]?.node.url}
+        ogType="product"
+        canonicalUrl={`/product/${data.handle}`}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

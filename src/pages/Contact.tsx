@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { SEO } from "@/components/SEO";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +26,12 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Contact Skill Stacker - Get in Touch with Our Team"
+        description="Have questions about Skill Stacker, $STKR token, or our merchandise? Contact us through our form, join our Discord community, or follow us on X (Twitter). We're here to help."
+        keywords="contact skill stacker, customer support, discord community, skill stacker help, web3 support, community contact, get in touch"
+        canonicalUrl="/contact"
+      />
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-20">

@@ -3,10 +3,17 @@ import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="About Skill Stacker - Web3 Education & Creator Ecosystem on Solana"
+        description="Discover Skill Stacker: the Web3 education platform revolutionizing creator monetization with $STKR token on Solana. Join the Meme Militia community of builders and innovators shaping the digital economy."
+        keywords="skill stacker, web3 education, solana blockchain, $STKR token, creator economy, meme militia, digital learning platform, web3 community, blockchain education, creator monetization"
+        canonicalUrl="/about"
+      />
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-20">
