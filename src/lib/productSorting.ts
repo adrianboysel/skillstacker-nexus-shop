@@ -7,21 +7,26 @@ import type { ShopifyProduct } from "@/stores/cartStore";
  * Lower numbers appear first. Products not listed will appear last.
  */
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
-  // Meme Militia products (featured first)
-  "meme militia og hoodie": 1,
-  "meme militia og hat": 2,
-  "meme militia og t-shirt": 3,
+  // Canvas Prints (top priority)
+  "flow": 1,
+  "stack skills": 2,
+  "stumpy meadows": 3,
+  
+  // Meme Militia products
+  "meme militia og hoodie": 4,
+  "meme militia og hat": 5,
+  "meme militia og t-shirt": 6,
+  
+  // Love Gangster products
+  "love gangster flexfit hat": 7,
   
   // Brand Hacker products
-  "brand hacker t-shirt": 4,
-  "brand hacker hat": 5,
-  "brand hacker sticker pack": 6,
+  "brand hacker t-shirt": 8,
+  "brand hacker hat": 9,
+  "brand hacker sticker pack": 10,
   
   // Skill Stacker products
-  "skill stacker wizard t-shirt": 7,
-  "flow": 8,
-  "stack skills": 9,
-  "stumpy meadows": 10,
+  "skill stacker wizard t-shirt": 11,
 };
 
 /**
