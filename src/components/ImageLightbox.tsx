@@ -137,6 +137,8 @@ export const ImageLightbox = ({
               <img
                 src={images[currentIndex]?.url}
                 alt={images[currentIndex]?.alt}
+                loading="eager"
+                decoding="async"
                 className="max-w-full max-h-full object-contain transition-transform duration-200"
                 style={{ transform: `scale(${zoomLevel})` }}
               />
