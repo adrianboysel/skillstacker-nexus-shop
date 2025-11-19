@@ -22,6 +22,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ProductReviews } from "@/components/ProductReviews";
+import { DeliveryEstimate } from "@/components/DeliveryEstimate";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -468,6 +469,9 @@ const ProductDetail = () => {
                 </CollapsibleContent>
               </Collapsible>
             )}
+            
+            {/* Delivery Estimate */}
+            <DeliveryEstimate productType={productType} />
             
             <Button 
               size="lg" 
