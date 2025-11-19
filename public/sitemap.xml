@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <!-- Home Page - Highest Priority -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Shop Page - Very High Priority -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- About Page - High Priority -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/about</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Contact Page - High Priority -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/contact</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Cart Page - Medium Priority -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/cart</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Shop Category Pages - High Priority for SEO -->
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=shirts</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=hats</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=hoodies</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=meme%20militia</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=skill%20stacker</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop?category=love%20gangster</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 
+    Product Pages (Dynamic)
+    Note: Individual product pages should be added here dynamically.
+    Format: https://skillstackershop.myshopify.com/product/[product-handle]
+    Priority: 0.8, changefreq: weekly
+    
+    To make this dynamic, you can:
+    1. Use a sitemap generation script that fetches products from Shopify
+    2. Update this file when products are added/removed
+    3. Use a sitemap index file pointing to multiple sitemaps
+  -->
+  
+</urlset>
