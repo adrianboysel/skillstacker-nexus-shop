@@ -55,7 +55,8 @@ const Shop = () => {
           products = products.filter((product) => 
             validTypes.some(type => 
               product.node.productType.toLowerCase().includes(type.toLowerCase()) ||
-              product.node.title.toLowerCase().includes(category.toLowerCase())
+              product.node.title.toLowerCase().includes(category.toLowerCase()) ||
+              product.node.tags?.some((tag: string) => tag.toLowerCase().includes(category.toLowerCase()))
             )
           );
         }
