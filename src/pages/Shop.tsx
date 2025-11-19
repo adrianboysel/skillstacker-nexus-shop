@@ -116,7 +116,7 @@ const Shop = () => {
       },
       "love gangster": {
         main: "Love Gangster",
-        highlight: "Street Romance Collection",
+        highlight: "Collection",
         subtitle: "Where love meets the streets. Bold designs for those who live by their own rules"
       },
     };
