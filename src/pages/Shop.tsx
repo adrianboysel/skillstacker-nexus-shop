@@ -106,7 +106,7 @@ const Shop = () => {
       },
       "brand hacker": {
         main: "Brand Hacker",
-        highlight: "Growth Marketing Gear",
+        highlight: "Collection",
         subtitle: "Rock the tools and tactics that build legendary brands from the ground up"
       },
       "meme militia": {
