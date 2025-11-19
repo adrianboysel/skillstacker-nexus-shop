@@ -46,6 +46,7 @@ const Shop = () => {
           "brand butler": ["brand butler"],
           "brand hacker": ["brand hacker"],
           "meme militia": ["meme militia"],
+          "love gangster": ["love gangster"],
         };
         
         const validTypes = categoryMap[category.toLowerCase()];
@@ -70,6 +71,7 @@ const Shop = () => {
       "brand butler": "Brand Butler Merch",
       "brand hacker": "Brand Hacker Merch",
       "meme militia": "Meme Militia Merch",
+      "love gangster": "Love Gangster Merch",
       "canvas": "Canvas Collection",
     };
     return categoryMap[category.toLowerCase()] || "Products";
