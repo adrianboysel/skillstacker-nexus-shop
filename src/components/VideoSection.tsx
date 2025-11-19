@@ -117,14 +117,14 @@ export const VideoSection = ({
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button onClick={handlePlay} className="relative group/btn" aria-label="Play video">
                     {/* Rotating text circle */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-5">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[5]">
                       <svg className="w-44 h-44 md:w-80 md:h-80" viewBox="0 0 200 200" style={{
                       animation: 'spin 20s linear infinite'
                     }}>
                         <defs>
                           <path id="circlePath" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
                         </defs>
-                        <text className="text-sm md:text-lg fill-foreground font-bold tracking-[0.35em] uppercase">
+                        <text className="text-sm md:text-lg font-bold tracking-[0.35em] uppercase" fill="hsl(329 100% 59%)" stroke="hsl(0 0% 100%)" strokeWidth="0.5">
                           <textPath href="#circlePath" startOffset="0%">
                             {rotatingText.repeat(2)}
                           </textPath>
