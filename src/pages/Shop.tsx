@@ -22,13 +22,11 @@ import {
 } from "@/components/ui/select";
 import { SEO } from "@/components/SEO";
 import { slugToCategory, getCategoryDisplayName } from "@/lib/categorySlug";
-import { getCategoryContent } from "@/lib/categoryContent";
 import loveGangsterLogo from "@/assets/love-gangster-logo.png";
 
 const Shop = () => {
   const { category: categorySlug } = useParams();
   const category = categorySlug ? slugToCategory(categorySlug) : '';
-  const categoryContent = getCategoryContent(categorySlug);
   const [sortBy, setSortBy] = useState<string>("custom");
 
   const { data, isLoading } = useQuery({
@@ -110,23 +108,30 @@ const Shop = () => {
     return category ? `/shop/${categorySlug}` : '/shop';
   };
 
-  // Featured products are the first few items that match featured product names
-  const featuredProducts = sortedProducts?.filter(product => 
-    categoryContent.featuredProducts?.some(featured => 
-      product.node.title.toLowerCase().includes(featured.toLowerCase())
-    )
-  ).slice(0, 3) || [];
+  const getSeoTitle = () => {
+    if (!category) return "Shop - Skill Stacker Merchandise";
+    const title = getCategoryTitle();
+    return `${title} - Skill Stacker Shop`;
+  };
 
-  const regularProducts = sortedProducts?.filter(product => 
-    !featuredProducts.some(featured => featured.node.id === product.node.id)
-  ) || [];
+  const getSeoDescription = () => {
+    if (!category) return "Browse our full collection of Skill Stacker merchandise. Find your favorite hoodies, hats, and t-shirts.";
+    const title = getCategoryTitle();
+    return `Shop ${title} from Skill Stacker. Premium quality Web3 merchandise and community apparel.`;
+  };
+
+  const getSeoKeywords = () => {
+    const baseKeywords = "skill stacker shop, buy merchandise";
+    if (!category) return `${baseKeywords}, hoodies, hats, t-shirts`;
+    return `${baseKeywords}, ${category}, ${getCategoryTitle().toLowerCase()}, web3 apparel`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title={categoryContent.title}
-        description={categoryContent.description}
-        keywords={categoryContent.keywords.join(', ')}
+        title={getSeoTitle()}
+        description={getSeoDescription()}
+        keywords={getSeoKeywords()}
         canonicalUrl={getCanonicalUrl()}
       />
       <PromoBanner />
@@ -134,8 +139,7 @@ const Shop = () => {
       
       <main className="container mx-auto px-4 pt-[132px] pb-20">
         <div className="max-w-7xl mx-auto">
-          {/* Category Hero Section */}
-          <section className="mb-16 space-y-8">
+          <div className="mb-16 space-y-8">
             {category.toLowerCase() === 'love gangster' ? (
               <div className="text-center space-y-6 relative">
                 <div className="absolute inset-0 bg-gradient-to-b from-purple-600/20 via-pink-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
@@ -149,64 +153,41 @@ const Shop = () => {
                   <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-purple-600 bg-clip-text text-transparent">
                     Love Gangster
                   </span>{" "}
-                  <span className="text-foreground">Collection</span>
+                  <span className="text-white">Collection</span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                  {categoryContent.description}
-                </p>
-                <p className="text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  {categoryContent.longDescription}
+                  Where love meets the streets. Bold designs for those who live by their own rules.
                 </p>
               </div>
             ) : (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-4">
                 <h1 className="text-4xl md:text-6xl font-bold">
-                  <span className="text-foreground">{categoryContent.h1}</span>
+                  <span className="text-white">{category ? category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'New Arrival'}</span>{" "}
+                  <span className="bg-gradient-primary bg-clip-text text-transparent">
+                    {category ? 'Collection' : 'Products'}
+                  </span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  {categoryContent.description}
-                </p>
-                <p className="text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  {categoryContent.longDescription}
+                  Exclusive drops from the creative collective behind the movement.
                 </p>
               </div>
             )}
-          </section>
-
-          {/* Featured Products Section */}
-          {!isLoading && featuredProducts.length > 0 && (
-            <section className="mb-16">
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-foreground mb-2">Featured Products</h2>
-                <p className="text-muted-foreground">Our most popular items from this collection</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {featuredProducts.map((product) => (
-                  <ProductCard key={product.node.id} product={product} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Sort Controls */}
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-foreground">
-              {featuredProducts.length > 0 ? 'All Products' : 'Products'}
-            </h2>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[200px] bg-card border-border">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent className="bg-card border-border z-50">
-                <SelectItem value="custom">Featured</SelectItem>
-                <SelectItem value="name">Name (A-Z)</SelectItem>
-                <SelectItem value="price-low">Price (Low to High)</SelectItem>
-                <SelectItem value="price-high">Price (High to Low)</SelectItem>
-              </SelectContent>
-            </Select>
+            
+            <div className="flex justify-center md:justify-end">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-[200px] bg-card border-border">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border z-50">
+                  <SelectItem value="custom">Featured</SelectItem>
+                  <SelectItem value="name">Name (A-Z)</SelectItem>
+                  <SelectItem value="price-low">Price (Low to High)</SelectItem>
+                  <SelectItem value="price-high">Price (High to Low)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           
-          {/* Products Grid */}
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, i) => (
@@ -217,9 +198,9 @@ const Shop = () => {
                 </div>
               ))}
             </div>
-          ) : regularProducts && regularProducts.length > 0 ? (
+          ) : sortedProducts && sortedProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {regularProducts.map((product) => (
+              {sortedProducts.map((product) => (
                 <ProductCard key={product.node.id} product={product} />
               ))}
             </div>
