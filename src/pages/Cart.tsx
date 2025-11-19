@@ -7,6 +7,7 @@ import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } f
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { CheckoutHealthCheck } from "@/components/CheckoutHealthCheck";
+import { SEO } from "@/components/SEO";
 
 const SHOPIFY_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
 const Cart = () => {
@@ -52,6 +53,12 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title="Shopping Cart - Skill Stacker Shop"
+        description="Review your Skill Stacker merchandise cart. Secure checkout for hoodies, hats, t-shirts, and exclusive community apparel. Fast shipping and easy returns available."
+        keywords="shopping cart, checkout, skill stacker cart, buy merchandise, secure checkout, online shopping"
+        canonicalUrl="/cart"
+      />
       <PromoBanner />
       <Header />
       
