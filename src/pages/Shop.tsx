@@ -90,6 +90,44 @@ const Shop = () => {
     return categoryMap[category.toLowerCase()] || getCategoryDisplayName(category);
   };
 
+  const getCategoryH1 = () => {
+    if (!category) return { main: "New Arrival", highlight: "Products", subtitle: "Exclusive drops from the creative collective behind the movement" };
+    
+    const h1Map: { [key: string]: { main: string; highlight: string; subtitle: string } } = {
+      "skill stacker": {
+        main: "Skill Stacker",
+        highlight: "Official Merchandise",
+        subtitle: "Premium Web3 apparel for developers, creators, and community builders"
+      },
+      "brand butler": {
+        main: "Brand Butler",
+        highlight: "Exclusive Collection",
+        subtitle: "Elevate your brand game with premium merchandise and streetwear essentials"
+      },
+      "brand hacker": {
+        main: "Brand Hacker",
+        highlight: "Growth Marketing Gear",
+        subtitle: "Rock the tools and tactics that build legendary brands from the ground up"
+      },
+      "meme militia": {
+        main: "Meme Militia",
+        highlight: "Viral Culture Collection",
+        subtitle: "Join the meme revolution with apparel that speaks your internet language"
+      },
+      "love gangster": {
+        main: "Love Gangster",
+        highlight: "Street Romance Collection",
+        subtitle: "Where love meets the streets. Bold designs for those who live by their own rules"
+      },
+    };
+    
+    return h1Map[category.toLowerCase()] || {
+      main: getCategoryDisplayName(category),
+      highlight: "Collection",
+      subtitle: "Exclusive drops from the creative collective behind the movement"
+    };
+  };
+
   const sortedProducts = data ? (() => {
     switch (sortBy) {
       case "price-low":
@@ -146,29 +184,29 @@ const Shop = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent rounded-3xl -z-10" />
                 <img 
                   src={loveGangsterLogo} 
-                  alt="Love Gangster" 
+                  alt="Love Gangster Official Merchandise" 
                   className="w-48 h-48 mx-auto animate-pulse-scale drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]"
                 />
                 <h1 className="text-4xl md:text-6xl font-bold animate-fade-in" style={{ animationDelay: '0.1s' }}>
                   <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-purple-600 bg-clip-text text-transparent">
-                    Love Gangster
+                    {getCategoryH1().main}
                   </span>{" "}
-                  <span className="text-white">Collection</span>
+                  <span className="text-white">{getCategoryH1().highlight}</span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                  Where love meets the streets. Bold designs for those who live by their own rules.
+                  {getCategoryH1().subtitle}
                 </p>
               </div>
             ) : (
               <div className="text-center space-y-4">
                 <h1 className="text-4xl md:text-6xl font-bold">
-                  <span className="text-white">{category ? category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'New Arrival'}</span>{" "}
+                  <span className="text-white">{getCategoryH1().main}</span>{" "}
                   <span className="bg-gradient-primary bg-clip-text text-transparent">
-                    {category ? 'Collection' : 'Products'}
+                    {getCategoryH1().highlight}
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Exclusive drops from the creative collective behind the movement.
+                  {getCategoryH1().subtitle}
                 </p>
               </div>
             )}
