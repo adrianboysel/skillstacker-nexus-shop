@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SEO } from "@/components/SEO";
 import loveGangsterLogo from "@/assets/love-gangster-logo.png";
 
 const Shop = () => {
@@ -100,6 +101,12 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Shop - Skill Stacker Merchandise"
+        description="Browse our full collection of Skill Stacker merchandise. Find your favorite hoodies, hats, and t-shirts."
+        keywords="skill stacker shop, buy merchandise, hoodies, hats, t-shirts"
+        canonicalUrl="/shop"
+      />
       <PromoBanner />
       <Header />
       
