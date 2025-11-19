@@ -117,7 +117,7 @@ export const VideoSection = ({
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button onClick={handlePlay} className="relative group/btn" aria-label="Play video">
                     {/* Rotating text circle */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-5">
                       <svg className="w-44 h-44 md:w-80 md:h-80" viewBox="0 0 200 200" style={{
                       animation: 'spin 20s linear infinite'
                     }}>
