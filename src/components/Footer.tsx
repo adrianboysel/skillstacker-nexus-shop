@@ -30,23 +30,28 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=skill stacker" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/shop/skill-stacker" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Skill Stacker
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=brand butler" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/shop/brand-butler" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Brand Butler
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=brand hacker" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/shop/brand-hacker" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Brand Hacker
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=meme militia" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/shop/meme-militia" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Meme Militia
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop/love-gangster" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                  Love Gangster
                 </Link>
               </li>
             </ul>
