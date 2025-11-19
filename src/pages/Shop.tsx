@@ -106,10 +106,10 @@ const Shop = () => {
                 <img 
                   src={loveGangsterLogo} 
                   alt="Love Gangster" 
-                  className="w-48 h-48 mx-auto animate-pulse-scale drop-shadow-[0_0_25px_rgba(236,72,153,0.5)]"
+                  className="w-48 h-48 mx-auto animate-pulse-scale drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]"
                 />
                 <h1 className="text-4xl md:text-6xl font-bold animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                  <span className="bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-purple-600 bg-clip-text text-transparent">
                     Love Gangster
                   </span>{" "}
                   <span className="text-white">Collection</span>
