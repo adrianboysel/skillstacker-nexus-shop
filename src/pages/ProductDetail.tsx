@@ -289,6 +289,9 @@ const ProductDetail = () => {
                   alt={data.title}
                   width="600"
                   height="600"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : isOGShirt ? (
@@ -297,6 +300,9 @@ const ProductDetail = () => {
                   alt={data.title}
                   width="600"
                   height="600"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-contain"
                 />
               ) : currentImage ? (
@@ -305,6 +311,9 @@ const ProductDetail = () => {
                   alt={data.title}
                   width="600"
                   height="600"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -338,6 +347,7 @@ const ProductDetail = () => {
                       width="150"
                       height="150"
                       loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </button>
