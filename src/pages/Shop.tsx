@@ -102,7 +102,8 @@ const Shop = () => {
           <div className="mb-16 space-y-8">
             {category.toLowerCase() === 'love gangster' ? (
               <div className="text-center space-y-6 relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-pink-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-purple-600/20 via-pink-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent rounded-3xl -z-10" />
                 <img 
                   src={loveGangsterLogo} 
                   alt="Love Gangster" 
