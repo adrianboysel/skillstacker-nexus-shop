@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -21,11 +21,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SEO } from "@/components/SEO";
+import { slugToCategory, getCategoryDisplayName } from "@/lib/categorySlug";
 import loveGangsterLogo from "@/assets/love-gangster-logo.png";
 
 const Shop = () => {
-  const [searchParams] = useSearchParams();
-  const category = searchParams.get('category') || '';
+  const { category: categorySlug } = useParams();
+  const category = categorySlug ? slugToCategory(categorySlug) : '';
   const [sortBy, setSortBy] = useState<string>("custom");
 
   const { data, isLoading } = useQuery({
@@ -81,8 +82,12 @@ const Shop = () => {
       "meme militia": "Meme Militia Merch",
       "love gangster": "Love Gangster Merch",
       "canvas": "Canvas Collection",
+      "shirts": "Shirts",
+      "hats": "Hats",
+      "hoodies": "Hoodies",
+      "sweatshirts": "Sweatshirts",
     };
-    return categoryMap[category.toLowerCase()] || "Products";
+    return categoryMap[category.toLowerCase()] || getCategoryDisplayName(category);
   };
 
   const sortedProducts = data ? (() => {
@@ -99,13 +104,35 @@ const Shop = () => {
     }
   })() : [];
 
+  const getCanonicalUrl = () => {
+    return category ? `/shop/${categorySlug}` : '/shop';
+  };
+
+  const getSeoTitle = () => {
+    if (!category) return "Shop - Skill Stacker Merchandise";
+    const title = getCategoryTitle();
+    return `${title} - Skill Stacker Shop`;
+  };
+
+  const getSeoDescription = () => {
+    if (!category) return "Browse our full collection of Skill Stacker merchandise. Find your favorite hoodies, hats, and t-shirts.";
+    const title = getCategoryTitle();
+    return `Shop ${title} from Skill Stacker. Premium quality Web3 merchandise and community apparel.`;
+  };
+
+  const getSeoKeywords = () => {
+    const baseKeywords = "skill stacker shop, buy merchandise";
+    if (!category) return `${baseKeywords}, hoodies, hats, t-shirts`;
+    return `${baseKeywords}, ${category}, ${getCategoryTitle().toLowerCase()}, web3 apparel`;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Shop - Skill Stacker Merchandise"
-        description="Browse our full collection of Skill Stacker merchandise. Find your favorite hoodies, hats, and t-shirts."
-        keywords="skill stacker shop, buy merchandise, hoodies, hats, t-shirts"
-        canonicalUrl="/shop"
+        title={getSeoTitle()}
+        description={getSeoDescription()}
+        keywords={getSeoKeywords()}
+        canonicalUrl={getCanonicalUrl()}
       />
       <PromoBanner />
       <Header />

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/collapsible";
 import { useCartStore } from "@/stores/cartStore";
 import { supabase } from "@/integrations/supabase/client";
+import { categoryToSlug } from "@/lib/categorySlug";
 import logoWhite from "@/assets/logo-white.png";
 import { useState, useEffect } from "react";
 
@@ -89,12 +90,12 @@ export const Header = () => {
   }, []);
 
   const handleCategoryClick = (category: string) => {
-    navigate(`/shop?category=${category}`);
+    navigate(`/shop/${categoryToSlug(category)}`);
     setMobileOpen(false);
   };
 
   const handleBrandClick = (brand: string) => {
-    navigate(`/shop?category=${brand}`);
+    navigate(`/shop/${categoryToSlug(brand)}`);
     setMobileOpen(false);
   };
 

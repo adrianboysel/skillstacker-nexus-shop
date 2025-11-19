@@ -45,42 +45,56 @@
   
   <!-- Shop Category Pages - High Priority for SEO -->
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=shirts</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/shirts</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=hats</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/hats</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=hoodies</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/hoodies</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=meme%20militia</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/meme-militia</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=skill%20stacker</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/skill-stacker</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://skillstackershop.myshopify.com/shop?category=love%20gangster</loc>
+    <loc>https://skillstackershop.myshopify.com/shop/love-gangster</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop/brand-hacker</loc>
+    <lastmod>2025-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://skillstackershop.myshopify.com/shop/brand-butler</loc>
     <lastmod>2025-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
