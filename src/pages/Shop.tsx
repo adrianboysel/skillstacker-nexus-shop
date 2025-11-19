@@ -111,7 +111,7 @@ const Shop = () => {
       },
       "meme militia": {
         main: "Meme Militia",
-        highlight: "Viral Culture Collection",
+        highlight: "Collection",
         subtitle: "Join the meme revolution with apparel that speaks your internet language"
       },
       "love gangster": {
