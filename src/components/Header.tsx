@@ -35,6 +35,7 @@ const brands = [
   { name: "Skill Stacker", value: "skill stacker", icon: Tag },
   { name: "Meme Militia", value: "meme militia", icon: Tag },
   { name: "Brand Hacker", value: "brand hacker", icon: Tag },
+  { name: "Love Gangster", value: "love gangster", icon: Tag },
   { name: "Brand Butler (Coming Soon)", value: "brand butler", icon: Tag },
 ];
 
