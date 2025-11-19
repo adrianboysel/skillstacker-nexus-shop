@@ -7,6 +7,7 @@ import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingCart, ArrowLeft } f
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { SEO } from "@/components/SEO";
+import { FreeShippingBanner } from "@/components/FreeShippingBanner";
 
 const SHOPIFY_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
 const Cart = () => {
@@ -68,6 +69,14 @@ const Cart = () => {
         </Link>
         
         <h1 className="text-4xl font-bold mb-8">Shopping Cart</h1>
+        
+        {items.length > 0 && (
+          <FreeShippingBanner 
+            currentTotal={totalPrice} 
+            threshold={150}
+            currencyCode={currencyCode}
+          />
+        )}
         
         {items.length === 0 ? (
           <div className="text-center py-20">
