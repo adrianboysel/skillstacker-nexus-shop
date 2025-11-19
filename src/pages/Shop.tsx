@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import loveGangsterLogo from "@/assets/love-gangster-logo.png";
 
 const Shop = () => {
   const [searchParams] = useSearchParams();
@@ -99,17 +100,37 @@ const Shop = () => {
       <main className="container mx-auto px-4 pt-[132px] pb-20">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 space-y-8">
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold">
-                <span className="text-white">{category ? category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'New Arrival'}</span>{" "}
-                <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  {category ? 'Collection' : 'Products'}
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Exclusive drops from the creative collective behind the movement.
-              </p>
-            </div>
+            {category.toLowerCase() === 'love gangster' ? (
+              <div className="text-center space-y-6 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-pink-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
+                <img 
+                  src={loveGangsterLogo} 
+                  alt="Love Gangster" 
+                  className="w-48 h-48 mx-auto animate-fade-in drop-shadow-[0_0_25px_rgba(236,72,153,0.5)]"
+                />
+                <h1 className="text-4xl md:text-6xl font-bold animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  <span className="bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent">
+                    Love Gangster
+                  </span>{" "}
+                  <span className="text-white">Collection</span>
+                </h1>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                  Where love meets the streets. Bold designs for those who live by their own rules.
+                </p>
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                <h1 className="text-4xl md:text-6xl font-bold">
+                  <span className="text-white">{category ? category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'New Arrival'}</span>{" "}
+                  <span className="bg-gradient-primary bg-clip-text text-transparent">
+                    {category ? 'Collection' : 'Products'}
+                  </span>
+                </h1>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                  Exclusive drops from the creative collective behind the movement.
+                </p>
+              </div>
+            )}
             
             <div className="flex justify-center md:justify-end">
               <Select value={sortBy} onValueChange={setSortBy}>
