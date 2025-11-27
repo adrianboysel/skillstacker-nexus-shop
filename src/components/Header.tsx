@@ -37,7 +37,7 @@ const brands = [
   { name: "Meme Militia", value: "meme militia", icon: Tag },
   { name: "Brand Hacker", value: "brand hacker", icon: Tag },
   { name: "Love Gangster", value: "love gangster", icon: Tag },
-  { name: "Brand Butler (Coming Soon)", value: "brand butler", icon: Tag },
+  { name: "Brand Butler", value: "brand butler", icon: Tag, comingSoon: true },
 ];
 
 export const Header = () => {
@@ -136,6 +136,11 @@ export const Header = () => {
                   >
                     <IconComponent className="h-4 w-4 mr-2" />
                     {brand.name}
+                    {brand.comingSoon && (
+                      <span className="ml-1.5 text-[10px] text-[hsl(300,100%,50%)]">
+                        (coming soon)
+                      </span>
+                    )}
                   </DropdownMenuItem>
                 );
               })}
@@ -273,6 +278,11 @@ export const Header = () => {
                         >
                           <IconComponent className="h-4 w-4" />
                           {brand.name}
+                          {brand.comingSoon && (
+                            <span className="ml-1.5 text-[10px] text-[hsl(300,100%,50%)]">
+                              (coming soon)
+                            </span>
+                          )}
                         </button>
                       );
                     })}
