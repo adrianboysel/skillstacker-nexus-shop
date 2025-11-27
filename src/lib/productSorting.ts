@@ -10,6 +10,7 @@ export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   // Featured new arrivals (top priority)
   "warrior in training kids relax hoodie": 1,
   "kids hoodie": 1,
+  "king bomber jacket": 2,
   "meme militia bomber jacket": 2,
   
   // Love Gangster products
