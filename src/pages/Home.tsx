@@ -89,6 +89,7 @@ const Home = () => {
           }}
           onAnimationEnd={(e) => {
             if (e.animationName.includes('slide-in-right')) {
+              e.currentTarget.classList.remove('animate-slide-in-right');
               e.currentTarget.classList.add('animate-float');
             }
           }}
