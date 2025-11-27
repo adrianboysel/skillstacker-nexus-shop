@@ -43,7 +43,7 @@ const Home = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[90px] sm:pt-[100px] md:pt-[152px] pb-4 md:pb-6 lg:pb-16">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[112px] sm:pt-[108px] md:pt-[156px] pb-4 md:pb-6 lg:pb-16">
         <div className="absolute inset-0 z-0 bg-black">
           <video autoPlay muted loop playsInline className="w-full h-full object-cover">
             <source src={heroVideo} type="video/mp4" />
