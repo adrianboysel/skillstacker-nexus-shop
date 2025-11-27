@@ -82,7 +82,7 @@ const Home = () => {
           alt="Skill Stacker Wizard" 
           className="hidden md:block absolute w-48 lg:w-56 animate-slide-in-right"
           style={{ 
-            bottom: '62px',
+            bottom: '52px',
             right: '47px',
             animationDelay: '0.5s',
             animationFillMode: 'both'
