@@ -16,9 +16,12 @@ export const PromoBanner = () => {
 
   return (
     <div className="sticky top-0 z-50 bg-primary text-white py-2 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
-      <div className="container mx-auto flex items-center justify-center gap-1.5 sm:gap-2 pr-8 sm:pr-0">
+      <div className="container mx-auto flex items-center justify-center gap-1.5 sm:gap-2 pr-8 sm:pr-0 flex-wrap">
         <span className="text-xs sm:text-sm md:text-base font-bold leading-tight">
-          Black Friday Sale 50% Off Everything
+          Black Friday Sale 50% Off Everything - Use Code:
+        </span>
+        <span className="text-xs sm:text-sm md:text-base font-extrabold bg-white/20 px-2 py-0.5 rounded">
+          BLACKFRIDAY50
         </span>
       </div>
       <button
