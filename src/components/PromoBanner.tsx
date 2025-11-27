@@ -3,13 +3,13 @@ import { useState } from "react";
 
 export const PromoBanner = () => {
   const [isVisible, setIsVisible] = useState(() => {
-    const stored = localStorage.getItem('promo-banner-visible');
+    const stored = localStorage.getItem('black-friday-banner-visible');
     return stored !== 'false';
   });
 
   const handleClose = () => {
     setIsVisible(false);
-    localStorage.setItem('promo-banner-visible', 'false');
+    localStorage.setItem('black-friday-banner-visible', 'false');
   };
 
   if (!isVisible) return null;
