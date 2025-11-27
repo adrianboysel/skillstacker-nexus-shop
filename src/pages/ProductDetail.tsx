@@ -164,6 +164,7 @@ const ProductDetail = () => {
     if (title.includes("sticker") || shopifyType.includes("sticker")) return "sticker";
     if (title.includes("canvas") || title.includes("print") || shopifyType.includes("canvas")) return "canvas";
     if (title.includes("hat") || title.includes("cap") || shopifyType.includes("hat")) return "hat";
+    if (title.includes("kids hoodie") || title.includes("kids relax hood")) return "kids-hoodie";
     if (title.includes("hoodie") || title.includes("sweatshirt") || shopifyType.includes("hoodie")) return "hoodie";
     if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt") || shopifyType.includes("shirt")) return "shirt";
     return "default";
@@ -181,6 +182,15 @@ const ProductDetail = () => {
         ["One Size", "22-24", "56-61"],
       ],
       note: "Adjustable strap fits most head sizes comfortably."
+    },
+    "kids-hoodie": {
+      headers: ["Size", "Body Width (in)", "Body Length (in)"],
+      rows: [
+        ["2", "14-1/4", "15-1/4"],
+        ["4", "15-1/4", "17"],
+        ["6", "16-1/2", "18-1/2"],
+      ],
+      note: "Please note measurements can vary within 2.5 inches, this is within our tolerance."
     },
     shirt: {
       headers: ["Size", "Chest (in)", "Length (in)", "Shoulder (in)"],
