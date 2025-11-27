@@ -83,7 +83,7 @@ const Home = () => {
           className="hidden md:block absolute w-48 lg:w-56 animate-slide-in-right"
           style={{ 
             bottom: '62px',
-            right: '22px',
+            right: '37px',
             animationDelay: '0.5s',
             animationFillMode: 'both'
           }}
