@@ -80,7 +80,7 @@ const Home = () => {
         <img 
           src={wizardFlying} 
           alt="Skill Stacker Wizard" 
-          className="hidden md:block absolute w-[202px] lg:w-[235px] animate-wizard"
+          className="hidden lg:block absolute w-[202px] lg:w-[235px] animate-wizard"
           style={{ 
             bottom: '52px',
             right: '241px'
