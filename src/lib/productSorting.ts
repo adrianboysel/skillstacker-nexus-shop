@@ -7,12 +7,12 @@ import type { ShopifyProduct } from "@/stores/cartStore";
  * Lower numbers appear first. Products not listed will appear last.
  */
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
-  // Love Gangster products (top priority)
-  "love gangster": 1,
-  
-  // Featured new arrivals
+  // Featured new arrivals (top priority)
+  "kids hoodie": 1,
   "meme militia bomber jacket": 2,
-  "kids hoodie": 3,
+  
+  // Love Gangster products
+  "love gangster": 3,
   
   // Canvas Prints
   "flow": 4,
