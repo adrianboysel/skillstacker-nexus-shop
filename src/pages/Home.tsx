@@ -16,6 +16,7 @@ import { SEO } from "@/components/SEO";
 import heroBg from "@/assets/hero-bg.webp";
 import heroVideo from "@/assets/meme-bg-2.mp4";
 import videoThumbnail from "@/assets/video-thumbnail.jpg";
+import wizardFlying from "@/assets/wizard-flying.webp";
 const Home = () => {
   const {
     data: allProducts,
@@ -74,6 +75,22 @@ const Home = () => {
             </div>
           </div>
         </div>
+        
+        {/* Floating Wizard */}
+        <img 
+          src={wizardFlying} 
+          alt="Skill Stacker Wizard" 
+          className="hidden md:block absolute right-8 bottom-24 w-48 lg:w-56 animate-slide-in-right"
+          style={{ 
+            animationDelay: '0.5s',
+            animationFillMode: 'both'
+          }}
+          onAnimationEnd={(e) => {
+            if (e.animationName.includes('slide-in-right')) {
+              e.currentTarget.classList.add('animate-float');
+            }
+          }}
+        />
         
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
       </section>
