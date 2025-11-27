@@ -117,6 +117,14 @@ export default {
             transform: "scale(1.05)"
           }
         },
+        "slide-in-right": {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" }
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -125,6 +133,8 @@ export default {
         "spin-slow": "spin 20s linear infinite",
         "gradient-shift": "gradient-shift 5.6s linear infinite",
         "pulse-scale": "pulse-scale 2s ease-in-out infinite",
+        "slide-in-right": "slide-in-right 0.8s ease-out",
+        "float": "float 3s ease-in-out infinite",
       },
     },
   },
