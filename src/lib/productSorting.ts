@@ -12,27 +12,28 @@ export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   "kids hoodie": 1,
   "king bomber jacket": 2,
   "meme militia bomber jacket": 2,
+  "future soldier kids classic tee": 3,
   
   // Love Gangster products
-  "love gangster": 3,
+  "love gangster": 4,
   
   // Canvas Prints
-  "flow": 4,
-  "stack skills": 5,
-  "stumpy meadows": 6,
+  "flow": 5,
+  "stack skills": 6,
+  "stumpy meadows": 7,
   
   // Meme Militia products
-  "meme militia og hoodie": 7,
-  "meme militia og hat": 8,
-  "meme militia og t-shirt": 9,
+  "meme militia og hoodie": 8,
+  "meme militia og hat": 9,
+  "meme militia og t-shirt": 10,
   
   // Brand Hacker products
-  "brand hacker t-shirt": 10,
-  "brand hacker hat": 11,
-  "brand hacker sticker pack": 12,
+  "brand hacker t-shirt": 11,
+  "brand hacker hat": 12,
+  "brand hacker sticker pack": 13,
   
   // Skill Stacker products
-  "skill stacker wizard t-shirt": 13,
+  "skill stacker wizard t-shirt": 14,
 };
 
 /**
