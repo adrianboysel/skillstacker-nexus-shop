@@ -134,7 +134,7 @@ export default {
         "gradient-shift": "gradient-shift 5.6s linear infinite",
         "pulse-scale": "pulse-scale 2s ease-in-out infinite",
         "slide-in-right": "slide-in-right 0.8s ease-out",
-        "float": "float 3s ease-in-out infinite",
+        "float": "float 4s ease-in-out infinite",
       },
     },
   },
