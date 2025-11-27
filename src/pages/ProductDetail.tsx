@@ -165,6 +165,7 @@ const ProductDetail = () => {
     if (title.includes("canvas") || title.includes("print") || shopifyType.includes("canvas")) return "canvas";
     if (title.includes("hat") || title.includes("cap") || shopifyType.includes("hat")) return "hat";
     if (title.includes("kids hoodie") || title.includes("kids relax hood")) return "kids-hoodie";
+    if (title.includes("future soldier kids") || title.includes("kids classic tee")) return "kids-tee";
     if (title.includes("hoodie") || title.includes("sweatshirt") || shopifyType.includes("hoodie")) return "hoodie";
     if (title.includes("shirt") || title.includes("tee") || title.includes("t-shirt") || shopifyType.includes("shirt")) return "shirt";
     return "default";
@@ -191,6 +192,17 @@ const ProductDetail = () => {
         ["6", "16-1/2", "18-1/2"],
       ],
       note: "Please note measurements can vary within 2.5 inches, this is within our tolerance."
+    },
+    "kids-tee": {
+      headers: ["Size", "Body Width (in)", "Body Length (in)"],
+      rows: [
+        ["8", "16-1/2", "20-3/4"],
+        ["10", "17-1/4", "22"],
+        ["12", "18", "23-1/4"],
+        ["14", "19", "25-1/4"],
+        ["16", "19-3/4", "26-3/4"],
+      ],
+      note: "Please note measurements can vary within 1 inch, this is within our tolerance."
     },
     shirt: {
       headers: ["Size", "Chest (in)", "Length (in)", "Shoulder (in)"],
