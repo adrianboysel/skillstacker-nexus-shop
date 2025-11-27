@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og-new.jpg";
 import shirtImage from "@/assets/products/shirt-og-new.png";
+import { formatDescription } from "@/lib/formatDescription";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -107,9 +108,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
               {node.title}
             </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {node.description}
-            </p>
+            <div className="text-sm text-muted-foreground line-clamp-2 space-y-1">
+              {formatDescription(node.description).slice(0, 2).map((sentence, idx) => (
+                <p key={idx}>{sentence}</p>
+              ))}
+            </div>
           </div>
           
           <div className="flex items-center justify-between">

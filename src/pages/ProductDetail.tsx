@@ -16,6 +16,7 @@ import hatVideo from "@/assets/products/hat-og.mp4";
 import hoodieImage from "@/assets/products/hoodie-og-new.jpg";
 import shirtImage from "@/assets/products/shirt-og-new.png";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import { formatDescription } from "@/lib/formatDescription";
 import {
   Collapsible,
   CollapsibleContent,
@@ -399,9 +400,11 @@ const ProductDetail = () => {
               <p className="text-3xl font-bold text-primary mb-6">
                 {variant?.price.currencyCode} ${parseFloat(variant?.price.amount || '0').toFixed(2)}
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                {data.description}
-              </p>
+              <div className="text-muted-foreground leading-relaxed space-y-3">
+                {formatDescription(data.description).map((sentence, idx) => (
+                  <p key={idx}>{sentence}</p>
+                ))}
+              </div>
             </div>
             
             {data.options.length > 0 && (
