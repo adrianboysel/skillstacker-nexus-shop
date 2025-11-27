@@ -10,6 +10,10 @@ export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   // Love Gangster products (top priority)
   "love gangster": 1,
   
+  // Featured new arrivals
+  "meme militia bomber jacket": 2,
+  "kids hoodie": 3,
+  
   // Canvas Prints
   "flow": 4,
   "stack skills": 5,
