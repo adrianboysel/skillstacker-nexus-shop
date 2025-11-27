@@ -80,18 +80,11 @@ const Home = () => {
         <img 
           src={wizardFlying} 
           alt="Skill Stacker Wizard" 
-          className="hidden md:block absolute w-48 lg:w-56 animate-slide-in-right"
+          className="hidden md:block absolute w-48 lg:w-56"
           style={{ 
             bottom: '52px',
             right: '216px',
-            animationDelay: '0.5s',
-            animationFillMode: 'both'
-          }}
-          onAnimationEnd={(e) => {
-            if (e.animationName.includes('slide-in-right')) {
-              e.currentTarget.classList.remove('animate-slide-in-right');
-              e.currentTarget.classList.add('animate-float');
-            }
+            animation: 'slide-in-right 0.8s ease-out 0.5s both, float 4s ease-in-out 1.3s infinite'
           }}
         />
         
