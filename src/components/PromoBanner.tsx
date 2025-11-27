@@ -1,6 +1,5 @@
 import { X } from "lucide-react";
 import { useState } from "react";
-import moonpayLogo from "@/assets/moonpay-logo.png";
 
 export const PromoBanner = () => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -18,10 +17,9 @@ export const PromoBanner = () => {
   return (
     <div className="sticky top-0 z-50 bg-primary text-white py-2 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
       <div className="container mx-auto flex items-center justify-center gap-1.5 sm:gap-2 pr-8 sm:pr-0">
-        <span className="text-xs sm:text-sm md:text-base font-medium leading-tight">
-          Now Accepting Crypto Payments via
+        <span className="text-xs sm:text-sm md:text-base font-bold leading-tight">
+          Black Friday Sale 50% Off Everything
         </span>
-        <img src={moonpayLogo} alt="MoonPay" width="79" height="20" className="h-3.5 sm:h-4 md:h-5 brightness-0 invert inline-block" />
       </div>
       <button
         onClick={handleClose}
