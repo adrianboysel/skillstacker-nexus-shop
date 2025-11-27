@@ -15,14 +15,14 @@ export const PromoBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="sticky top-0 z-50 bg-primary text-white py-2 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
-      <div className="container mx-auto flex items-center justify-center gap-1.5 sm:gap-2 pr-8 sm:pr-0 flex-wrap">
-        <span className="text-xs sm:text-sm md:text-base font-bold leading-tight">
+    <div className="sticky top-0 z-50 bg-primary text-white py-1.5 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
+      <div className="container mx-auto pr-8 sm:pr-0">
+        <div className="text-[10px] sm:text-xs font-semibold leading-tight mb-0.5">
           Black Friday Sale 50% Off Everything - Use Code:
-        </span>
-        <span className="text-xs sm:text-sm md:text-base font-extrabold bg-white/20 px-2 py-0.5 rounded">
+        </div>
+        <div className="text-xs sm:text-sm font-extrabold bg-white/20 px-2 py-0.5 rounded inline-block">
           BLACKFRIDAY50
-        </span>
+        </div>
       </div>
       <button
         onClick={handleClose}
