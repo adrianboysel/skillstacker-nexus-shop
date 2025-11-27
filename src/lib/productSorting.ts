@@ -8,6 +8,7 @@ import type { ShopifyProduct } from "@/stores/cartStore";
  */
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   // Featured new arrivals (top priority)
+  "warrior in training kids relax hoodie": 1,
   "kids hoodie": 1,
   "meme militia bomber jacket": 2,
   
