@@ -80,11 +80,10 @@ const Home = () => {
         <img 
           src={wizardFlying} 
           alt="Skill Stacker Wizard" 
-          className="hidden md:block absolute w-[202px] lg:w-[235px]"
+          className="hidden md:block absolute w-[202px] lg:w-[235px] animate-wizard"
           style={{ 
             bottom: '52px',
-            right: '241px',
-            animation: 'slide-in-right 0.8s ease-out 0.5s both, float 4s ease-in-out 1.3s infinite'
+            right: '241px'
           }}
         />
         
