@@ -3,13 +3,13 @@ import { useState } from "react";
 
 export const PromoBanner = () => {
   const [isVisible, setIsVisible] = useState(() => {
-    const stored = localStorage.getItem('black-friday-banner-visible');
+    const stored = localStorage.getItem('sbs-banner-visible');
     return stored !== 'false';
   });
 
   const handleClose = () => {
     setIsVisible(false);
-    localStorage.setItem('black-friday-banner-visible', 'false');
+    localStorage.setItem('sbs-banner-visible', 'false');
   };
 
   if (!isVisible) return null;
@@ -18,10 +18,10 @@ export const PromoBanner = () => {
     <div className="sticky top-0 z-50 bg-primary text-white py-2 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 pr-8 sm:pr-0">
         <span className="text-[10px] sm:text-sm md:text-base font-bold leading-tight whitespace-nowrap">
-          Black Friday Sale 50% Off Everything - Use Code:
+          Small Business Saturday 30% Off Everything - use Code:
         </span>
         <span className="text-xs sm:text-sm md:text-base font-extrabold bg-white/20 px-2 py-0.5 rounded">
-          BLACKFRIDAY50
+          SBS30
         </span>
       </div>
       <button
