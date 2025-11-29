@@ -8,32 +8,33 @@ import type { ShopifyProduct } from "@/stores/cartStore";
  */
 export const PRODUCT_ORDER_CONFIG: Record<string, number> = {
   // Featured new arrivals (top priority)
-  "warrior in training kids relax hoodie": 1,
-  "kids hoodie": 1,
-  "king bomber jacket": 2,
-  "meme militia bomber jacket": 2,
-  "future soldier kids classic tee": 3,
+  "skill stacker og t-shirt": 1,
+  "warrior in training kids relax hoodie": 2,
+  "kids hoodie": 2,
+  "king bomber jacket": 3,
+  "meme militia bomber jacket": 3,
+  "future soldier kids classic tee": 4,
   
   // Love Gangster products
-  "love gangster": 4,
+  "love gangster": 5,
   
   // Canvas Prints
-  "flow": 5,
-  "stack skills": 6,
-  "stumpy meadows": 7,
+  "flow": 6,
+  "stack skills": 7,
+  "stumpy meadows": 8,
   
   // Meme Militia products
-  "meme militia og hoodie": 8,
-  "meme militia og hat": 9,
-  "meme militia og t-shirt": 10,
+  "meme militia og hoodie": 9,
+  "meme militia og hat": 10,
+  "meme militia og t-shirt": 11,
   
   // Brand Hacker products
-  "brand hacker t-shirt": 11,
-  "brand hacker hat": 12,
-  "brand hacker sticker pack": 13,
+  "brand hacker t-shirt": 12,
+  "brand hacker hat": 13,
+  "brand hacker sticker pack": 14,
   
   // Skill Stacker products
-  "skill stacker wizard t-shirt": 14,
+  "skill stacker wizard t-shirt": 15,
 };
 
 /**
