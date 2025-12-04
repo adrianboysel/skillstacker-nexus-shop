@@ -18,10 +18,7 @@ export const PromoBanner = () => {
     <div className="sticky top-0 z-50 bg-primary text-white py-2 px-4 text-center shadow-md animate-in slide-in-from-top duration-500">
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 pr-8 sm:pr-0">
         <span className="text-[10px] sm:text-sm md:text-base font-bold leading-tight whitespace-nowrap">
-          Small Business Saturday 30% Off Everything - use Code:
-        </span>
-        <span className="text-xs sm:text-sm md:text-base font-extrabold bg-white/20 px-2 py-0.5 rounded">
-          SBS30
+          Now Accepting Crypto Payments
         </span>
       </div>
       <button
