@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      points_transactions: {
+        Row: {
+          created_at: string
+          customer_email: string | null
+          id: string
+          order_details: Json | null
+          points_earned: number
+          points_type: string
+          shopify_customer_id: string
+          shopify_order_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_email?: string | null
+          id?: string
+          order_details?: Json | null
+          points_earned?: number
+          points_type?: string
+          shopify_customer_id: string
+          shopify_order_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string | null
+          id?: string
+          order_details?: Json | null
+          points_earned?: number
+          points_type?: string
+          shopify_customer_id?: string
+          shopify_order_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
