@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.customer-rewards]
 verify_jwt = false
+
+[functions.admin-product-points]
+verify_jwt = false

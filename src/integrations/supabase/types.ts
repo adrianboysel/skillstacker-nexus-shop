@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      points_change_log: {
+        Row: {
+          changed_by_email: string | null
+          changed_by_user_id: string | null
+          created_at: string
+          id: string
+          new_points_value: number
+          old_points_value: number | null
+          product_title: string | null
+          shopify_product_id: string
+        }
+        Insert: {
+          changed_by_email?: string | null
+          changed_by_user_id?: string | null
+          created_at?: string
+          id?: string
+          new_points_value: number
+          old_points_value?: number | null
+          product_title?: string | null
+          shopify_product_id: string
+        }
+        Update: {
+          changed_by_email?: string | null
+          changed_by_user_id?: string | null
+          created_at?: string
+          id?: string
+          new_points_value?: number
+          old_points_value?: number | null
+          product_title?: string | null
+          shopify_product_id?: string
+        }
+        Relationships: []
+      }
       points_transactions: {
         Row: {
           created_at: string
