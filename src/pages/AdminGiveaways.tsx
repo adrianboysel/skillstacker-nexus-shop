@@ -295,7 +295,7 @@ const AdminGiveaways = () => {
       return;
     }
     if (formData.points_per_entry < 1) {
-      toast.error("Points per entry must be at least 1");
+      toast.error("Entries per submission must be at least 1");
       return;
     }
     if (new Date(formData.end_date) <= new Date(formData.start_date)) {
@@ -433,7 +433,7 @@ const AdminGiveaways = () => {
                         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Star className="h-4 w-4" />
-                            {giveaway.points_per_entry} pts/entry
+                            {giveaway.points_per_entry} entries/submission
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
@@ -499,8 +499,8 @@ const AdminGiveaways = () => {
             </DialogTitle>
             <DialogDescription>
               {editingGiveaway 
-                ? "Update giveaway details. Changes only affect future entries."
-                : "Set up a new giveaway for customers to enter with points."
+                ? "Update giveaway details. Changes only affect future submissions."
+                : "Set up a new giveaway for customers to enter with entries."
               }
             </DialogDescription>
           </DialogHeader>
@@ -540,7 +540,7 @@ const AdminGiveaways = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="points">Points per Entry *</Label>
+                <Label htmlFor="points">Entries per Submission *</Label>
                 <Input
                   id="points"
                   type="number"
@@ -657,8 +657,8 @@ const AdminGiveaways = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Customer</TableHead>
-                      <TableHead className="text-right">Entries</TableHead>
-                      <TableHead className="text-right">Points Spent</TableHead>
+                      <TableHead className="text-right">Submissions</TableHead>
+                      <TableHead className="text-right">Entries Spent</TableHead>
                       <TableHead className="text-right">Date</TableHead>
                     </TableRow>
                   </TableHeader>
