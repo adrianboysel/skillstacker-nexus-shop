@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { 
-  ArrowLeft, 
   Plus,
   Save, 
   Loader2, 
@@ -50,6 +49,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AdminTopNav } from "@/components/admin/AdminTopNav";
 
 interface Giveaway {
   id: string;
@@ -345,6 +345,11 @@ const AdminGiveaways = () => {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
@@ -367,30 +372,18 @@ const AdminGiveaways = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <AdminTopNav onLogout={handleLogout} />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate("/admin/inventory")}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Giveaway Management</h1>
-              <p className="text-muted-foreground">
-                Create and manage giveaways
-              </p>
-            </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Giveaway Management</h1>
+            <p className="text-muted-foreground">Create and manage giveaways</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={loadGiveaways}
-              disabled={isLoading}
-              className="gap-2"
-            >
+            <Button variant="outline" onClick={loadGiveaways} disabled={isLoading} className="gap-2">
               <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
               Refresh
             </Button>
