@@ -131,8 +131,8 @@ const Rewards = () => {
     <div className="min-h-screen bg-background">
       <SEO 
         title="My Rewards | Skill Stacker Shop"
-        description="Check your rewards points balance and activity. Earn points with every purchase at Skill Stacker Shop."
-        keywords="rewards, points, loyalty program, skill stacker"
+        description="Check your rewards entries balance and activity. Earn entries with every purchase at Skill Stacker Shop."
+        keywords="rewards, entries, loyalty program, skill stacker"
         canonicalUrl="/rewards"
       />
       <PromoBanner />
@@ -148,7 +148,7 @@ const Rewards = () => {
             My Rewards
           </h1>
           <p className="text-muted-foreground text-lg max-w-md mx-auto">
-            Check your points balance and see your rewards activity
+            Check your entries balance and see your rewards activity
           </p>
         </div>
 
@@ -161,7 +161,7 @@ const Rewards = () => {
               </div>
               <CardTitle className="text-lg">Sign In Required</CardTitle>
               <CardDescription>
-                Please sign in to view your rewards and points balance
+                Please sign in to view your rewards and entries balance
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
@@ -196,7 +196,7 @@ const Rewards = () => {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">
-                        Available Points
+                        Available Entries
                       </p>
                       <p className="text-4xl font-bold text-foreground">
                         {customer.pointsBalance.toLocaleString()}
@@ -215,7 +215,7 @@ const Rewards = () => {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">
-                        Lifetime Points Earned
+                        Lifetime Entries Earned
                       </p>
                       <p className="text-2xl font-semibold text-foreground">
                         {customer.lifetimePoints.toLocaleString()}
@@ -241,9 +241,9 @@ const Rewards = () => {
                 {transactions.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <ShoppingBag className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                    <p>No points activity yet</p>
+                    <p>No entries activity yet</p>
                     <p className="text-sm mt-1">
-                      Make a purchase to start earning points!
+                      Make a purchase to start earning entries!
                     </p>
                   </div>
                 ) : (
@@ -280,7 +280,7 @@ const Rewards = () => {
                               : ""
                             }
                           >
-                            {tx.pointsEarned >= 0 ? '+' : ''}{tx.pointsEarned.toLocaleString()} pts
+                            {tx.pointsEarned >= 0 ? '+' : ''}{tx.pointsEarned.toLocaleString()} entries
                           </Badge>
                         </div>
                       </div>
@@ -297,13 +297,13 @@ const Rewards = () => {
                   <Info className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium text-foreground mb-2">
-                      How Points Work
+                      How Entries Work
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Points are earned based on the products you purchase. Each product 
-                      earns a fixed number of points, which are added to your balance 
+                      Entries are earned based on the products you purchase. Each product 
+                      earns a fixed number of entries, which are added to your balance 
                       when your order is completed. Refunded items will have their 
-                      points deducted from your balance.
+                      entries deducted from your balance.
                     </p>
                   </div>
                 </div>
@@ -320,7 +320,7 @@ const Rewards = () => {
               No Rewards Found
             </h3>
             <p className="text-muted-foreground">
-              We couldn't find a rewards account with your email. Points are 
+              We couldn't find a rewards account with your email. Entries are 
               automatically created when you make your first purchase.
             </p>
           </div>
