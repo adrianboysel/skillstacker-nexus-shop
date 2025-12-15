@@ -85,6 +85,11 @@ export const Footer = () => {
                   Buy $STKR
                 </a>
               </li>
+              <li>
+                <a href="https://skillstacker-nexus-shop-4jh39.myshopify.com/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                  Return and Exchange Policy
+                </a>
+              </li>
             </ul>
           </div>
           
