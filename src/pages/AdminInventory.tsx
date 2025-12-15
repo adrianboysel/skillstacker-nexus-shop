@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Loader2, LogOut, AlertTriangle, Plus, Minus, Star } from 'lucide-react';
+import { Loader2, LogOut, AlertTriangle, Plus, Minus, Star, Gift } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
@@ -161,6 +161,10 @@ export default function AdminInventory() {
             <Button variant="outline" onClick={() => navigate('/admin/product-points')}>
               <Star className="mr-2 h-4 w-4" />
               Product Points
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/admin/giveaways')}>
+              <Gift className="mr-2 h-4 w-4" />
+              Giveaways
             </Button>
             <Button variant="outline" onClick={() => navigate('/admin/users')}>
               Users

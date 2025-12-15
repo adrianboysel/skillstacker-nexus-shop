@@ -16,6 +16,7 @@ import Auth from "./pages/Auth";
 import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
 import AdminProductPoints from "./pages/AdminProductPoints";
+import AdminGiveaways from "./pages/AdminGiveaways";
 import Rewards from "./pages/Rewards";
 import Giveaways from "./pages/Giveaways";
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/product-points" element={<AdminProductPoints />} />
+          <Route path="/admin/giveaways" element={<AdminGiveaways />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
