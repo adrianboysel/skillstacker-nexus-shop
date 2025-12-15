@@ -151,7 +151,7 @@ export default function AdminInventory() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-8 pt-24">
+      <main className="flex-1 container mx-auto px-4 py-8 pt-32">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold">Inventory Management</h1>
