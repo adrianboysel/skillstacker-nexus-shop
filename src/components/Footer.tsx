@@ -8,7 +8,7 @@ export const Footer = () => {
   return (
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6 lg:gap-8 mb-12 md:mb-16">
           <div className="flex flex-col items-center md:items-start">
             <div className="mb-6 md:ml-[-65px]">
               <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="block h-10 md:h-12 w-auto object-contain mx-auto md:mx-0 md:ml-[10px] lg:ml-[5px] md:object-left" />
@@ -87,6 +87,14 @@ export const Footer = () => {
               </li>
             </ul>
           </div>
+          
+          {/* Legal Disclaimer Column */}
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-xs md:text-sm mb-4">SKILL STACKER GIVEAWAY®</h3>
+            <p className="text-[9px] md:text-[10px] text-muted-foreground leading-relaxed">
+              * NO PURCHASE NECESSARY TO ENTER OR WIN. A PURCHASE WILL NOT INCREASE YOUR CHANCES OF WINNING. Open to legal residents of the 50 United States, the District of Columbia, and Canada where permitted by law. Void where prohibited. Must be age of majority in state/province of residence at the time of entry. Promotion dates, entry methods, prize descriptions, and odds of winning are disclosed in the Official Rules. Odds of winning depend upon the total number of eligible purchase and non-purchase entries received. Skill-testing question required if a Canadian resident is selected as a potential winner. See Official Rules for full details including how*
+            </p>
+          </div>
         </div>
         
         {/* Newsletter Footer Signup - Removed (now using main section above) */}
@@ -129,16 +137,6 @@ export const Footer = () => {
             
             <p className="text-xs md:text-sm text-muted-foreground text-center">
               © {new Date().getFullYear()} Skill Stacker. All rights reserved.
-            </p>
-          </div>
-          
-          {/* Legal Disclaimer */}
-          <div className="pt-8 mt-6 border-t border-border/50">
-            <h4 className="text-xs font-bold text-foreground mb-2 text-center md:text-left">
-              SKILL STACKER GIVEAWAY®
-            </h4>
-            <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed text-center md:text-left">
-              * NO PURCHASE NECESSARY TO ENTER OR WIN. A PURCHASE WILL NOT INCREASE YOUR CHANCES OF WINNING. Open to legal residents of the 50 United States, the District of Columbia, and Canada where permitted by law. Void where prohibited. Must be age of majority in state/province of residence at the time of entry. Promotion dates, entry methods, prize descriptions, and odds of winning are disclosed in the Official Rules. Odds of winning depend upon the total number of eligible purchase and non-purchase entries received. Skill-testing question required if a Canadian resident is selected as a potential winner. See Official Rules for full details including how*
             </p>
           </div>
         </div>
