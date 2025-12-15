@@ -522,7 +522,12 @@ const ProductDetail = () => {
             
             {/* Reward Points Display */}
             {(() => {
-              const rewardPoints = data.rewardPoints?.value ? parseInt(data.rewardPoints.value, 10) : 0;
+              // Get reward points from metafield, or calculate from price as fallback (100 pts per $1, rounded to nearest 10)
+              const metafieldPoints = data.rewardPoints?.value ? parseInt(data.rewardPoints.value, 10) : 0;
+              const variantPrice = parseFloat(variant?.price.amount || '0');
+              const calculatedPoints = Math.round(Math.round(variantPrice * 100) / 10) * 10;
+              const rewardPoints = metafieldPoints > 0 ? metafieldPoints : calculatedPoints;
+              
               if (rewardPoints <= 0) return null;
               
               const totalPoints = rewardPoints * quantity;

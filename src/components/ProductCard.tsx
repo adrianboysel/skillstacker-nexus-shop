@@ -20,7 +20,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const image = node.images.edges[0]?.node.url;
   const price = node.priceRange.minVariantPrice;
   const variant = node.variants.edges[0]?.node;
-  const rewardPoints = node.rewardPoints?.value ? parseInt(node.rewardPoints.value, 10) : 0;
+  
+  // Get reward points from metafield, or calculate from price as fallback (100 pts per $1, rounded to nearest 10)
+  const metafieldPoints = node.rewardPoints?.value ? parseInt(node.rewardPoints.value, 10) : 0;
+  const calculatedPoints = Math.round(Math.round(parseFloat(price.amount) * 100) / 10) * 10;
+  const rewardPoints = metafieldPoints > 0 ? metafieldPoints : calculatedPoints;
   
   // Check if this is the Meme Militia OG Hat to show video
   const isOGHat = node.title.toLowerCase().includes("meme militia og hat");
