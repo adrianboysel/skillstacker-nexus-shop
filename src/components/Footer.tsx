@@ -61,6 +61,11 @@ export const Footer = () => {
             <h3 className="font-semibold text-base md:text-lg mb-6">Resources</h3>
             <ul className="space-y-3 flex flex-col items-center md:items-start">
               <li>
+                <Link to="/rewards" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                  My Rewards
+                </Link>
+              </li>
+              <li>
                 <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Whitepaper
                 </a>
