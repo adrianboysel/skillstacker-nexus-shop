@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, ArrowLeft, Ruler, Expand, Star, Info } from "lucide-react";
+import { ShoppingCart, ArrowLeft, Ruler, Expand, Star, Info, Minus, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
@@ -88,6 +88,7 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const { data, isLoading } = useQuery({
     queryKey: ['product', handle],
@@ -112,14 +113,20 @@ const ProductDetail = () => {
         amount: variant.price.amount,
         currencyCode: variant.price.currencyCode,
       },
-      quantity: 1,
+      quantity: quantity,
       selectedOptions: variant.selectedOptions,
     });
 
     toast.success("Added to cart", {
-      description: `${data.title} has been added to your cart.`,
+      description: `${quantity}x ${data.title} has been added to your cart.`,
     });
+    
+    // Reset quantity after adding
+    setQuantity(1);
   };
+
+  const incrementQuantity = () => setQuantity(prev => prev + 1);
+  const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
 
   if (isLoading) {
     return (
@@ -518,11 +525,13 @@ const ProductDetail = () => {
               const rewardPoints = data.rewardPoints?.value ? parseInt(data.rewardPoints.value, 10) : 0;
               if (rewardPoints <= 0) return null;
               
+              const totalPoints = rewardPoints * quantity;
+              
               return (
                 <div className="flex items-center gap-2 py-3 px-4 rounded-lg bg-primary/10 border border-primary/20">
                   <Star className="h-5 w-5 text-primary flex-shrink-0" />
                   <span className="text-sm font-medium text-foreground">
-                    Earn <span className="text-primary font-bold">{rewardPoints.toLocaleString()}</span> points with this purchase
+                    Earn <span className="text-primary font-bold">{totalPoints.toLocaleString()}</span> points with this purchase
                   </span>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -532,13 +541,38 @@ const ProductDetail = () => {
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-[250px]">
                       <p className="text-xs">
-                        Points are earned per product and added to your account after your order is paid.
+                        Points are added to your account after purchase and can be used for giveaways.
                       </p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
               );
             })()}
+            
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium">Quantity</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={decrementQuantity}
+                  disabled={quantity <= 1}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <span className="w-12 text-center font-medium">{quantity}</span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={incrementQuantity}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
             
             <Button 
               size="lg" 
