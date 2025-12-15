@@ -17,6 +17,7 @@ import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
 import AdminProductPoints from "./pages/AdminProductPoints";
 import Rewards from "./pages/Rewards";
+import Giveaways from "./pages/Giveaways";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/rewards" element={<Rewards />} />
+          <Route path="/giveaways" element={<Giveaways />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />

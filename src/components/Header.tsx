@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, ChevronDown, Menu, Home, Store, X, Shirt, CircleDot, Frame, Tag, ChevronRight, Gift } from "lucide-react";
+import { ShoppingCart, ChevronDown, Menu, Home, Store, X, Shirt, CircleDot, Frame, Tag, ChevronRight, Gift, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -175,6 +175,10 @@ export const Header = () => {
           <Link to="/rewards" className="text-sm font-medium hover:text-primary transition-colors">
             Rewards
           </Link>
+          
+          <Link to="/giveaways" className="text-sm font-medium hover:text-primary transition-colors">
+            Giveaways
+          </Link>
         </nav>
 
         {/* Mobile Menu & Cart */}
@@ -270,6 +274,16 @@ export const Header = () => {
                 >
                   <Gift className="h-5 w-5" />
                   Rewards
+                </Link>
+                
+                {/* Giveaways */}
+                <Link 
+                  to="/giveaways" 
+                  className="flex items-center gap-3 px-4 py-4 text-base font-medium rounded-lg hover:bg-primary/10 transition-colors active:scale-[0.98]"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Trophy className="h-5 w-5" />
+                  Giveaways
                 </Link>
                 
                 {/* Shop By Brand - Collapsible */}
