@@ -25,7 +25,9 @@ interface Product {
   title: string;
   handle: string;
   image: string | null;
+  price: string;
   pointsValue: number;
+  calculatedPoints: number;
 }
 
 interface ChangeLogEntry {
@@ -50,6 +52,7 @@ const AdminProductPoints = () => {
   const [showLog, setShowLog] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isRecalculating, setIsRecalculating] = useState(false);
 
   useEffect(() => {
     checkAdminAccess();
@@ -247,6 +250,34 @@ const AdminProductPoints = () => {
     }
   };
 
+  const handleRecalculateAll = async () => {
+    if (!confirm("This will recalculate points for ALL products based on their current price (100 pts per $1, rounded to nearest 10). Continue?")) {
+      return;
+    }
+
+    setIsRecalculating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-product-points", {
+        body: { action: "recalculate_all" },
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        const successCount = data.results.filter((r: any) => r.success).length;
+        toast.success(`Recalculated points for ${successCount} products`);
+        await Promise.all([loadProducts(), loadChangeLog()]);
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error: any) {
+      console.error("Error recalculating points:", error);
+      toast.error("Failed to recalculate points");
+    } finally {
+      setIsRecalculating(false);
+    }
+  };
+
   const toggleSelectAll = () => {
     if (selectedProducts.size === products.length) {
       setSelectedProducts(new Set());
@@ -299,11 +330,24 @@ const AdminProductPoints = () => {
             <div>
               <h1 className="text-2xl font-bold text-foreground">Product Points</h1>
               <p className="text-muted-foreground">
-                Manage reward points for each product
+                Manage reward points for each product (100 pts per $1)
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="default"
+              onClick={handleRecalculateAll}
+              disabled={isRecalculating || isLoading}
+              className="gap-2"
+            >
+              {isRecalculating ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Star className="h-4 w-4" />
+              )}
+              Recalculate All
+            </Button>
             <Button
               variant="outline"
               onClick={() => setShowLog(!showLog)}
@@ -421,7 +465,10 @@ const AdminProductPoints = () => {
                                 {product.title}
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                Current: {product.pointsValue} pts
+                                ${parseFloat(product.price || '0').toFixed(2)} → {product.calculatedPoints.toLocaleString()} pts (auto)
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Current: {product.pointsValue.toLocaleString()} pts
                               </p>
                             </div>
                           </div>

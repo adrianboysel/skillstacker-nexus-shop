@@ -20,11 +20,20 @@ interface ProductPointsUpdate {
 }
 
 interface RequestBody {
-  action: 'get' | 'update' | 'bulk_update';
+  action: 'get' | 'update' | 'bulk_update' | 'recalculate_all';
   products?: ProductPointsUpdate[];
   productId?: string;
   adminEmail?: string;
   adminUserId?: string;
+}
+
+// Calculate points from price: 100 points per $1, rounded to nearest 10
+function calculatePointsFromPrice(priceAmount: string): number {
+  const price = parseFloat(priceAmount);
+  if (isNaN(price) || price <= 0) return 0;
+  const rawPoints = Math.round(price * 100);
+  // Round to nearest 10
+  return Math.round(rawPoints / 10) * 10;
 }
 
 // Verify admin authorization from auth token
@@ -123,7 +132,7 @@ async function getProductPointsValue(productId: string): Promise<number> {
   }
 }
 
-// Get all products with their points values
+// Get all products with their points values and prices
 async function getAllProductsWithPoints(): Promise<any[]> {
   try {
     const productsData = await shopifyAdminRequest('products.json?limit=250');
@@ -132,12 +141,16 @@ async function getAllProductsWithPoints(): Promise<any[]> {
     const productsWithPoints = await Promise.all(
       products.map(async (product: any) => {
         const points = await getProductPointsValue(product.id.toString());
+        const price = product.variants?.[0]?.price || '0';
+        const calculatedPoints = calculatePointsFromPrice(price);
         return {
           id: product.id.toString(),
           title: product.title,
           handle: product.handle,
           image: product.images?.[0]?.src || null,
+          price: price,
           pointsValue: points,
+          calculatedPoints: calculatedPoints,
         };
       })
     );
@@ -147,6 +160,50 @@ async function getAllProductsWithPoints(): Promise<any[]> {
     console.error('[Products] Error fetching products:', error);
     throw error;
   }
+}
+
+// Recalculate all product points based on price (100 pts per $1, rounded to nearest 10)
+async function recalculateAllPoints(
+  adminEmail: string,
+  adminUserId: string,
+  supabase: any
+): Promise<any[]> {
+  const productsData = await shopifyAdminRequest('products.json?limit=250');
+  const products = productsData.products || [];
+  
+  const results = await Promise.all(
+    products.map(async (product: any) => {
+      try {
+        const price = product.variants?.[0]?.price || '0';
+        const calculatedPoints = calculatePointsFromPrice(price);
+        
+        const result = await updateProductPoints(
+          product.id.toString(),
+          calculatedPoints,
+          product.title,
+          adminEmail,
+          adminUserId,
+          supabase
+        );
+        
+        return {
+          productId: product.id.toString(),
+          title: product.title,
+          price: price,
+          ...result,
+        };
+      } catch (error: any) {
+        return {
+          productId: product.id.toString(),
+          title: product.title,
+          success: false,
+          error: error.message,
+        };
+      }
+    })
+  );
+  
+  return results;
 }
 
 // Update product points value
@@ -301,6 +358,15 @@ Deno.serve(async (req) => {
           })
         );
         
+        return new Response(
+          JSON.stringify({ success: true, results }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      case 'recalculate_all': {
+        console.log('[Admin Points] Recalculating all product points based on price (100 pts per $1)');
+        const results = await recalculateAllPoints(adminEmail, adminUserId, supabase);
         return new Response(
           JSON.stringify({ success: true, results }),
           { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

@@ -45,6 +45,10 @@ export interface ShopifyProduct {
       name: string;
       values: string[];
     }>;
+    rewardPoints?: {
+      value: string;
+      type: string;
+    } | null;
   };
 }
 
