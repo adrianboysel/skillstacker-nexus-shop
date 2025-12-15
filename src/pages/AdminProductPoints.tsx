@@ -167,7 +167,7 @@ const AdminProductPoints = () => {
       if (error) throw error;
 
       if (data.success) {
-        toast.success(`Updated ${product.title} to ${newPoints} points`);
+        toast.success(`Updated ${product.title} to ${newPoints} entries`);
         // Update local state
         setProducts((prev) =>
           prev.map((p) =>
@@ -221,7 +221,7 @@ const AdminProductPoints = () => {
 
       if (data.success) {
         const successCount = data.results.filter((r: any) => r.success).length;
-        toast.success(`Updated ${successCount} products to ${bulkValue} points`);
+        toast.success(`Updated ${successCount} products to ${bulkValue} entries`);
         
         // Update local state
         setProducts((prev) =>
@@ -251,7 +251,7 @@ const AdminProductPoints = () => {
   };
 
   const handleRecalculateAll = async () => {
-    if (!confirm("This will recalculate points for ALL products based on their current price (100 pts per $1, rounded to nearest 10). Continue?")) {
+    if (!confirm("This will recalculate entries for ALL products based on their current price (100 entries per $1, rounded to nearest 10). Continue?")) {
       return;
     }
 
@@ -265,14 +265,14 @@ const AdminProductPoints = () => {
 
       if (data.success) {
         const successCount = data.results.filter((r: any) => r.success).length;
-        toast.success(`Recalculated points for ${successCount} products`);
+        toast.success(`Recalculated entries for ${successCount} products`);
         await Promise.all([loadProducts(), loadChangeLog()]);
       } else {
         throw new Error(data.error);
       }
     } catch (error: any) {
       console.error("Error recalculating points:", error);
-      toast.error("Failed to recalculate points");
+      toast.error("Failed to recalculate entries");
     } finally {
       setIsRecalculating(false);
     }
@@ -328,9 +328,9 @@ const AdminProductPoints = () => {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Product Points</h1>
+              <h1 className="text-2xl font-bold text-foreground">Product Entries</h1>
               <p className="text-muted-foreground">
-                Manage reward points for each product (100 pts per $1)
+                Manage reward entries for each product (100 entries per $1)
               </p>
             </div>
           </div>
@@ -376,7 +376,7 @@ const AdminProductPoints = () => {
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Bulk Edit</CardTitle>
                 <CardDescription>
-                  Select products and set a single points value for all
+                  Select products and set a single entries value for all
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -395,7 +395,7 @@ const AdminProductPoints = () => {
                       type="number"
                       min="0"
                       step="1"
-                      placeholder="Points value"
+                      placeholder="Entries value"
                       value={bulkPointsValue}
                       onChange={(e) => setBulkPointsValue(e.target.value)}
                       className="w-32"
@@ -465,10 +465,10 @@ const AdminProductPoints = () => {
                                 {product.title}
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                ${parseFloat(product.price || '0').toFixed(2)} → {product.calculatedPoints.toLocaleString()} pts (auto)
+                                ${parseFloat(product.price || '0').toFixed(2)} → {product.calculatedPoints.toLocaleString()} entries (auto)
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                Current: {product.pointsValue.toLocaleString()} pts
+                                Current: {product.pointsValue.toLocaleString()} entries
                               </p>
                             </div>
                           </div>
@@ -487,7 +487,7 @@ const AdminProductPoints = () => {
                                 className="h-8 w-20 text-center"
                               />
                               <span className="text-xs text-muted-foreground">
-                                pts
+                                entries
                               </span>
                             </div>
                             <Button
