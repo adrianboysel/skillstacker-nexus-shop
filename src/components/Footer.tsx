@@ -66,6 +66,11 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/giveaways" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
+                  Giveaways
+                </Link>
+              </li>
+              <li>
                 <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">
                   Whitepaper
                 </a>

@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.admin-product-points]
 verify_jwt = false
+
+[functions.giveaway-entries]
+verify_jwt = false

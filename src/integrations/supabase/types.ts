@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      giveaway_entries: {
+        Row: {
+          created_at: string
+          customer_email: string
+          entry_count: number
+          giveaway_id: string
+          id: string
+          points_spent: number
+          shopify_customer_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          entry_count?: number
+          giveaway_id: string
+          id?: string
+          points_spent: number
+          shopify_customer_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          entry_count?: number
+          giveaway_id?: string
+          id?: string
+          points_spent?: number
+          shopify_customer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "giveaway_entries_giveaway_id_fkey"
+            columns: ["giveaway_id"]
+            isOneToOne: false
+            referencedRelation: "giveaways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      giveaways: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          max_entries_per_customer: number | null
+          points_per_entry: number
+          prize_description: string | null
+          start_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          max_entries_per_customer?: number | null
+          points_per_entry?: number
+          prize_description?: string | null
+          start_date?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          max_entries_per_customer?: number | null
+          points_per_entry?: number
+          prize_description?: string | null
+          start_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       points_change_log: {
         Row: {
           changed_by_email: string | null
