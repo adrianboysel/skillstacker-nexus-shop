@@ -536,7 +536,7 @@ const ProductDetail = () => {
                 <div className="flex items-center gap-2 py-3 px-4 rounded-lg bg-primary/10 border border-primary/20">
                   <Star className="h-5 w-5 text-primary flex-shrink-0" />
                   <span className="text-sm font-medium text-foreground">
-                    Earn <span className="text-primary font-bold">{totalPoints.toLocaleString()}</span> points with this purchase
+                    Earn <span className="text-primary font-bold">{totalPoints.toLocaleString()}</span> entries with this purchase
                   </span>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -546,7 +546,7 @@ const ProductDetail = () => {
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-[250px]">
                       <p className="text-xs">
-                        Points are added to your account after purchase and can be used for giveaways.
+                        Entries are added to your account after purchase and can be used for giveaways.
                       </p>
                     </TooltipContent>
                   </Tooltip>
