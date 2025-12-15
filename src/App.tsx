@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
+import AdminProductPoints from "./pages/AdminProductPoints";
 import Rewards from "./pages/Rewards";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/product-points" element={<AdminProductPoints />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Loader2, LogOut, AlertTriangle, Plus, Minus } from 'lucide-react';
+import { Loader2, LogOut, AlertTriangle, Plus, Minus, Star } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
@@ -158,6 +158,10 @@ export default function AdminInventory() {
             <p className="text-muted-foreground mt-2">Manage your product stock levels</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/admin/product-points')}>
+              <Star className="mr-2 h-4 w-4" />
+              Product Points
+            </Button>
             <Button variant="outline" onClick={() => navigate('/admin/users')}>
               Users
             </Button>
