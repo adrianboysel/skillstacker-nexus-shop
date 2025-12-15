@@ -129,7 +129,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
                   <Star className="h-3 w-3 fill-primary text-primary" />
                   <span className="text-xs font-medium text-primary">
-                    Earn {rewardPoints.toLocaleString()} pts
+                    Earn {rewardPoints.toLocaleString()} entries
                   </span>
                 </div>
               )}
