@@ -88,6 +88,10 @@ export const PRODUCTS_QUERY = `
             name
             values
           }
+          rewardPoints: metafield(namespace: "rewards", key: "points_value") {
+            value
+            type
+          }
         }
       }
     }

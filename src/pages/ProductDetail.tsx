@@ -406,9 +406,15 @@ const ProductDetail = () => {
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold mb-4">{data.title}</h1>
-              <p className="text-3xl font-bold text-primary mb-6">
+              <p className="text-3xl font-bold text-primary mb-2">
                 {variant?.price.currencyCode} ${parseFloat(variant?.price.amount || '0').toFixed(2)}
               </p>
+              {data.rewardPoints?.value && parseInt(data.rewardPoints.value, 10) > 0 && (
+                <p className="text-sm text-primary flex items-center gap-1.5 mb-6">
+                  <Star className="h-4 w-4 fill-primary" />
+                  Earn {parseInt(data.rewardPoints.value, 10).toLocaleString()} points with this purchase
+                </p>
+              )}
               <div className="text-muted-foreground leading-relaxed space-y-3">
                 {formatDescription(data.description).map((sentence, idx) => (
                   <p key={idx}>{sentence}</p>

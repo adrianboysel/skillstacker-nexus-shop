@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
 import { useCartStore, type ShopifyProduct } from "@/stores/cartStore";
 import { toast } from "sonner";
 import hatVideo from "@/assets/products/hat-og.mp4";
@@ -20,6 +20,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const image = node.images.edges[0]?.node.url;
   const price = node.priceRange.minVariantPrice;
   const variant = node.variants.edges[0]?.node;
+  const rewardPoints = node.rewardPoints?.value ? parseInt(node.rewardPoints.value, 10) : 0;
   
   // Check if this is the Meme Militia OG Hat to show video
   const isOGHat = node.title.toLowerCase().includes("meme militia og hat");
@@ -116,9 +117,17 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </div>
           
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold">
-              {price.currencyCode} ${parseFloat(price.amount).toFixed(2)}
-            </span>
+            <div className="space-y-1">
+              <span className="text-2xl font-bold block">
+                {price.currencyCode} ${parseFloat(price.amount).toFixed(2)}
+              </span>
+              {rewardPoints > 0 && (
+                <span className="text-xs text-primary flex items-center gap-1">
+                  <Star className="h-3 w-3 fill-primary" />
+                  Earn {rewardPoints.toLocaleString()} points
+                </span>
+              )}
+            </div>
             
             <Button 
               size="icon"
