@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NewsletterPopup } from "@/components/NewsletterPopup";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Home from "./pages/Home";
@@ -41,6 +41,7 @@ const App = () => (
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/giveaways" element={<Giveaways />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<Navigate to="/admin/inventory" replace />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/product-points" element={<AdminProductPoints />} />
