@@ -272,7 +272,7 @@ const Giveaways = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {giveaways.map((giveaway) => {
               const entries = entryAmounts[giveaway.id] || 1;
               const pointsNeeded = giveaway.points_per_entry * entries;
