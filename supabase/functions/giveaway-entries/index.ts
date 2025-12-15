@@ -20,6 +20,32 @@ interface EntryRequest {
   entryCount?: number;
 }
 
+// Verify user authentication and email ownership
+async function verifyUserAuth(req: Request, requestedEmail: string, supabase: any): Promise<{ authorized: boolean; error?: string }> {
+  const authHeader = req.headers.get('Authorization');
+  
+  if (!authHeader) {
+    return { authorized: false, error: 'Authentication required' };
+  }
+  
+  const token = authHeader.replace('Bearer ', '');
+  
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  
+  if (userError || !user) {
+    console.error('[Auth] Token verification failed:', userError?.message);
+    return { authorized: false, error: 'Invalid or expired token' };
+  }
+  
+  // Verify email ownership - user can only query their own email
+  if (user.email?.toLowerCase() !== requestedEmail.toLowerCase()) {
+    console.warn(`[Auth] User ${user.email} attempted to access data for ${requestedEmail}`);
+    return { authorized: false, error: 'You can only access your own giveaway data' };
+  }
+  
+  return { authorized: true };
+}
+
 // Shopify Admin API helper
 async function shopifyAdminRequest(endpoint: string, method = 'GET', body?: any) {
   const url = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2025-01/${endpoint}`;
@@ -139,7 +165,7 @@ Deno.serve(async (req) => {
     
     switch (action) {
       case 'get_giveaways': {
-        // Get all active giveaways
+        // Get all active giveaways - public endpoint
         const { data: giveaways, error } = await supabase
           .from('giveaways')
           .select('*')
@@ -150,16 +176,25 @@ Deno.serve(async (req) => {
         
         if (error) throw error;
         
-        // If email provided, also get customer entries
+        // If email provided, verify auth and get customer entries
         let customerEntries: Record<string, number> = {};
         let customerBalance = 0;
         
         if (email) {
+          // Verify user auth for email-specific data
+          const authResult = await verifyUserAuth(req, email, supabase);
+          
+          if (!authResult.authorized) {
+            return new Response(
+              JSON.stringify({ success: false, error: authResult.error }),
+              { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+          
           const customer = await findCustomerByEmail(email);
           if (customer) {
             customerBalance = await getCustomerPointsBalance(customer.id);
             
-            // Get entries for each giveaway
             const { data: entries } = await supabase
               .from('giveaway_entries')
               .select('giveaway_id, entry_count')
@@ -189,6 +224,16 @@ Deno.serve(async (req) => {
           return new Response(
             JSON.stringify({ success: false, error: 'Email required' }),
             { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        // Verify user auth - users can only see their own entries
+        const authResult = await verifyUserAuth(req, email, supabase);
+        
+        if (!authResult.authorized) {
+          return new Response(
+            JSON.stringify({ success: false, error: authResult.error }),
+            { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
         
@@ -224,6 +269,24 @@ Deno.serve(async (req) => {
           return new Response(
             JSON.stringify({ success: false, error: 'Email, giveaway ID, and entry count required' }),
             { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        // Validate entry count to prevent abuse
+        if (entryCount > 100) {
+          return new Response(
+            JSON.stringify({ success: false, error: 'Entry count cannot exceed 100 per request' }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        // Verify user auth - users can only enter for themselves
+        const authResult = await verifyUserAuth(req, email, supabase);
+        
+        if (!authResult.authorized) {
+          return new Response(
+            JSON.stringify({ success: false, error: authResult.error }),
+            { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
         

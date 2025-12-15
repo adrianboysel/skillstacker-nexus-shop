@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { User } from "@supabase/supabase-js";
 import { 
   Gift, 
   Star, 
@@ -20,7 +21,8 @@ import {
   CheckCircle2,
   Minus,
   Plus,
-  Trophy
+  Trophy,
+  LogIn
 } from "lucide-react";
 
 interface Giveaway {
@@ -37,26 +39,40 @@ interface Giveaway {
 }
 
 const Giveaways = () => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isEntering, setIsEntering] = useState<string | null>(null);
   const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
   const [customerEntries, setCustomerEntries] = useState<Record<string, number>>({});
   const [customerBalance, setCustomerBalance] = useState<number>(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [entryAmounts, setEntryAmounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    loadGiveaways();
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+      loadGiveaways(session?.user?.email);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user?.email) {
+        loadGiveaways(session.user.email);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const loadGiveaways = async (customerEmail?: string) => {
-    setIsLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('giveaway-entries', {
         body: { 
           action: 'get_giveaways',
-          email: customerEmail || email || undefined
+          email: customerEmail || undefined
         }
       });
 
@@ -76,27 +92,18 @@ const Giveaways = () => {
       }
     } catch (error: any) {
       console.error("Error loading giveaways:", error);
-      toast.error("Failed to load giveaways");
-    } finally {
-      setIsLoading(false);
+      // Still show giveaways even if customer data fails
+      setGiveaways([]);
     }
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) {
-      toast.error("Please enter your email");
-      return;
-    }
-    
-    setIsLoading(true);
-    await loadGiveaways(email.trim());
-    setIsLoggedIn(true);
-    setIsLoading(false);
-    toast.success("Logged in successfully!");
   };
 
   const handleEnterGiveaway = async (giveaway: Giveaway) => {
+    if (!user?.email) {
+      toast.error("Please sign in to enter giveaways");
+      navigate('/auth');
+      return;
+    }
+
     const entries = entryAmounts[giveaway.id] || 1;
     const pointsNeeded = giveaway.points_per_entry * entries;
     
@@ -110,7 +117,7 @@ const Giveaways = () => {
       const { data, error } = await supabase.functions.invoke('giveaway-entries', {
         body: {
           action: 'enter_giveaway',
-          email: email.trim(),
+          email: user.email,
           giveawayId: giveaway.id,
           entryCount: entries
         }
@@ -134,7 +141,12 @@ const Giveaways = () => {
       }
     } catch (error: any) {
       console.error("Error entering giveaway:", error);
-      toast.error("Failed to enter giveaway");
+      if (error.message?.includes('401') || error.message?.includes('Authentication')) {
+        toast.error("Please sign in to enter giveaways");
+        navigate('/auth');
+      } else {
+        toast.error("Failed to enter giveaway");
+      }
     } finally {
       setIsEntering(null);
     }
@@ -173,6 +185,14 @@ const Giveaways = () => {
     return "Ending soon";
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <SEO 
@@ -198,75 +218,48 @@ const Giveaways = () => {
           </p>
         </div>
 
-        {/* Login Section */}
-        {!isLoggedIn ? (
+        {/* Auth Status Section */}
+        {!user ? (
           <Card className="max-w-md mx-auto mb-8 bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-lg">Enter Your Email</CardTitle>
+            <CardHeader className="text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-muted mx-auto mb-2">
+                <LogIn className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">Sign In to Enter</CardTitle>
               <CardDescription>
-                Use the same email from your purchases to access your points
+                Sign in to see your points balance and enter giveaways
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="flex gap-3">
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1"
-                  disabled={isLoading}
-                />
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    "Continue"
-                  )}
-                </Button>
-              </form>
+            <CardContent className="text-center">
+              <Button onClick={() => navigate('/auth')} className="w-full">
+                Sign In
+              </Button>
             </CardContent>
           </Card>
         ) : (
-          <>
-            {/* Points Balance */}
-            <Card className="max-w-md mx-auto mb-8 bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Your Points Balance</p>
-                    <p className="text-3xl font-bold text-foreground">
-                      {customerBalance.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-full bg-primary/20">
-                    <Star className="w-6 h-6 text-primary" />
-                  </div>
+          /* Points Balance */
+          <Card className="max-w-md mx-auto mb-8 bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Your Points Balance</p>
+                  <p className="text-3xl font-bold text-foreground">
+                    {customerBalance.toLocaleString()}
+                  </p>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="mt-4 text-muted-foreground"
-                  onClick={() => {
-                    setIsLoggedIn(false);
-                    setEmail("");
-                    setCustomerBalance(0);
-                    setCustomerEntries({});
-                  }}
-                >
-                  Change email
-                </Button>
-              </CardContent>
-            </Card>
-          </>
+                <div className="p-3 rounded-full bg-primary/20">
+                  <Star className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-3">
+                Signed in as {user.email}
+              </p>
+            </CardContent>
+          </Card>
         )}
 
         {/* Giveaways List */}
-        {isLoading && !isLoggedIn ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : giveaways.length === 0 ? (
+        {giveaways.length === 0 ? (
           <Card className="max-w-md mx-auto bg-card border-border">
             <CardContent className="py-12 text-center">
               <Gift className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
@@ -338,7 +331,7 @@ const Giveaways = () => {
                     
                     <Separator />
                     
-                    {isLoggedIn ? (
+                    {user ? (
                       <div className="space-y-3">
                         {/* Entry Amount Selector */}
                         <div className="flex items-center justify-between">
@@ -395,9 +388,14 @@ const Giveaways = () => {
                       </div>
                     ) : (
                       <div className="text-center py-2">
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Enter your email above to participate
-                        </p>
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          onClick={() => navigate('/auth')}
+                        >
+                          <LogIn className="w-4 h-4 mr-2" />
+                          Sign in to enter
+                        </Button>
                       </div>
                     )}
                     
