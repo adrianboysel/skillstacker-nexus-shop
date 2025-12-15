@@ -93,7 +93,7 @@ export const Footer = () => {
             <h3 className="font-bold text-xs md:text-sm mb-4">SKILL STACKER GIVEAWAY®</h3>
             <p className="text-[9px] md:text-[10px] text-muted-foreground leading-relaxed">
               * NO PURCHASE NECESSARY TO ENTER OR WIN. A PURCHASE WILL NOT INCREASE YOUR CHANCES OF WINNING. Open to legal residents of the 50 United States, the District of Columbia, and Canada where permitted by law. Void where prohibited. Must be age of majority in state/province of residence at the time of entry. Promotion dates, entry methods, prize descriptions, and odds of winning are disclosed in the Official Rules. Odds of winning depend upon the total number of eligible purchase and non-purchase entries received. Skill-testing question required if a Canadian resident is selected as a potential winner. See{" "}
-              <Link to="/official-rules" className="text-primary hover:underline">Official Rules</Link>
+              <a href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Official Rules</a>
               {" "}for full details including how to enter without making a purchase.
             </p>
           </div>
