@@ -34,6 +34,32 @@ interface CustomerRewardsResponse {
   error?: string;
 }
 
+// Verify user authentication and email ownership
+async function verifyUserAuth(req: Request, requestedEmail: string, supabase: any): Promise<{ authorized: boolean; error?: string }> {
+  const authHeader = req.headers.get('Authorization');
+  
+  if (!authHeader) {
+    return { authorized: false, error: 'Authentication required' };
+  }
+  
+  const token = authHeader.replace('Bearer ', '');
+  
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  
+  if (userError || !user) {
+    console.error('[Auth] Token verification failed:', userError?.message);
+    return { authorized: false, error: 'Invalid or expired token' };
+  }
+  
+  // Verify email ownership - user can only query their own email
+  if (user.email?.toLowerCase() !== requestedEmail.toLowerCase()) {
+    console.warn(`[Auth] User ${user.email} attempted to access data for ${requestedEmail}`);
+    return { authorized: false, error: 'You can only access your own rewards data' };
+  }
+  
+  return { authorized: true };
+}
+
 // Shopify Admin API helper
 async function shopifyAdminRequest(endpoint: string) {
   const url = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2025-01/${endpoint}`;
@@ -99,7 +125,6 @@ async function getCustomerMetafields(customerId: number): Promise<{ balance: num
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -115,6 +140,28 @@ Deno.serve(async (req) => {
     }
     
     const normalizedEmail = email.toLowerCase().trim();
+    
+    // Validate email format and length
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (normalizedEmail.length > 255 || !emailRegex.test(normalizedEmail)) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid email format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    
+    // Verify authentication and email ownership
+    const authResult = await verifyUserAuth(req, normalizedEmail, supabase);
+    
+    if (!authResult.authorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: authResult.error }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     console.log(`[Rewards] Looking up customer: ${normalizedEmail}`);
     
     // Find customer in Shopify
@@ -136,8 +183,6 @@ Deno.serve(async (req) => {
     const { balance, lifetime } = await getCustomerMetafields(customer.id);
     
     // Get transaction history from Supabase
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    
     const { data: transactions, error: txError } = await supabase
       .from('points_transactions')
       .select('*')

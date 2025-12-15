@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { User } from "@supabase/supabase-js";
 import { 
   Star, 
   Gift, 
@@ -18,7 +19,8 @@ import {
   TrendingUp,
   ShoppingBag,
   RefreshCw,
-  Info
+  Info,
+  LogIn
 } from "lucide-react";
 
 interface CustomerData {
@@ -39,47 +41,69 @@ interface Transaction {
 }
 
 const Rewards = () => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingRewards, setIsLoadingRewards] = useState(false);
   const [customer, setCustomer] = useState<CustomerData | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
 
-  const handleLookup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email.trim()) {
-      toast.error("Please enter your email address");
-      return;
-    }
+  useEffect(() => {
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+      if (session?.user?.email) {
+        loadRewards(session.user.email);
+      }
+    });
 
-    setIsLoading(true);
-    setHasSearched(true);
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user?.email) {
+        loadRewards(session.user.email);
+      } else {
+        setCustomer(null);
+        setTransactions([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const loadRewards = async (email: string) => {
+    setIsLoadingRewards(true);
 
     try {
       const { data, error } = await supabase.functions.invoke('customer-rewards', {
-        body: { email: email.trim() }
+        body: { email }
       });
 
       if (error) throw error;
 
       if (!data.success) {
-        toast.error(data.error || "Could not find your rewards");
-        setCustomer(null);
-        setTransactions([]);
+        if (data.error?.includes('Authentication')) {
+          toast.error("Please sign in to view your rewards");
+        } else {
+          // Customer might not have made a purchase yet
+          setCustomer(null);
+          setTransactions([]);
+        }
         return;
       }
 
       setCustomer(data.customer);
       setTransactions(data.transactions || []);
-      toast.success("Rewards loaded successfully!");
     } catch (error: any) {
       console.error("Error fetching rewards:", error);
-      toast.error("Failed to look up rewards. Please try again.");
+      if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+        toast.error("Please sign in to view your rewards");
+      }
       setCustomer(null);
       setTransactions([]);
     } finally {
-      setIsLoading(false);
+      setIsLoadingRewards(false);
     }
   };
 
@@ -92,9 +116,16 @@ const Rewards = () => {
   };
 
   const getOrderNumber = (orderId: string) => {
-    // Extract order number from order_123456 format
     return orderId.replace('order_', '#').replace('refund_', 'Refund #');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,37 +152,32 @@ const Rewards = () => {
           </p>
         </div>
 
-        {/* Email Lookup Form */}
-        <Card className="max-w-md mx-auto mb-8 bg-card border-border">
-          <CardHeader>
-            <CardTitle className="text-lg">Look Up Your Points</CardTitle>
-            <CardDescription>
-              Enter the email address you use for purchases
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLookup} className="flex gap-3">
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1"
-                disabled={isLoading}
-              />
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  "Look Up"
-                )}
+        {/* Not Logged In State */}
+        {!user ? (
+          <Card className="max-w-md mx-auto bg-card border-border">
+            <CardHeader className="text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-muted mx-auto mb-2">
+                <LogIn className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">Sign In Required</CardTitle>
+              <CardDescription>
+                Please sign in to view your rewards and points balance
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button onClick={() => navigate('/auth')} className="w-full">
+                Sign In to View Rewards
               </Button>
-            </form>
-          </CardContent>
-        </Card>
-
-        {/* Results Section */}
-        {customer && (
+              <p className="text-sm text-muted-foreground mt-4">
+                Don't have an account? You can create one when you sign in.
+              </p>
+            </CardContent>
+          </Card>
+        ) : isLoadingRewards ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : customer ? (
           <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Welcome Message */}
             <div className="text-center mb-6">
@@ -284,10 +310,8 @@ const Rewards = () => {
               </CardContent>
             </Card>
           </div>
-        )}
-
-        {/* No Results State */}
-        {hasSearched && !customer && !isLoading && (
+        ) : (
+          /* No Rewards Found State */
           <div className="max-w-md mx-auto text-center py-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
               <Gift className="w-8 h-8 text-muted-foreground" />
@@ -296,31 +320,10 @@ const Rewards = () => {
               No Rewards Found
             </h3>
             <p className="text-muted-foreground">
-              We couldn't find a rewards account with that email. Points are 
+              We couldn't find a rewards account with your email. Points are 
               automatically created when you make your first purchase.
             </p>
           </div>
-        )}
-
-        {/* Explainer for non-searched state */}
-        {!hasSearched && (
-          <Card className="max-w-md mx-auto bg-muted/30 border-border">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-3">
-                <Star className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-foreground mb-2">
-                    Earn Points on Every Purchase
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Our rewards program lets you earn points with every purchase. 
-                    Each product has a set point value, and your points are added 
-                    automatically when your order is paid.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         )}
       </main>
 

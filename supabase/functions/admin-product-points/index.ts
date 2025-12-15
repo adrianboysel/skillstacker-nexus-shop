@@ -14,7 +14,7 @@ const REWARDS_NAMESPACE = 'rewards';
 const PRODUCT_POINTS_KEY = 'points_value';
 
 interface ProductPointsUpdate {
-  productId: string; // Shopify product ID (numeric string or gid)
+  productId: string;
   productTitle: string;
   pointsValue: number;
 }
@@ -25,6 +25,46 @@ interface RequestBody {
   productId?: string;
   adminEmail?: string;
   adminUserId?: string;
+}
+
+// Verify admin authorization from auth token
+async function verifyAdminAuth(req: Request, supabase: any): Promise<{ authorized: boolean; userId?: string; email?: string; error?: string }> {
+  const authHeader = req.headers.get('Authorization');
+  
+  if (!authHeader) {
+    return { authorized: false, error: 'Authorization header required' };
+  }
+  
+  const token = authHeader.replace('Bearer ', '');
+  
+  // Verify the token and get user
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  
+  if (userError || !user) {
+    console.error('[Auth] Token verification failed:', userError?.message);
+    return { authorized: false, error: 'Invalid or expired token' };
+  }
+  
+  // Check if user has admin role
+  const { data: userRoles, error: rolesError } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', user.id);
+  
+  if (rolesError) {
+    console.error('[Auth] Error checking roles:', rolesError);
+    return { authorized: false, error: 'Failed to verify permissions' };
+  }
+  
+  const hasAdminRole = userRoles?.some((r: { role: string }) => r.role === 'admin');
+  
+  if (!hasAdminRole) {
+    console.warn(`[Auth] User ${user.id} attempted admin access without admin role`);
+    return { authorized: false, error: 'Admin access required' };
+  }
+  
+  console.log(`[Auth] Admin access granted for user ${user.id}`);
+  return { authorized: true, userId: user.id, email: user.email };
 }
 
 // Shopify Admin API helper
@@ -57,7 +97,6 @@ async function shopifyAdminRequest(endpoint: string, method = 'GET', body?: any)
 
 // Extract numeric product ID from various formats
 function extractProductId(id: string): string {
-  // Handle gid://shopify/Product/123456 format
   if (id.includes('gid://')) {
     const match = id.match(/\/(\d+)$/);
     return match ? match[1] : id;
@@ -87,11 +126,9 @@ async function getProductPointsValue(productId: string): Promise<number> {
 // Get all products with their points values
 async function getAllProductsWithPoints(): Promise<any[]> {
   try {
-    // Get all products
     const productsData = await shopifyAdminRequest('products.json?limit=250');
     const products = productsData.products || [];
     
-    // Get points for each product
     const productsWithPoints = await Promise.all(
       products.map(async (product: any) => {
         const points = await getProductPointsValue(product.id.toString());
@@ -123,15 +160,12 @@ async function updateProductPoints(
 ): Promise<{ success: boolean; oldValue: number; newValue: number }> {
   const numericId = extractProductId(productId);
   
-  // Validate points value
   if (!Number.isInteger(pointsValue) || pointsValue < 0) {
     throw new Error('Points value must be a non-negative integer');
   }
   
-  // Get current value for logging
   const oldValue = await getProductPointsValue(numericId);
   
-  // Find existing metafield
   const existingData = await shopifyAdminRequest(
     `products/${numericId}/metafields.json?namespace=${REWARDS_NAMESPACE}&key=${PRODUCT_POINTS_KEY}`
   );
@@ -139,7 +173,6 @@ async function updateProductPoints(
   const existingMetafield = existingData.metafields?.[0];
   
   if (existingMetafield) {
-    // Update existing
     await shopifyAdminRequest(
       `products/${numericId}/metafields/${existingMetafield.id}.json`,
       'PUT',
@@ -152,7 +185,6 @@ async function updateProductPoints(
       }
     );
   } else {
-    // Create new
     await shopifyAdminRequest(
       `products/${numericId}/metafields.json`,
       'POST',
@@ -167,7 +199,6 @@ async function updateProductPoints(
     );
   }
   
-  // Log the change
   await supabase.from('points_change_log').insert({
     shopify_product_id: numericId,
     product_title: productTitle,
@@ -183,20 +214,32 @@ async function updateProductPoints(
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
   
   try {
-    const body: RequestBody = await req.json();
-    const { action, products, productId, adminEmail, adminUserId } = body;
-    
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    
+    // Verify admin authorization
+    const authResult = await verifyAdminAuth(req, supabase);
+    
+    if (!authResult.authorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: authResult.error }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const body: RequestBody = await req.json();
+    const { action, products } = body;
+    
+    // Use verified admin info from token instead of trusting client
+    const adminUserId = authResult.userId!;
+    const adminEmail = authResult.email || 'unknown';
     
     switch (action) {
       case 'get': {
-        // Get all products with points
         const productsWithPoints = await getAllProductsWithPoints();
         return new Response(
           JSON.stringify({ success: true, products: productsWithPoints }),
@@ -205,7 +248,6 @@ Deno.serve(async (req) => {
       }
       
       case 'update': {
-        // Single product update
         if (!products || products.length !== 1) {
           return new Response(
             JSON.stringify({ success: false, error: 'Single product required for update' }),
@@ -218,8 +260,8 @@ Deno.serve(async (req) => {
           product.productId,
           product.pointsValue,
           product.productTitle,
-          adminEmail || 'unknown',
-          adminUserId || '',
+          adminEmail,
+          adminUserId,
           supabase
         );
         
@@ -230,7 +272,6 @@ Deno.serve(async (req) => {
       }
       
       case 'bulk_update': {
-        // Bulk update multiple products
         if (!products || products.length === 0) {
           return new Response(
             JSON.stringify({ success: false, error: 'Products array required for bulk update' }),
@@ -245,8 +286,8 @@ Deno.serve(async (req) => {
                 product.productId,
                 product.pointsValue,
                 product.productTitle,
-                adminEmail || 'unknown',
-                adminUserId || '',
+                adminEmail,
+                adminUserId,
                 supabase
               );
               return { productId: product.productId, ...result };
