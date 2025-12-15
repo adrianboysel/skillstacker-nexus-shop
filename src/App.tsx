@@ -19,7 +19,6 @@ import AdminProductPoints from "./pages/AdminProductPoints";
 import AdminGiveaways from "./pages/AdminGiveaways";
 import Rewards from "./pages/Rewards";
 import Giveaways from "./pages/Giveaways";
-import OfficialRules from "./pages/OfficialRules";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +40,6 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/giveaways" element={<Giveaways />} />
-          <Route path="/official-rules" element={<OfficialRules />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Navigate to="/admin/inventory" replace />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
