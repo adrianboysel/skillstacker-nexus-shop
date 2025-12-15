@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
+import Rewards from "./pages/Rewards";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/rewards" element={<Rewards />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
