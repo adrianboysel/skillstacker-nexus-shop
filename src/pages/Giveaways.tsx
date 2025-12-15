@@ -108,7 +108,7 @@ const Giveaways = () => {
     const pointsNeeded = giveaway.points_per_entry * entries;
     
     if (customerBalance < pointsNeeded) {
-      toast.error(`You need ${pointsNeeded.toLocaleString()} points but only have ${customerBalance.toLocaleString()}`);
+      toast.error(`You need ${pointsNeeded.toLocaleString()} entries but only have ${customerBalance.toLocaleString()}`);
       return;
     }
     
@@ -127,8 +127,8 @@ const Giveaways = () => {
 
       if (data.success) {
         toast.success(
-          `You entered ${giveaway.title} with ${entries} ${entries === 1 ? 'entry' : 'entries'}!`,
-          { description: `${data.pointsSpent.toLocaleString()} points spent` }
+          `You entered ${giveaway.title} with ${entries} ${entries === 1 ? 'submission' : 'submissions'}!`,
+          { description: `${data.pointsSpent.toLocaleString()} entries spent` }
         );
         setCustomerBalance(data.newBalance);
         setCustomerEntries(prev => ({
@@ -197,8 +197,8 @@ const Giveaways = () => {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Giveaways | Skill Stacker Shop"
-        description="Enter giveaways using your reward points. Win exclusive prizes from Skill Stacker Shop."
-        keywords="giveaways, prizes, rewards, points, skill stacker"
+        description="Enter giveaways using your reward entries. Win exclusive prizes from Skill Stacker Shop."
+        keywords="giveaways, prizes, rewards, entries, skill stacker"
         canonicalUrl="/giveaways"
       />
       <PromoBanner />
@@ -214,7 +214,7 @@ const Giveaways = () => {
             Giveaways
           </h1>
           <p className="text-muted-foreground text-lg max-w-md mx-auto">
-            Use your reward points to enter for a chance to win exclusive prizes
+            Use your reward entries to enter for a chance to win exclusive prizes
           </p>
         </div>
 
@@ -227,7 +227,7 @@ const Giveaways = () => {
               </div>
               <CardTitle className="text-lg">Sign In to Enter</CardTitle>
               <CardDescription>
-                Sign in to see your points balance and enter giveaways
+                Sign in to see your entries balance and enter giveaways
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
@@ -242,7 +242,7 @@ const Giveaways = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Your Points Balance</p>
+                  <p className="text-sm text-muted-foreground mb-1">Your Entries Balance</p>
                   <p className="text-3xl font-bold text-foreground">
                     {customerBalance.toLocaleString()}
                   </p>
@@ -314,7 +314,7 @@ const Giveaways = () => {
                     )}
                     
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Points per entry:</span>
+                      <span className="text-muted-foreground">Entries per submission:</span>
                       <span className="font-semibold text-primary">
                         {giveaway.points_per_entry.toLocaleString()}
                       </span>
@@ -358,11 +358,11 @@ const Giveaways = () => {
                           </div>
                         </div>
                         
-                        {/* Total Points */}
+                        {/* Total Entries */}
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">Total cost:</span>
                           <span className={`font-bold ${canAfford ? 'text-foreground' : 'text-destructive'}`}>
-                            {pointsNeeded.toLocaleString()} points
+                            {pointsNeeded.toLocaleString()} entries
                           </span>
                         </div>
                         
@@ -377,12 +377,12 @@ const Giveaways = () => {
                           ) : (
                             <Ticket className="w-4 h-4 mr-2" />
                           )}
-                          {canAfford ? 'Enter Giveaway' : 'Insufficient Points'}
+                          {canAfford ? 'Enter Giveaway' : 'Insufficient Entries'}
                         </Button>
                         
                         {!canAfford && (
                           <p className="text-xs text-center text-destructive">
-                            You need {(pointsNeeded - customerBalance).toLocaleString()} more points
+                            You need {(pointsNeeded - customerBalance).toLocaleString()} more entries
                           </p>
                         )}
                       </div>
@@ -417,10 +417,10 @@ const Giveaways = () => {
               How Giveaways Work
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Use your reward points to purchase giveaway entries</li>
-              <li>• Each entry gives you one chance to win</li>
-              <li>• More entries = more chances to win</li>
-              <li>• Points are deducted immediately upon entry</li>
+              <li>• Use your reward entries to purchase giveaway submissions</li>
+              <li>• Each submission gives you one chance to win</li>
+              <li>• More submissions = more chances to win</li>
+              <li>• Entries are deducted immediately upon submission</li>
               <li>• Winners are selected randomly after the giveaway ends</li>
             </ul>
           </CardContent>
