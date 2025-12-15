@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, ArrowLeft, Ruler, Expand } from "lucide-react";
+import { ShoppingCart, ArrowLeft, Ruler, Expand, Star, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest } from "@/lib/shopify";
@@ -24,6 +24,11 @@ import {
 } from "@/components/ui/collapsible";
 import { ProductReviews } from "@/components/ProductReviews";
 import { DeliveryEstimate } from "@/components/DeliveryEstimate";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -67,6 +72,10 @@ const PRODUCT_BY_HANDLE_QUERY = `
       options {
         name
         values
+      }
+      rewardPoints: metafield(namespace: "rewards", key: "points_value") {
+        value
+        type
       }
     }
   }
@@ -497,6 +506,33 @@ const ProductDetail = () => {
             
             {/* Delivery Estimate */}
             <DeliveryEstimate productType={productType} />
+            
+            {/* Reward Points Display */}
+            {(() => {
+              const rewardPoints = data.rewardPoints?.value ? parseInt(data.rewardPoints.value, 10) : 0;
+              if (rewardPoints <= 0) return null;
+              
+              return (
+                <div className="flex items-center gap-2 py-3 px-4 rounded-lg bg-primary/10 border border-primary/20">
+                  <Star className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm font-medium text-foreground">
+                    Earn <span className="text-primary font-bold">{rewardPoints.toLocaleString()}</span> points with this purchase
+                  </span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="ml-auto p-1 hover:bg-primary/10 rounded-full transition-colors">
+                        <Info className="h-4 w-4 text-muted-foreground" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-[250px]">
+                      <p className="text-xs">
+                        Points are earned per product and added to your account after your order is paid.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              );
+            })()}
             
             <Button 
               size="lg" 
