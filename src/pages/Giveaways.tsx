@@ -286,7 +286,7 @@ const Giveaways = () => {
                       <img 
                         src={giveaway.image_url} 
                         alt={giveaway.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-top"
                       />
                     </div>
                   )}
