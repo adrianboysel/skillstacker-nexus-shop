@@ -282,7 +282,7 @@ const Giveaways = () => {
               return (
                 <Card key={giveaway.id} className="bg-card border-border overflow-hidden">
                   {giveaway.image_url && (
-                    <div className="aspect-video bg-muted overflow-hidden">
+                    <div className="aspect-[4/5] bg-muted overflow-hidden">
                       <img 
                         src={giveaway.image_url} 
                         alt={giveaway.title}
