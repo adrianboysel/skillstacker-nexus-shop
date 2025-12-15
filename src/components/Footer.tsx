@@ -6,30 +6,19 @@ export const Footer = () => {
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container mx-auto px-4 py-12 md:py-16">
         {/* Main Footer Grid - 4 columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           
-          {/* Column 1: Company */}
+          {/* Column 1: Logo & Tagline */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
-              Company
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <a href="https://skillstacker.io" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Whitepaper
-                </a>
-              </li>
-            </ul>
+            <div className="mb-4">
+              <img src={logoWhite} alt="Skill Stacker" width="432" height="48" className="h-10 w-auto object-contain" />
+            </div>
+            <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+              Built on Solana. Fueled by $STKR.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Where skills become capital — and style makes a statement.
+            </p>
           </div>
 
           {/* Column 2: Shop By Brand */}
@@ -37,7 +26,7 @@ export const Footer = () => {
             <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
               Shop By Brand
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               <li>
                 <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   All Products
@@ -76,7 +65,7 @@ export const Footer = () => {
             <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
               My Account
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               <li>
                 <Link to="/rewards" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   My Rewards
@@ -112,11 +101,7 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <img src={logoWhite} alt="Skill Stacker" width="200" height="24" className="h-6 w-auto object-contain" />
-          </div>
-          
+        <div className="mt-10 pt-6 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <a href="https://www.youtube.com/@adrianboysel" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
               YouTube
