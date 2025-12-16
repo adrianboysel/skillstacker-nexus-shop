@@ -461,9 +461,11 @@ const Giveaways = () => {
                       </div>
                     )}
                     
-                    <p className="text-xs text-muted-foreground text-center">
-                      Ends {formatDate(giveaway.end_date)}
-                    </p>
+                    {giveaway.end_date ? (
+                      <p className="text-xs text-muted-foreground text-center">
+                        Ends {formatDate(giveaway.end_date)}
+                      </p>
+                    ) : null}
                   </CardContent>
                 </Card>
               );
