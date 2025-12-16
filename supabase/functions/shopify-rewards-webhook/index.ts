@@ -7,6 +7,7 @@ const corsHeaders = {
 
 const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN')!;
 const SHOPIFY_STORE_DOMAIN = Deno.env.get('SHOPIFY_STORE_DOMAIN')!;
+const SHOPIFY_WEBHOOK_SECRET = Deno.env.get('SHOPIFY_WEBHOOK_SECRET')!;
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
@@ -40,6 +41,52 @@ interface ShopifyOrder {
       quantity: number;
     }>;
   }>;
+}
+
+// Verify Shopify webhook HMAC signature
+async function verifyShopifyWebhook(hmacHeader: string | null, body: string): Promise<boolean> {
+  if (!hmacHeader) {
+    console.error('[Webhook] Missing HMAC header');
+    return false;
+  }
+
+  if (!SHOPIFY_WEBHOOK_SECRET) {
+    console.error('[Webhook] Missing SHOPIFY_WEBHOOK_SECRET environment variable');
+    return false;
+  }
+
+  try {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(SHOPIFY_WEBHOOK_SECRET),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+
+    const signature = await crypto.subtle.sign(
+      'HMAC',
+      key,
+      encoder.encode(body)
+    );
+
+    const hashArray = Array.from(new Uint8Array(signature));
+    const hashBase64 = btoa(String.fromCharCode(...hashArray));
+
+    const isValid = hashBase64 === hmacHeader;
+
+    if (!isValid) {
+      console.error('[Webhook] HMAC verification failed - signatures do not match');
+    } else {
+      console.log('[Webhook] HMAC verification successful');
+    }
+
+    return isValid;
+  } catch (error) {
+    console.error('[Webhook] HMAC verification error:', error);
+    return false;
+  }
 }
 
 // Shopify Admin API helper
@@ -357,6 +404,7 @@ Deno.serve(async (req) => {
   
   try {
     const topic = req.headers.get('x-shopify-topic');
+    const hmacHeader = req.headers.get('x-shopify-hmac-sha256');
     console.log(`[Webhook] Received topic: ${topic}`);
     
     if (!topic) {
@@ -366,7 +414,20 @@ Deno.serve(async (req) => {
       });
     }
     
-    const order: ShopifyOrder = await req.json();
+    // Read the raw body for HMAC verification
+    const bodyText = await req.text();
+    
+    // Verify HMAC signature
+    if (!await verifyShopifyWebhook(hmacHeader, bodyText)) {
+      console.error('[Webhook] HMAC verification failed - rejecting request');
+      return new Response(JSON.stringify({ error: 'Invalid webhook signature' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    // Parse the verified body
+    const order: ShopifyOrder = JSON.parse(bodyText);
     console.log(`[Webhook] Processing order ${order.id}, customer: ${order.customer?.id}`);
     
     // Initialize Supabase client with service role for RLS bypass
