@@ -22,8 +22,15 @@ import {
   Minus,
   Plus,
   Trophy,
-  LogIn
+  LogIn,
+  Info,
+  ExternalLink
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Giveaway {
   id: string;
@@ -313,11 +320,31 @@ const Giveaways = () => {
                       </p>
                     )}
                     
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Entries per submission:</span>
-                      <span className="font-semibold text-primary">
-                        {giveaway.points_per_entry.toLocaleString()}
-                      </span>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground flex items-center gap-1.5">
+                          Entry cost:
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="w-3.5 h-3.5 text-muted-foreground cursor-help" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs text-left p-3">
+                              <p className="text-sm leading-relaxed">
+                                Entries are used to participate in giveaways.<br /><br />
+                                One submission equals one entry attempt.<br /><br />
+                                No purchase is necessary to obtain entries.<br /><br />
+                                Entries have no cash value and do not guarantee winning.
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </span>
+                        <span className="font-semibold text-primary">
+                          {giveaway.points_per_entry.toLocaleString()} entries
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Each submission uses entries from your balance. Entries have no cash value and do not guarantee winning.
+                      </p>
                     </div>
                     
                     {myEntries > 0 && (
@@ -385,9 +412,20 @@ const Giveaways = () => {
                             You need {(pointsNeeded - customerBalance).toLocaleString()} more entries
                           </p>
                         )}
+                        
+                        {/* No Purchase Necessary Link */}
+                        <a 
+                          href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          No purchase necessary. Free entry method available.
+                        </a>
                       </div>
                     ) : (
-                      <div className="text-center py-2">
+                      <div className="space-y-3 text-center py-2">
                         <Button 
                           variant="outline" 
                           className="w-full"
@@ -396,6 +434,17 @@ const Giveaways = () => {
                           <LogIn className="w-4 h-4 mr-2" />
                           Sign in to enter
                         </Button>
+                        
+                        {/* No Purchase Necessary Link - visible to logged out users */}
+                        <a 
+                          href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          No purchase necessary. Free entry method available.
+                        </a>
                       </div>
                     )}
                     
@@ -417,12 +466,22 @@ const Giveaways = () => {
               How Giveaways Work
             </h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Use your reward entries to purchase giveaway submissions</li>
+              <li>• Use your reward entries to submit giveaway entries</li>
               <li>• Each submission gives you one chance to win</li>
-              <li>• More submissions = more chances to win</li>
-              <li>• Entries are deducted immediately upon submission</li>
+              <li>• Entries are spent from your balance upon submission</li>
+              <li>• Entries have no cash value and do not guarantee winning</li>
               <li>• Winners are selected randomly after the giveaway ends</li>
+              <li>• No purchase is necessary to obtain entries</li>
             </ul>
+            <a 
+              href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors mt-4"
+            >
+              <ExternalLink className="w-3 h-3" />
+              View Official Rules
+            </a>
           </CardContent>
         </Card>
 
