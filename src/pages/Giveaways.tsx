@@ -499,7 +499,7 @@ const Giveaways = () => {
             </div>
             
             {/* Right Side - Trust Badges */}
-            <div className="space-y-10">
+            <div className="space-y-8 md:space-y-14 md:pt-8">
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
                 <span className="text-foreground font-medium">
