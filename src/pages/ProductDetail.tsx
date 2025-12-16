@@ -417,9 +417,9 @@ const ProductDetail = () => {
                 {variant?.price.currencyCode} ${parseFloat(variant?.price.amount || '0').toFixed(2)}
               </p>
               {data.rewardPoints?.value && parseInt(data.rewardPoints.value, 10) > 0 && (
-                <p className="text-sm text-primary flex items-center gap-1.5 mb-6">
-                  <Star className="h-4 w-4 fill-primary" />
-                  Earn {parseInt(data.rewardPoints.value, 10).toLocaleString()} points with this purchase
+                <p className="text-sm text-secondary flex items-center gap-1.5 mb-6">
+                  <Star className="h-4 w-4 fill-secondary" />
+                  Earn {parseInt(data.rewardPoints.value, 10).toLocaleString()} entries with this purchase
                 </p>
               )}
               <div className="text-muted-foreground leading-relaxed space-y-3">
