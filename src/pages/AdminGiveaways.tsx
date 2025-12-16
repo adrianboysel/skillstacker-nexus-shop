@@ -58,7 +58,7 @@ interface Giveaway {
   prize_description: string | null;
   points_per_entry: number;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   is_active: boolean;
   max_entries_per_customer: number | null;
   image_url: string | null;
@@ -83,6 +83,7 @@ interface GiveawayFormData {
   points_per_entry: number;
   start_date: string;
   end_date: string;
+  hasEndDate: boolean;
   is_active: boolean;
   max_entries_per_customer: number | null;
   image_url: string;
@@ -95,6 +96,7 @@ const emptyFormData: GiveawayFormData = {
   points_per_entry: 100,
   start_date: new Date().toISOString().slice(0, 16),
   end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
+  hasEndDate: true,
   is_active: true,
   max_entries_per_customer: null,
   image_url: "",
@@ -192,7 +194,6 @@ const AdminGiveaways = () => {
   const getGiveawayStatus = (giveaway: Giveaway) => {
     const now = new Date();
     const start = new Date(giveaway.start_date);
-    const end = new Date(giveaway.end_date);
 
     if (!giveaway.is_active) {
       return { label: "Inactive", variant: "secondary" as const };
@@ -200,8 +201,11 @@ const AdminGiveaways = () => {
     if (now < start) {
       return { label: "Scheduled", variant: "outline" as const };
     }
-    if (now > end) {
-      return { label: "Ended", variant: "destructive" as const };
+    if (giveaway.end_date) {
+      const end = new Date(giveaway.end_date);
+      if (now > end) {
+        return { label: "Ended", variant: "destructive" as const };
+      }
     }
     return { label: "Active", variant: "default" as const };
   };
@@ -225,7 +229,10 @@ const AdminGiveaways = () => {
       prize_description: giveaway.prize_description || "",
       points_per_entry: giveaway.points_per_entry,
       start_date: new Date(giveaway.start_date).toISOString().slice(0, 16),
-      end_date: new Date(giveaway.end_date).toISOString().slice(0, 16),
+      end_date: giveaway.end_date 
+        ? new Date(giveaway.end_date).toISOString().slice(0, 16)
+        : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
+      hasEndDate: !!giveaway.end_date,
       is_active: giveaway.is_active,
       max_entries_per_customer: giveaway.max_entries_per_customer,
       image_url: giveaway.image_url || "",
@@ -298,7 +305,7 @@ const AdminGiveaways = () => {
       toast.error("Entries per submission must be at least 1");
       return;
     }
-    if (new Date(formData.end_date) <= new Date(formData.start_date)) {
+    if (formData.hasEndDate && new Date(formData.end_date) <= new Date(formData.start_date)) {
       toast.error("End date must be after start date");
       return;
     }
@@ -311,7 +318,7 @@ const AdminGiveaways = () => {
         prize_description: formData.prize_description.trim() || null,
         points_per_entry: formData.points_per_entry,
         start_date: new Date(formData.start_date).toISOString(),
-        end_date: new Date(formData.end_date).toISOString(),
+        end_date: formData.hasEndDate ? new Date(formData.end_date).toISOString() : null,
         is_active: formData.is_active,
         max_entries_per_customer: formData.max_entries_per_customer || null,
         image_url: formData.image_url.trim() || null,
@@ -437,7 +444,7 @@ const AdminGiveaways = () => {
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            {formatDate(giveaway.start_date)} - {formatDate(giveaway.end_date)}
+                            {formatDate(giveaway.start_date)} - {giveaway.end_date ? formatDate(giveaway.end_date) : "No end date"}
                           </span>
                         </div>
                       </div>
@@ -565,25 +572,43 @@ const AdminGiveaways = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="start_date">Start Date *</Label>
-                <Input
-                  id="start_date"
-                  type="datetime-local"
-                  value={formData.start_date}
-                  onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+            <div className="space-y-2">
+              <Label htmlFor="start_date">Start Date *</Label>
+              <Input
+                id="start_date"
+                type="datetime-local"
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="hasEndDate"
+                  checked={formData.hasEndDate}
+                  onCheckedChange={(checked) => setFormData({ ...formData, hasEndDate: checked })}
                 />
+                <Label htmlFor="hasEndDate">Set end date</Label>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="end_date">End Date *</Label>
-                <Input
-                  id="end_date"
-                  type="datetime-local"
-                  value={formData.end_date}
-                  onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-                />
-              </div>
+              
+              {formData.hasEndDate && (
+                <div className="space-y-2">
+                  <Label htmlFor="end_date">End Date</Label>
+                  <Input
+                    id="end_date"
+                    type="datetime-local"
+                    value={formData.end_date}
+                    onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                  />
+                </div>
+              )}
+              
+              {!formData.hasEndDate && (
+                <p className="text-sm text-muted-foreground">
+                  Giveaway will run indefinitely until manually ended
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">

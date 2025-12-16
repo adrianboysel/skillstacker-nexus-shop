@@ -39,7 +39,7 @@ interface Giveaway {
   prize_description: string;
   points_per_entry: number;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   is_active: boolean;
   max_entries_per_customer: number | null;
   image_url: string | null;
@@ -177,7 +177,9 @@ const Giveaways = () => {
     });
   };
 
-  const getTimeRemaining = (endDate: string) => {
+  const getTimeRemaining = (endDate: string | null) => {
+    if (!endDate) return "Ongoing";
+    
     const end = new Date(endDate);
     const now = new Date();
     const diff = end.getTime() - now.getTime();
