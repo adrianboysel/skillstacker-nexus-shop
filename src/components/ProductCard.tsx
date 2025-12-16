@@ -126,9 +126,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 {price.currencyCode} ${parseFloat(price.amount).toFixed(2)}
               </span>
               {rewardPoints > 0 && (
-                <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
-                  <Star className="h-3 w-3 fill-primary text-primary" />
-                  <span className="text-xs font-medium text-primary">
+                <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+                  <Star className="h-3 w-3 fill-secondary text-secondary" />
+                  <span className="text-xs font-medium text-secondary">
                     Earn {rewardPoints.toLocaleString()} entries
                   </span>
                 </div>
