@@ -49,6 +49,7 @@ const Giveaways = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingGiveaways, setIsLoadingGiveaways] = useState(true);
   const [isEntering, setIsEntering] = useState<string | null>(null);
   const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
   const [customerEntries, setCustomerEntries] = useState<Record<string, number>>({});
@@ -75,7 +76,9 @@ const Giveaways = () => {
   }, []);
 
   const loadGiveaways = async (customerEmail?: string) => {
+    setIsLoadingGiveaways(true);
     try {
+      console.log('[Giveaways] Loading giveaways, email:', customerEmail);
       const { data, error } = await supabase.functions.invoke('giveaway-entries', {
         body: { 
           action: 'get_giveaways',
@@ -83,9 +86,15 @@ const Giveaways = () => {
         }
       });
 
-      if (error) throw error;
+      console.log('[Giveaways] Response:', { data, error });
 
-      if (data.success) {
+      if (error) {
+        console.error('[Giveaways] Invoke error:', error);
+        throw error;
+      }
+
+      if (data?.success) {
+        console.log('[Giveaways] Setting giveaways:', data.giveaways?.length);
         setGiveaways(data.giveaways || []);
         setCustomerEntries(data.customerEntries || {});
         setCustomerBalance(data.customerBalance || 0);
@@ -96,11 +105,15 @@ const Giveaways = () => {
           amounts[g.id] = 1;
         });
         setEntryAmounts(amounts);
+      } else {
+        console.error('[Giveaways] Response not successful:', data);
+        setGiveaways([]);
       }
     } catch (error: any) {
-      console.error("Error loading giveaways:", error);
-      // Still show giveaways even if customer data fails
+      console.error('[Giveaways] Error loading giveaways:', error);
       setGiveaways([]);
+    } finally {
+      setIsLoadingGiveaways(false);
     }
   };
 
@@ -268,7 +281,11 @@ const Giveaways = () => {
         )}
 
         {/* Giveaways List */}
-        {giveaways.length === 0 ? (
+        {isLoadingGiveaways ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : giveaways.length === 0 ? (
           <Card className="max-w-md mx-auto bg-card border-border">
             <CardContent className="py-12 text-center">
               <Gift className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
