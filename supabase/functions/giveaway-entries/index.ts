@@ -167,16 +167,29 @@ Deno.serve(async (req) => {
       case 'get_giveaways': {
         // Get all active giveaways - public endpoint
         // Giveaways without end_date are considered ongoing
-        const now = new Date().toISOString();
-        const { data: giveaways, error } = await supabase
+        const now = new Date();
+        console.log('[Giveaways] Fetching active giveaways, now:', now.toISOString());
+        
+        const { data: allGiveaways, error } = await supabase
           .from('giveaways')
           .select('*')
           .eq('is_active', true)
-          .lte('start_date', now)
-          .or(`end_date.is.null,end_date.gt.${now}`)
+          .lte('start_date', now.toISOString())
           .order('created_at', { ascending: false });
         
-        if (error) throw error;
+        if (error) {
+          console.error('[Giveaways] Query error:', error);
+          throw error;
+        }
+        
+        console.log('[Giveaways] Found', allGiveaways?.length || 0, 'giveaways from query');
+        
+        // Filter: include giveaways with no end_date OR end_date in the future
+        const giveaways = allGiveaways?.filter(g => 
+          !g.end_date || new Date(g.end_date) > now
+        ) || [];
+        
+        console.log('[Giveaways] After filtering:', giveaways.length, 'active giveaways');
         
         // If email provided, verify auth and get customer entries
         let customerEntries: Record<string, number> = {};
