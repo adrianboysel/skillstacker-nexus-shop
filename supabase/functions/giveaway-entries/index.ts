@@ -166,13 +166,15 @@ Deno.serve(async (req) => {
     switch (action) {
       case 'get_giveaways': {
         // Get all active giveaways - public endpoint
+        // Giveaways without end_date are considered ongoing
+        const now = new Date().toISOString();
         const { data: giveaways, error } = await supabase
           .from('giveaways')
           .select('*')
           .eq('is_active', true)
-          .gt('end_date', new Date().toISOString())
-          .lte('start_date', new Date().toISOString())
-          .order('end_date', { ascending: true });
+          .lte('start_date', now)
+          .or(`end_date.is.null,end_date.gt.${now}`)
+          .order('created_at', { ascending: false });
         
         if (error) throw error;
         
@@ -322,7 +324,8 @@ Deno.serve(async (req) => {
           );
         }
         
-        if (new Date(giveaway.end_date) < now) {
+        // Only check end date if it's set
+        if (giveaway.end_date && new Date(giveaway.end_date) < now) {
           return new Response(
             JSON.stringify({ success: false, error: 'This giveaway has ended' }),
             { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
