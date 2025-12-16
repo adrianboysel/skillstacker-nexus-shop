@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PromoBanner } from "@/components/PromoBanner";
@@ -414,15 +414,12 @@ const Giveaways = () => {
                         )}
                         
                         {/* No Purchase Necessary Link */}
-                        <a 
-                          href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link 
+                          to="/free-entry"
                           className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                         >
-                          <ExternalLink className="w-3 h-3" />
                           No purchase necessary. Free entry method available.
-                        </a>
+                        </Link>
                       </div>
                     ) : (
                       <div className="space-y-3 text-center py-2">
@@ -436,15 +433,12 @@ const Giveaways = () => {
                         </Button>
                         
                         {/* No Purchase Necessary Link - visible to logged out users */}
-                        <a 
-                          href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link 
+                          to="/free-entry"
                           className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                         >
-                          <ExternalLink className="w-3 h-3" />
                           No purchase necessary. Free entry method available.
-                        </a>
+                        </Link>
                       </div>
                     )}
                     
@@ -473,15 +467,23 @@ const Giveaways = () => {
               <li>• Winners are selected randomly after the giveaway ends</li>
               <li>• No purchase is necessary to obtain entries</li>
             </ul>
-            <a 
-              href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors mt-4"
-            >
-              <ExternalLink className="w-3 h-3" />
-              View Official Rules
-            </a>
+            <div className="flex flex-wrap gap-4 mt-4">
+              <Link 
+                to="/free-entry"
+                className="inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors"
+              >
+                Free Entry Method
+              </Link>
+              <a 
+                href="https://storage.googleapis.com/msgsndr/Rx2NKvjRAshrTTGyKfC1/media/69409f000212340a7df25437.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors"
+              >
+                <ExternalLink className="w-3 h-3" />
+                View Official Rules
+              </a>
+            </div>
           </CardContent>
         </Card>
 
