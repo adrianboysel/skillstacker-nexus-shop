@@ -425,6 +425,118 @@ const Giveaways = () => {
             </ul>
           </CardContent>
         </Card>
+
+        {/* How The Winner Is Chosen Section */}
+        <section className="mt-20 max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-foreground mb-12">
+            HOW THE WINNER IS CHOSEN
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Left Side - Process */}
+            <div className="space-y-8">
+              {/* Step 1 */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-muted mb-4">
+                  <svg className="w-10 h-10 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="2" y="3" width="20" height="14" rx="2" strokeWidth="1.5"/>
+                    <line x1="8" y1="21" x2="16" y2="21" strokeWidth="1.5"/>
+                    <line x1="12" y1="17" x2="12" y2="21" strokeWidth="1.5"/>
+                  </svg>
+                </div>
+                <p className="text-sm md:text-base font-semibold text-foreground uppercase tracking-wide">
+                  3rd Party Sweepstakes Firm Does<br />
+                  A Computer Random Drawing To<br />
+                  Pick The Winner
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">(Usually Takes 5-7 Business Days)</p>
+              </div>
+              
+              {/* Arrow Down */}
+              <div className="flex justify-center">
+                <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="text-center">
+                <p className="text-sm md:text-base font-semibold text-foreground uppercase tracking-wide">
+                  We Announce The Winner<br />
+                  On All Of Our Social Media<br />
+                  Pages + Email
+                </p>
+              </div>
+              
+              {/* Arrow Down */}
+              <div className="flex justify-center">
+                <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="flex items-center justify-center gap-4">
+                <div className="p-3 rounded-full bg-muted">
+                  <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <p className="text-sm md:text-base font-semibold text-foreground uppercase tracking-wide">
+                    We Contact The Winner<br />
+                    Through A Phone Call<br />
+                    To Notify Them
+                  </p>
+                </div>
+              </div>
+              
+              {/* Warning */}
+              <p className="text-center text-destructive text-xs font-medium">
+                * WE WILL NEVER CONTACT THE WINNER<br />
+                ASKING FOR PAYMENT OF ANY KIND
+              </p>
+            </div>
+            
+            {/* Right Side - Trust Badges */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
+                <span className="text-foreground font-medium">
+                  Drawing is handled by a Sweepstakes Firm
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
+                <span className="text-foreground font-medium">
+                  100% Satisfaction Guarantee
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
+                <span className="text-foreground font-medium">
+                  No subscription required
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
+                <span className="text-foreground font-medium">
+                  High Quality Apparel & Products
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary flex-shrink-0" />
+                <span className="text-foreground font-medium">
+                  Bonded and Insured
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
