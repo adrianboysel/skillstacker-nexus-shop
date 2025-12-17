@@ -109,7 +109,9 @@ const AdminProductPoints = () => {
       }
     } catch (error: any) {
       console.error("Error loading products:", error);
-      toast.error("Failed to load products");
+      toast.error("Failed to load products", {
+        description: error?.message ? String(error.message) : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }
