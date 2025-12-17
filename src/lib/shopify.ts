@@ -2,9 +2,11 @@ import { toast } from 'sonner';
 import type { CartItem } from '@/stores/cartStore';
 
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+// USER'S ACTUAL STORE - not the Lovable-managed sandbox
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'skillstackershop.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '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';
+// Valid Storefront API token for skillstackershop.myshopify.com
+const SHOPIFY_STOREFRONT_TOKEN = '0bc2514aea611d0f8ea39b755a3fc570';
 
 export async function storefrontApiRequest(query: string, variables: any = {}) {
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
