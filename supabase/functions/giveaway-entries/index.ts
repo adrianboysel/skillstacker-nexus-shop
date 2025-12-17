@@ -5,8 +5,34 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+function normalizeShopifyDomain(raw: string): string {
+  const trimmed = (raw ?? '').trim();
+  if (!trimmed) return trimmed;
+
+  const withProto = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  try {
+    const url = new URL(withProto);
+    return url.hostname;
+  } catch {
+    return trimmed
+      .replace(/^https?:\/\//i, '')
+      .split('/')[0]
+      .split('?')[0]
+      .trim();
+  }
+}
+
 const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN')!;
-const SHOPIFY_STORE_DOMAIN = Deno.env.get('SHOPIFY_STORE_DOMAIN')!;
+
+// Normalize and force permanent *.myshopify.com domain for Admin API calls.
+const SHOPIFY_STORE_DOMAIN_FALLBACK = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+const SHOPIFY_STORE_DOMAIN_RAW = Deno.env.get('SHOPIFY_STORE_DOMAIN')!;
+const SHOPIFY_STORE_DOMAIN_NORMALIZED = normalizeShopifyDomain(SHOPIFY_STORE_DOMAIN_RAW);
+const SHOPIFY_STORE_DOMAIN =
+  SHOPIFY_STORE_DOMAIN_NORMALIZED && SHOPIFY_STORE_DOMAIN_NORMALIZED.endsWith('.myshopify.com')
+    ? SHOPIFY_STORE_DOMAIN_NORMALIZED
+    : SHOPIFY_STORE_DOMAIN_FALLBACK;
+
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
