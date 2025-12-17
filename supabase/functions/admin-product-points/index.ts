@@ -26,8 +26,8 @@ const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN')!;
 const SHOPIFY_STORE_DOMAIN = normalizeShopifyDomain(Deno.env.get('SHOPIFY_STORE_DOMAIN')!);
 
 // Shopify Admin API is safest via the permanent *.myshopify.com domain.
-// Fallback avoids misconfigured values like shortened/redirect links.
-const SHOPIFY_ADMIN_DOMAIN_FALLBACK = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+// USER'S ACTUAL STORE - not the Lovable-managed sandbox
+const SHOPIFY_ADMIN_DOMAIN_FALLBACK = 'skillstackershop.myshopify.com';
 const SHOPIFY_ADMIN_DOMAIN =
   SHOPIFY_STORE_DOMAIN && SHOPIFY_STORE_DOMAIN.endsWith('.myshopify.com')
     ? SHOPIFY_STORE_DOMAIN

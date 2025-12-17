@@ -25,8 +25,8 @@ function normalizeShopifyDomain(raw: string): string {
 const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN')!;
 
 // Normalize and force permanent *.myshopify.com domain for Admin API calls.
-// This prevents breakage if someone enters a custom domain or an old store URL.
-const SHOPIFY_STORE_DOMAIN_FALLBACK = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+// USER'S ACTUAL STORE - not the Lovable-managed sandbox
+const SHOPIFY_STORE_DOMAIN_FALLBACK = 'skillstackershop.myshopify.com';
 const SHOPIFY_STORE_DOMAIN_RAW = Deno.env.get('SHOPIFY_STORE_DOMAIN')!;
 const SHOPIFY_STORE_DOMAIN_NORMALIZED = normalizeShopifyDomain(SHOPIFY_STORE_DOMAIN_RAW);
 const SHOPIFY_STORE_DOMAIN =
