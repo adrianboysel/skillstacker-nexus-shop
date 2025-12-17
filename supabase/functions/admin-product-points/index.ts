@@ -39,6 +39,21 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const REWARDS_NAMESPACE = 'rewards';
 const PRODUCT_POINTS_KEY = 'points_value';
 
+// Startup validation - log configuration on first request
+let startupLogged = false;
+function logStartupConfig() {
+  if (startupLogged) return;
+  startupLogged = true;
+  console.log('[admin-product-points] Configuration:');
+  console.log(`  Admin domain: ${SHOPIFY_ADMIN_DOMAIN}`);
+  console.log(`  Domain source: ${SHOPIFY_STORE_DOMAIN ? 'env' : 'fallback'}`);
+  console.log(`  Access token present: ${!!SHOPIFY_ACCESS_TOKEN}`);
+  
+  if (!SHOPIFY_ACCESS_TOKEN) {
+    console.error('[admin-product-points] CRITICAL: SHOPIFY_ACCESS_TOKEN is missing!');
+  }
+}
+
 interface ProductPointsUpdate {
   productId: string;
   productTitle: string;
@@ -102,10 +117,14 @@ async function verifyAdminAuth(req: Request, supabase: any): Promise<{ authorize
   return { authorized: true, userId: user.id, email: user.email };
 }
 
-// Shopify Admin API helper
+// Shopify Admin API helper with detailed error logging
 async function shopifyAdminRequest(endpoint: string, method = 'GET', body?: any) {
   const url = `https://${SHOPIFY_ADMIN_DOMAIN}/admin/api/2025-01/${endpoint}`;
   console.log(`[Shopify API] ${method} ${url}`);
+  
+  if (!SHOPIFY_ACCESS_TOKEN) {
+    throw new Error('SHOPIFY_ACCESS_TOKEN is not configured');
+  }
   
   const options: RequestInit = {
     method,
@@ -123,8 +142,17 @@ async function shopifyAdminRequest(endpoint: string, method = 'GET', body?: any)
   
   if (!response.ok) {
     const errorText = await response.text();
-    console.error(`[Shopify API] Error: ${response.status} - ${errorText}`);
-    throw new Error(`Shopify API error: ${response.status}`);
+    console.error(`[Shopify API] Error ${response.status}: ${errorText}`);
+    
+    if (response.status === 401) {
+      throw new Error('Shopify Admin API: Invalid or expired access token (401)');
+    } else if (response.status === 403) {
+      throw new Error('Shopify Admin API: Insufficient scopes (403) - check app permissions');
+    } else if (response.status === 404) {
+      throw new Error(`Shopify Admin API: Resource not found (404) - ${endpoint}`);
+    }
+    
+    throw new Error(`Shopify Admin API error: ${response.status}`);
   }
   
   return response.json();
@@ -301,7 +329,19 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
   
+  // Log configuration on first request
+  logStartupConfig();
+  
   try {
+    // Pre-flight check: Verify Admin API credentials are configured
+    if (!SHOPIFY_ACCESS_TOKEN) {
+      console.error('[admin-product-points] Admin API token missing');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Shopify Admin API not configured - missing access token' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     
     // Verify admin authorization

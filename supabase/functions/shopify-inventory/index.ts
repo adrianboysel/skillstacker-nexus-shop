@@ -37,6 +37,22 @@ const SHOPIFY_STORE_DOMAIN =
 
 const SHOPIFY_API_VERSION = '2025-01';
 
+// Startup validation - log configuration on first request
+let startupLogged = false;
+function logStartupConfig() {
+  if (startupLogged) return;
+  startupLogged = true;
+  console.log('[shopify-inventory] Configuration:');
+  console.log(`  Store domain: ${SHOPIFY_STORE_DOMAIN}`);
+  console.log(`  Domain source: ${SHOPIFY_STORE_DOMAIN_NORMALIZED ? 'env' : 'fallback'}`);
+  console.log(`  Access token present: ${!!SHOPIFY_ACCESS_TOKEN}`);
+  console.log(`  API version: ${SHOPIFY_API_VERSION}`);
+  
+  if (!SHOPIFY_ACCESS_TOKEN) {
+    console.error('[shopify-inventory] CRITICAL: SHOPIFY_ACCESS_TOKEN is missing!');
+  }
+}
+
 interface InventoryUpdateRequest {
   variantId: string;
   inventoryItemId: string;
@@ -58,7 +74,19 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Log configuration on first request
+  logStartupConfig();
+
   try {
+    // Pre-flight check: Verify Admin API credentials are configured
+    if (!SHOPIFY_ACCESS_TOKEN) {
+      console.error('[shopify-inventory] Admin API token missing');
+      return new Response(
+        JSON.stringify({ error: 'Shopify Admin API not configured - missing access token' }),
+        { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
     // Verify user is authenticated and is admin
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
@@ -153,30 +181,40 @@ Deno.serve(async (req) => {
         }
       `;
 
-      console.log('Fetching products from Shopify Admin API...');
-      const response = await fetch(
-        `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Shopify-Access-Token': SHOPIFY_ACCESS_TOKEN!,
-          },
-          body: JSON.stringify({ query }),
-        }
-      );
+      const apiUrl = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`;
+      console.log(`[shopify-inventory] Fetching products from: ${apiUrl}`);
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Access-Token': SHOPIFY_ACCESS_TOKEN!,
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      console.log(`[shopify-inventory] Shopify response status: ${response.status}`);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`[shopify-inventory] Admin API error ${response.status}: ${errorText}`);
+        return new Response(
+          JSON.stringify({ 
+            error: `Shopify Admin API error: ${response.status}`,
+            details: response.status === 401 ? 'Invalid or expired Admin API token' : errorText
+          }),
+          { status: response.status, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+        );
+      }
 
       const data = await response.json();
-      console.log('Shopify products fetched successfully');
+      console.log('[shopify-inventory] Products fetched successfully');
 
       if (data.errors) {
-        console.error('Shopify API returned errors');
+        console.error('[shopify-inventory] GraphQL errors:', JSON.stringify(data.errors));
         return new Response(
-          JSON.stringify({ error: 'Failed to fetch products' }),
-          {
-            status: 500,
-            headers: { 'Content-Type': 'application/json', ...corsHeaders },
-          }
+          JSON.stringify({ error: 'GraphQL query failed', details: data.errors }),
+          { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
         );
       }
 
