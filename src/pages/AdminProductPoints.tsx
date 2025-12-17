@@ -94,7 +94,24 @@ const AdminProductPoints = () => {
         body: { action: "get" },
       });
 
-      if (error) throw error;
+      if (error) {
+        const ctxBody = (error as any)?.context?.body;
+        let message = error.message || "Edge Function error";
+
+        if (typeof ctxBody === "string") {
+          try {
+            const parsed = JSON.parse(ctxBody);
+            if (parsed?.error) message = String(parsed.error);
+            else message = ctxBody;
+          } catch {
+            message = ctxBody;
+          }
+        } else if (ctxBody && typeof ctxBody === "object" && "error" in ctxBody) {
+          message = String((ctxBody as any).error);
+        }
+
+        throw new Error(message);
+      }
 
       if (data.success) {
         setProducts(data.products);
