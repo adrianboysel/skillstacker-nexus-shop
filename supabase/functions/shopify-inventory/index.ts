@@ -137,7 +137,15 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { action } = await req.json();
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
+    const action = (body as any).action;
 
     if (action === 'getProducts') {
       // Fetch products with inventory information
@@ -195,17 +203,22 @@ Deno.serve(async (req) => {
 
       console.log(`[shopify-inventory] Shopify response status: ${response.status}`);
       
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`[shopify-inventory] Admin API error ${response.status}: ${errorText}`);
-        return new Response(
-          JSON.stringify({ 
-            error: `Shopify Admin API error: ${response.status}`,
-            details: response.status === 401 ? 'Invalid or expired Admin API token' : errorText
-          }),
-          { status: response.status, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
-        );
-      }
+       if (!response.ok) {
+         const errorText = await response.text();
+         console.error(`[shopify-inventory] Admin API error ${response.status}: ${errorText}`);
+
+         let details: any = errorText;
+         if (response.status === 401) {
+           details = 'Invalid or expired Admin API token (401)';
+         } else if (response.status === 403) {
+           details = 'Insufficient Shopify app scopes (403). Required for inventory page: read_products, read_inventory (view), write_inventory (adjust).';
+         }
+
+         return new Response(
+           JSON.stringify({ error: `Shopify Admin API error: ${response.status}`, details }),
+           { status: response.status, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+         );
+       }
 
       const data = await response.json();
       console.log('[shopify-inventory] Products fetched successfully');
@@ -224,8 +237,7 @@ Deno.serve(async (req) => {
     }
 
     if (action === 'updateInventory') {
-      const requestData = await req.json();
-      
+      const requestData = body as any;
       // Validate input parameters
       const validationResult = inventoryUpdateSchema.safeParse(requestData);
       if (!validationResult.success) {

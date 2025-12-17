@@ -45,6 +45,7 @@ export default function AdminInventory() {
   const [products, setProducts] = useState<Product[]>([]);
   const [locationId, setLocationId] = useState<string>('');
   const [updatingVariants, setUpdatingVariants] = useState<Set<string>>(new Set());
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     checkAdminAndLoadProducts();
@@ -82,8 +83,30 @@ export default function AdminInventory() {
     }
   };
 
+  const parseInvokeError = (err: any) => {
+    const ctxBody = err?.context?.body;
+    if (typeof ctxBody === 'string') {
+      try {
+        const parsed = JSON.parse(ctxBody);
+        if (parsed?.error && parsed?.details) {
+          return `${parsed.error} — ${typeof parsed.details === 'string' ? parsed.details : JSON.stringify(parsed.details)}`;
+        }
+        if (parsed?.error) return String(parsed.error);
+      } catch {
+        // ignore
+      }
+      return ctxBody;
+    }
+    if (ctxBody && typeof ctxBody === 'object' && 'error' in ctxBody) {
+      const details = (ctxBody as any).details;
+      return details ? `${String((ctxBody as any).error)} — ${String(details)}` : String((ctxBody as any).error);
+    }
+    return err?.message ? String(err.message) : 'Unknown error';
+  };
+
   const loadProducts = async () => {
     setIsLoading(true);
+    setLoadError(null);
     try {
       const { data, error } = await supabase.functions.invoke('shopify-inventory', {
         body: { action: 'getProducts' },
@@ -92,17 +115,19 @@ export default function AdminInventory() {
       if (error) throw error;
 
       console.log('Products data:', data);
-      
+
       if (data.locations?.edges?.length > 0) {
         setLocationId(data.locations.edges[0].node.id);
       }
-      
+
       if (data.products?.edges) {
         setProducts(data.products.edges.map((edge: any) => edge.node));
       }
-    } catch (error: any) {
-      console.error('Error loading products:', error);
-      toast.error('Failed to load products');
+    } catch (err: any) {
+      const message = parseInvokeError(err);
+      console.error('Error loading products:', err);
+      setLoadError(message);
+      toast.error('Failed to load products', { description: message });
     } finally {
       setIsLoading(false);
     }
@@ -127,9 +152,10 @@ export default function AdminInventory() {
 
       toast.success(`Inventory updated: ${adjustment > 0 ? '+' : ''}${adjustment}`);
       await loadProducts(); // Reload to get updated quantities
-    } catch (error: any) {
-      console.error('Error updating inventory:', error);
-      toast.error('Failed to update inventory');
+    } catch (err: any) {
+      const message = parseInvokeError(err);
+      console.error('Error updating inventory:', err);
+      toast.error('Failed to update inventory', { description: message });
     } finally {
       setUpdatingVariants(prev => {
         const newSet = new Set(prev);
@@ -165,6 +191,16 @@ export default function AdminInventory() {
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
+        ) : loadError ? (
+          <Card>
+            <CardContent className="py-10 text-center space-y-3">
+              <p className="font-medium">Failed to load products</p>
+              <p className="text-sm text-muted-foreground break-words">{loadError}</p>
+              <div className="pt-2">
+                <Button variant="outline" onClick={loadProducts}>Retry</Button>
+              </div>
+            </CardContent>
+          </Card>
         ) : products.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
