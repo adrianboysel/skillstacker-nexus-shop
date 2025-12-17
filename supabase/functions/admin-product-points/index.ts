@@ -24,6 +24,15 @@ function normalizeShopifyDomain(raw: string): string {
 
 const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN')!;
 const SHOPIFY_STORE_DOMAIN = normalizeShopifyDomain(Deno.env.get('SHOPIFY_STORE_DOMAIN')!);
+
+// Shopify Admin API is safest via the permanent *.myshopify.com domain.
+// Fallback avoids misconfigured values like shortened/redirect links.
+const SHOPIFY_ADMIN_DOMAIN_FALLBACK = 'skillstacker-nexus-shop-4jh39.myshopify.com';
+const SHOPIFY_ADMIN_DOMAIN =
+  SHOPIFY_STORE_DOMAIN && SHOPIFY_STORE_DOMAIN.endsWith('.myshopify.com')
+    ? SHOPIFY_STORE_DOMAIN
+    : SHOPIFY_ADMIN_DOMAIN_FALLBACK;
+
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
@@ -95,7 +104,7 @@ async function verifyAdminAuth(req: Request, supabase: any): Promise<{ authorize
 
 // Shopify Admin API helper
 async function shopifyAdminRequest(endpoint: string, method = 'GET', body?: any) {
-  const url = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2025-01/${endpoint}`;
+  const url = `https://${SHOPIFY_ADMIN_DOMAIN}/admin/api/2025-01/${endpoint}`;
   console.log(`[Shopify API] ${method} ${url}`);
   
   const options: RequestInit = {
