@@ -25,29 +25,44 @@ function normalizeShopifyDomain(raw?: string | null): string | null {
 
 const SHOPIFY_ACCESS_TOKEN = Deno.env.get('SHOPIFY_ACCESS_TOKEN');
 
-// Normalize and force permanent *.myshopify.com domain for Admin API calls.
-// USER'S ACTUAL STORE - not the Lovable-managed sandbox
-const SHOPIFY_STORE_DOMAIN_FALLBACK = 'skillstackershop.myshopify.com';
+// We hard-pin the Admin API domain to the live store to prevent accidental calls to
+// any dev/sandbox domains.
+const EXPECTED_SHOPIFY_DOMAIN = 'skillstackershop.myshopify.com';
+
+// Keep raw/normalized values only for logging/diagnostics.
 const SHOPIFY_STORE_DOMAIN_RAW = Deno.env.get('SHOPIFY_STORE_DOMAIN');
 const SHOPIFY_STORE_DOMAIN_NORMALIZED = normalizeShopifyDomain(SHOPIFY_STORE_DOMAIN_RAW);
-const SHOPIFY_STORE_DOMAIN =
-  SHOPIFY_STORE_DOMAIN_NORMALIZED && SHOPIFY_STORE_DOMAIN_NORMALIZED.endsWith('.myshopify.com')
-    ? SHOPIFY_STORE_DOMAIN_NORMALIZED
-    : SHOPIFY_STORE_DOMAIN_FALLBACK;
 
+const SHOPIFY_STORE_DOMAIN = EXPECTED_SHOPIFY_DOMAIN;
 const SHOPIFY_API_VERSION = '2025-01';
+
+function maskSecret(secret: string, start = 6, end = 4) {
+  if (!secret) return '(missing)';
+  const s = String(secret);
+  if (s.length <= start + end) return `${s.slice(0, 2)}***`;
+  return `${s.slice(0, start)}***${s.slice(-end)}`;
+}
 
 // Startup validation - log configuration on first request
 let startupLogged = false;
 function logStartupConfig() {
   if (startupLogged) return;
   startupLogged = true;
+
   console.log('[shopify-inventory] Configuration:');
-  console.log(`  Store domain: ${SHOPIFY_STORE_DOMAIN}`);
-  console.log(`  Domain source: ${SHOPIFY_STORE_DOMAIN_NORMALIZED ? 'env' : 'fallback'}`);
-  console.log(`  Access token present: ${!!SHOPIFY_ACCESS_TOKEN}`);
+  console.log(`  Store domain (pinned): ${SHOPIFY_STORE_DOMAIN}`);
+  console.log(`  Env domain (raw): ${SHOPIFY_STORE_DOMAIN_RAW ?? '(missing)'}`);
+  console.log(`  Env domain (normalized): ${SHOPIFY_STORE_DOMAIN_NORMALIZED ?? '(missing)'}`);
   console.log(`  API version: ${SHOPIFY_API_VERSION}`);
-  
+  console.log(`  Admin token present: ${!!SHOPIFY_ACCESS_TOKEN}`);
+  console.log(`  Admin token (masked): ${SHOPIFY_ACCESS_TOKEN ? maskSecret(SHOPIFY_ACCESS_TOKEN) : '(missing)'}`);
+
+  if (SHOPIFY_STORE_DOMAIN !== EXPECTED_SHOPIFY_DOMAIN) {
+    console.error(
+      `[shopify-inventory] CRITICAL: Store domain mismatch (got ${SHOPIFY_STORE_DOMAIN}, expected ${EXPECTED_SHOPIFY_DOMAIN})`
+    );
+  }
+
   if (!SHOPIFY_ACCESS_TOKEN) {
     console.error('[shopify-inventory] CRITICAL: SHOPIFY_ACCESS_TOKEN is missing!');
   }
@@ -190,8 +205,11 @@ Deno.serve(async (req) => {
       `;
 
       const apiUrl = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`;
-      console.log(`[shopify-inventory] Fetching products from: ${apiUrl}`);
-      
+      console.log(`[shopify-inventory] Shopify Admin GraphQL URL: ${apiUrl}`);
+      console.log(
+        `[shopify-inventory] Request headers: Content-Type=application/json, X-Shopify-Access-Token=${SHOPIFY_ACCESS_TOKEN ? maskSecret(SHOPIFY_ACCESS_TOKEN) : '(missing)'}`
+      );
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -201,37 +219,52 @@ Deno.serve(async (req) => {
         body: JSON.stringify({ query }),
       });
 
-      console.log(`[shopify-inventory] Shopify response status: ${response.status}`);
-      
-       if (!response.ok) {
-         const errorText = await response.text();
-         console.error(`[shopify-inventory] Admin API error ${response.status}: ${errorText}`);
+      console.log(`[shopify-inventory] Shopify HTTP status: ${response.status}`);
 
-         let details: any = errorText;
-         if (response.status === 401) {
-           details = 'Invalid or expired Admin API token (401)';
-         } else if (response.status === 403) {
-           details = 'Insufficient Shopify app scopes (403). Required for inventory page: read_products, read_inventory (view), write_inventory (adjust).';
-         }
-
-         return new Response(
-           JSON.stringify({ error: `Shopify Admin API error: ${response.status}`, details }),
-           { status: response.status, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
-         );
-       }
-
-      const data = await response.json();
-      console.log('[shopify-inventory] Products fetched successfully');
-
-      if (data.errors) {
-        console.error('[shopify-inventory] GraphQL errors:', JSON.stringify(data.errors));
-        return new Response(
-          JSON.stringify({ error: 'GraphQL query failed', details: data.errors }),
-          { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          `[shopify-inventory] Admin API error ${response.status} (domain=${SHOPIFY_STORE_DOMAIN}, version=${SHOPIFY_API_VERSION}): ${errorText}`
         );
+
+        let details: any = errorText;
+        if (response.status === 401) {
+          details = {
+            message: 'Shopify returned 401 (Admin token invalid for this store or stale env token).',
+            domain: SHOPIFY_STORE_DOMAIN,
+            api_version: SHOPIFY_API_VERSION,
+            token_masked: SHOPIFY_ACCESS_TOKEN ? maskSecret(SHOPIFY_ACCESS_TOKEN) : '(missing)',
+          };
+        } else if (response.status === 403) {
+          details = {
+            message:
+              'Shopify returned 403 (missing scopes). Required for inventory: read_products + read_inventory (view) + write_inventory (adjust).',
+            domain: SHOPIFY_STORE_DOMAIN,
+            api_version: SHOPIFY_API_VERSION,
+          };
+        }
+
+        return new Response(JSON.stringify({ error: `Shopify Admin API error: ${response.status}`, details }), {
+          status: response.status,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
       }
 
-      return new Response(JSON.stringify(data.data), {
+      const json = await response.json();
+
+      if (json.errors) {
+        console.error('[shopify-inventory] GraphQL errors:', JSON.stringify(json.errors));
+        return new Response(JSON.stringify({ error: 'GraphQL query failed', details: json.errors }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+
+      const productsCount = json?.data?.products?.edges?.length ?? 0;
+      const locationsCount = json?.data?.locations?.edges?.length ?? 0;
+      console.log(`[shopify-inventory] Success: products=${productsCount}, locations=${locationsCount}`);
+
+      return new Response(JSON.stringify(json.data), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
