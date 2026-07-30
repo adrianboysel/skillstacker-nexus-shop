@@ -20,6 +20,7 @@ import AdminGiveaways from "./pages/AdminGiveaways";
 import Rewards from "./pages/Rewards";
 import Giveaways from "./pages/Giveaways";
 import FreeEntry from "./pages/FreeEntry";
+import UnderConstruction from "./pages/UnderConstruction";
 
 const queryClient = new QueryClient();
 
@@ -32,23 +33,14 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:category" element={<Shop />} />
-          <Route path="/product/:handle" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="/giveaways" element={<Giveaways />} />
-          <Route path="/free-entry" element={<FreeEntry />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Navigate to="/admin/inventory" replace />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/product-points" element={<AdminProductPoints />} />
           <Route path="/admin/giveaways" element={<AdminGiveaways />} />
-          <Route path="*" element={<NotFound />} />
+          {/* Store temporarily closed — everything else shows the under construction page */}
+          <Route path="*" element={<UnderConstruction />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
